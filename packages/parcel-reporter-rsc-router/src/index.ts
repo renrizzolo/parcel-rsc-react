@@ -4,8 +4,6 @@ const test = (): null => {
   console.log("test");
   const obj = { a: 1, b: 2 };
 
-  console.log(obj?.c);
+  console.log(obj);
   return null;
 };
-
-export default test;

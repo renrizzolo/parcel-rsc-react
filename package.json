@@ -12,8 +12,10 @@
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
     "type-check": "tsgo --noEmit",
-    "format": "prettier . --write --experimental-cli",
     "lint": "pnpm oxlint --type-aware",
+    "format": "prettier . --write --experimental-cli",
+    "lint:ci": "pnpm oxlint --type-aware --deny-warnings",
+    "format:ci": "prettier . --check --experimental-cli",
     "version": "changeset version && pnpm install --lockfile-only",
     "release": "pnpm build && changeset publish"
   },
