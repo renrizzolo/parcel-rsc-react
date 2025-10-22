@@ -1,0 +1,38 @@
+{
+  "name": "@renr/parcel-reporter-rsc-router",
+  "private": true,
+  "version": "0.0.1",
+  "author": "Ren Rizzolo",
+  "license": "MIT",
+  "description": "Parcel reporter that generates filesystem route definitions on build",
+  "keywords": [
+    "parcel",
+    "rsc"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renrizzolo/parcel-rsc-react.git"
+  },
+  "type": "module",
+  "main": "src/index.ts",
+  "files": [
+    "src"
+  ],
+  "sideEffects": false,
+  "exports": {
+    "import": {
+      "types": "./dist/esm/index.d.ts",
+      "default": "./dist/esm/index.js"
+    },
+    "require": {
+      "types": "./dist/esm/index.d.ts",
+      "default": "./dist/cjs/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsdown"
+  },
+  "dependencies": {
+    "@parcel/plugin": "^2.16.0"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    // transpile typescript code
+    "module": "NodeNext",
+    "outDir": "dist",
+    // emit .d.ts files
+    "declaration": true,
+    // for monorepos
+    "composite": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    // using DOM types
+    "lib": ["es2022", "dom", "dom.iterable"]
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
