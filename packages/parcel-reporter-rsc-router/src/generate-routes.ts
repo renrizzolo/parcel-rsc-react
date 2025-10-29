@@ -180,7 +180,7 @@ export async function generateRoutes(
     
         ${routesType}
 
-        export const routes= ${JSON.stringify(pages, null, 2)} as const satisfies RouteData[];
+        export const flatRoutes = ${JSON.stringify(pages, null, 2)} as const satisfies RouteData[];
 
         export const routeTree = ${JSON.stringify(
           routeTree,

@@ -25,7 +25,7 @@ declare module "@renr/parcel-rsc-router" {
   }
 }
 
-export const routes = [
+export const flatRoutes = [
   {
     path: "/",
     slug: "index",
