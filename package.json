@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/renrizzolo/parcel-rsc-react.git"
   },
-  "description": "Parcel RSC filesystem router",
+  "author": "Ren Rizzolo",
   "scripts": {
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
@@ -31,7 +31,5 @@
     "typescript": "^5.9.3",
     "vitest": "^4.0.1"
   },
-  "keywords": [],
-  "author": "Ren Rizzolo",
   "packageManager": "pnpm@10.13.1"
 }
