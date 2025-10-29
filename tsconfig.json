@@ -7,13 +7,11 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
-    "verbatimModuleSyntax": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-    // transpile typescript code
-    "module": "NodeNext",
-    "outDir": "dist",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
     // emit .d.ts files
     "declaration": true,
     // for monorepos

@@ -11,11 +11,12 @@
   "scripts": {
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
-    "type-check": "tsgo --noEmit",
+    "type-check": "pnpm -r type-check",
     "lint": "pnpm oxlint --type-aware",
     "format": "prettier . --write --experimental-cli",
     "lint:ci": "pnpm oxlint --type-aware --deny-warnings",
     "format:ci": "prettier . --check --experimental-cli",
+    "test": "vitest",
     "version": "changeset version && pnpm install --lockfile-only",
     "release": "pnpm build && changeset publish"
   },
@@ -27,7 +28,8 @@
     "oxlint-tsgolint": "^0.2.0",
     "prettier": "^3.6.2",
     "tsdown": "^0.15.9",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.1"
   },
   "keywords": [],
   "author": "Ren Rizzolo",
