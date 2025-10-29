@@ -7,24 +7,25 @@ import {
 } from "./generate-routes.js";
 
 const files = [
+  "one/two/web-development.md",
+  "blog/2024-03-21-test.mdx",
   "index.tsx",
   "about.tsx",
+  "one/page/two.md",
   "one/page.tsx",
-  "one/two/web-development.md",
-  "blog/index.js",
-  "blog/2024-03-21-test.mdx",
   "blog/2024-01-01-test.mdx",
+  "blog/index.js",
 ];
 
 describe("generate-routes", () => {
   it("removeExtension", () => {
     expect(removeExtension("index.tsx")).toBe("index");
-    expect(removeExtension("blog/[slug].tsx")).toBe("blog/[slug]");
+    expect(removeExtension("blog/slug.tsx")).toBe("blog/slug");
   });
 
   it("buildRouteTree", () => {
     const tree = buildRouteTree(files);
-
+    console.log(JSON.stringify(tree, null, 2));
     expect(tree).toEqual({
       path: "/",
       slug: "index",
@@ -39,8 +40,8 @@ describe("generate-routes", () => {
           children: [],
         },
         {
-          path: "/blog/index",
-          slug: "index",
+          path: "/blog",
+          slug: "blog",
           html: "/blog/index.html",
           rsc: "/blog/index.rsc",
           children: [
@@ -67,13 +68,20 @@ describe("generate-routes", () => {
           rsc: "/one/page.rsc",
           children: [
             {
-              path: "/one/two/web-development",
-              slug: "web-development",
-              html: "/one/two/web-development.html",
-              rsc: "/one/two/web-development.rsc",
+              html: "/one/page/two.html",
+              path: "/one/page/two",
+              rsc: "/one/page/two.rsc",
+              slug: "two",
               children: [],
             },
           ],
+        },
+        {
+          path: "/one/two/web-development",
+          slug: "web-development",
+          html: "/one/two/web-development.html",
+          rsc: "/one/two/web-development.rsc",
+          children: [],
         },
       ],
     });
@@ -98,8 +106,8 @@ describe("generate-routes", () => {
         html: "/about.html",
       },
       {
-        path: "/blog/index",
-        slug: "index",
+        path: "/blog",
+        slug: "blog",
         rsc: "/blog/index.rsc",
         html: "/blog/index.html",
       },
@@ -120,6 +128,12 @@ describe("generate-routes", () => {
         slug: "page",
         rsc: "/one/page.rsc",
         html: "/one/page.html",
+      },
+      {
+        html: "/one/page/two.html",
+        path: "/one/page/two",
+        rsc: "/one/page/two.rsc",
+        slug: "two",
       },
       {
         path: "/one/two/web-development",
@@ -151,8 +165,8 @@ describe("generate-routes", () => {
         html: "/about.html",
       },
       "/blog/index.html": {
-        path: "/blog/index",
-        slug: "index",
+        path: "/blog",
+        slug: "blog",
         rsc: "/blog/index.rsc",
         html: "/blog/index.html",
       },
@@ -173,6 +187,12 @@ describe("generate-routes", () => {
         slug: "page",
         rsc: "/one/page.rsc",
         html: "/one/page.html",
+      },
+      "/one/page/two.html": {
+        html: "/one/page/two.html",
+        path: "/one/page/two",
+        rsc: "/one/page/two.rsc",
+        slug: "two",
       },
       "/one/two/web-development.html": {
         path: "/one/two/web-development",
