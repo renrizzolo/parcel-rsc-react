@@ -31,5 +31,8 @@
     "typescript": "^5.9.3",
     "vitest": "^4.0.1"
   },
+  "prettier": {
+    "trailingComma": "es5"
+  },
   "packageManager": "pnpm@10.13.1"
 }
