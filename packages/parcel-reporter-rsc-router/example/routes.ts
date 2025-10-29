@@ -9,15 +9,22 @@ import type { App, RouteData, RouteNode } from "@renr/parcel-rsc-router";
 declare module "@renr/parcel-rsc-router" {
   namespace App {
     interface Routes {
-      "/": { slug: "index"; rsc: "/index.rsc"; html: "/index.html" };
-      "/about": { slug: "about"; rsc: "/about.rsc"; html: "/about.html" };
+      "/": { slug: "index"; path: "/"; rsc: "/index.rsc"; html: "/index.html" };
+      "/about": {
+        slug: "about";
+        path: "/about";
+        rsc: "/about.rsc";
+        html: "/about.html";
+      };
       "/blog": {
         slug: "blog";
+        path: "/blog";
         rsc: "/blog/index.rsc";
         html: "/blog/index.html";
       };
       "/blog/test_2024-10-31": {
         slug: "test_2024-10-31";
+        path: "/blog/test_2024-10-31";
         rsc: "/blog/test_2024-10-31.rsc";
         html: "/blog/test_2024-10-31.html";
       };
@@ -110,5 +117,5 @@ export const routesByPage = {
     html: "/blog/test_2024-10-31.html",
   },
 } satisfies {
-  [Key in keyof App.Routes as App.Routes[number]["html"]]: App.Routes[Key];
+  [Key in keyof App.Routes as App.Routes[Key]["html"]]: App.Routes[Key];
 };

@@ -95,8 +95,9 @@ function createRouteNode(filePath: string): RouteNode {
   const path = normalizeIndex(removeExtension(filePath));
 
   return {
-    path: `/${path}`,
-    slug: path.split("/").pop() || "index",
+    // TODO casting is only necessary because the example routes file is within this package
+    path: `/${path}` as RouteNode["path"],
+    slug: (path.split("/").pop() || "index") as RouteNode["slug"],
     html: convertFilePathToType(filePath, "html"),
     rsc: convertFilePathToType(filePath, "rsc"),
     children: [],
@@ -194,7 +195,7 @@ export async function generateRoutes(
           null,
           2
         )} satisfies {
-            [Key in keyof App.Routes as App.Routes[number]["html"]]: App.Routes[Key];
+            [Key in keyof App.Routes as App.Routes[Key]["html"]]: App.Routes[Key];
           };
 
 `;
@@ -279,7 +280,7 @@ function getBasePathFromGlob(globPattern: string): string {
 function buildRoutesType(pages: RouteData[]) {
   const routes = pages.map((page) => {
     const { path, slug, rsc, html } = page;
-    return `'${path}': { slug: '${slug}', rsc: '${rsc}', html: '${html}' };`;
+    return `'${path}': { slug: '${slug}', path:'${path}', rsc: '${rsc}', html: '${html}' };`;
   });
 
   // this generates a module augmentation for the router package
