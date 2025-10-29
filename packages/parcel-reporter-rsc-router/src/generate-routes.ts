@@ -176,24 +176,26 @@ export async function generateRoutes(
     // Do not edit it manually.
     // You should also exclude it from your linting/formatting rules.
     
-    import type { RouteData, RouteNode } from '${routerPackageName}';
+    import type { App, RouteData, RouteNode } from '${routerPackageName}';
     
         ${routesType}
 
-        export const routes: RouteData[] = ${JSON.stringify(pages, null, 2)}
+        export const routes= ${JSON.stringify(pages, null, 2)} as const satisfies RouteData[];
 
-        export const routeTree: RouteNode = ${JSON.stringify(
+        export const routeTree = ${JSON.stringify(
           routeTree,
           null,
           2
-        )}
+        )} as const satisfies RouteNode;
 
         // lookup routes by PageProps url
-        export const routesByPage: Record<string, RouteData> = ${JSON.stringify(
+        export const routesByPage = ${JSON.stringify(
           routesByPage,
           null,
           2
-        )}
+        )} satisfies {
+            [Key in keyof App.Routes as App.Routes[number]["html"]]: App.Routes[Key];
+          };
 
 `;
 
