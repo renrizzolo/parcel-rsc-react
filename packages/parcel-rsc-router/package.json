@@ -1,0 +1,28 @@
+{
+  "name": "@renr/parcel-rsc-router",
+  "version": "0.0.1",
+  "author": "Ren Rizzolo",
+  "license": "MIT",
+  "description": "Parcel rsc router",
+  "keywords": [
+    "parcel",
+    "rsc"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renrizzolo/parcel-rsc-react.git"
+  },
+  "type": "module",
+  "main": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsgo --noEmit",
+    "build": "tsdown"
+  },
+  "sideEffects": false
+}

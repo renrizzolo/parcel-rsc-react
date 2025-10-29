@@ -1,6 +1,5 @@
 {
   "name": "@renr/parcel-reporter-rsc-router",
-  "private": true,
   "version": "0.0.1",
   "author": "Ren Rizzolo",
   "license": "MIT",
@@ -30,9 +29,17 @@
     }
   },
   "scripts": {
-    "build": "tsdown"
+    "build": "tsdown",
+    "type-check": "tsgo --noEmit",
+    "example:generate": "vite-node example/generate.ts"
   },
   "dependencies": {
-    "@parcel/plugin": "^2.16.0"
+    "@parcel/plugin": "^2.16.0",
+    "tinyglobby": "^0.2.15",
+    "@renr/parcel-rsc-router": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "vite-node": "^3.2.4"
   }
 }
