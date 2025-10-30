@@ -101,9 +101,8 @@ function createRouteNode(filePath: string): RouteNode {
   const path = normalizeIndex(removeExtension(filePath));
 
   return {
-    // TODO casting is only necessary because the example routes file is within this package
-    path: `/${path}` as RouteNode["path"],
-    slug: (path.split("/").pop() || "index") as RouteNode["slug"],
+    path: `/${path}`,
+    slug: path.split("/").pop() || "index",
     html: convertFilePathToType(filePath, "html"),
     rsc: convertFilePathToType(filePath, "rsc"),
     children: [],

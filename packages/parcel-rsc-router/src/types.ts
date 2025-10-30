@@ -1,8 +1,9 @@
 export namespace App {
-  export interface Routes {}
+  export interface Routes extends Record<string, RouteData> {}
 }
 
-export type RoutePath = keyof App.Routes;
+// narrow the interface to have string keys only
+export type RoutePath = Exclude<keyof App.Routes, number>;
 
 export type RouteData = Omit<RouteNode, "children">;
 
