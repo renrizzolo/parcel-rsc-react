@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import prettier from "prettier";
+import { format } from "prettier";
 import type { RouteNode, RouteData } from "@renr/parcel-rsc-router";
 import { glob } from "tinyglobby";
 
@@ -13,12 +13,15 @@ const allowedPageFileExtensions = [".tsx", ".mdx", ".ts", ".jsx", ".js", ".md"];
 // special chars \ ? # : * < > | ! $ % don't make sense to be in file names/urls either.
 const disallowedCharsRegex = /[\s\\?#:*<>|!$%]/;
 
-export function buildRouteTree(filePaths: string[]): RouteNode {
+export function buildRouteTree(
+  filePaths: string[],
+  log?: (message: string) => void
+): RouteNode {
   const rootNode: RouteNode = {
     path: "/",
-    slug: "root",
-    html: "/root.html",
-    rsc: "/root.rsc",
+    slug: "index",
+    html: "/index.html",
+    rsc: "/index.rsc",
     children: [],
   };
 
@@ -34,7 +37,7 @@ export function buildRouteTree(filePaths: string[]): RouteNode {
         );
       }
 
-      if (removeExtension(filePath) === "root") {
+      if (removeExtension(filePath) === "index") {
         foundRoot = true;
         // skip the the root - `rootNode` is already created as our initial node
         return false;
@@ -46,9 +49,11 @@ export function buildRouteTree(filePaths: string[]): RouteNode {
 
   if (!foundRoot) {
     throw new Error(
-      `No root file found. Please ensure there is a root file in the pages directory.`
+      `No root file found. Please ensure there is an index file in the pages directory root.`
     );
   }
+
+  log?.(`📄 ${rootNode.html}`);
 
   // sort nodes by path depth, to make it easier to find parents
   nodes.sort((a, b) => a.path.split("/").length - b.path.split("/").length);
@@ -89,6 +94,8 @@ export function buildRouteTree(filePaths: string[]): RouteNode {
     bestParent.children.push(node);
     // keep children sorted by path
     bestParent.children.sort((a, b) => a.path.localeCompare(b.path));
+
+    log?.(`📄 ${node.html}`);
   }
 
   return rootNode;
@@ -167,7 +174,7 @@ export async function generateRoutes(
     (a, b) => a.localeCompare(b)
   );
 
-  const routeTree = buildRouteTree(files);
+  const routeTree = buildRouteTree(files, log);
   const pages = flattenRouteTree(routeTree);
 
   const routesByPage = getRoutesByPagePath(pages);
@@ -211,7 +218,7 @@ export async function generateRoutes(
 `;
 
   // TODO - see if we can use the consumer's prettier config
-  const formatted = await prettier.format(routesTypeContent, {
+  const formatted = await format(routesTypeContent, {
     parser: "typescript",
   });
 
@@ -226,12 +233,13 @@ export async function generateRoutes(
 
     // only write the file if the content has changed
     if (oldContent === formatted) {
+      log(`✅ Routes file at ${routesTypePath} is up to date.`);
       return;
     }
   }
 
   fs.writeFileSync(routesTypePath, formatted, "utf-8");
-  log(`Routes generated at ${routesTypePath}`);
+  log(`✅ Routes generated at ${routesTypePath}`);
 }
 
 /** normalize file paths to use posix style */

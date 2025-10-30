@@ -9,7 +9,7 @@ import {
 const files = [
   "one/two/web-development.md",
   "blog/2024-03-21-test.mdx",
-  "root.tsx",
+  "index.tsx",
   "about.tsx",
   "one/page/two.md",
   "one/page.tsx",
@@ -28,9 +28,9 @@ describe("generate-routes", () => {
     console.log(JSON.stringify(tree, null, 2));
     expect(tree).toEqual({
       path: "/",
-      slug: "root",
-      html: "/root.html",
-      rsc: "/root.rsc",
+      slug: "index",
+      html: "/index.html",
+      rsc: "/index.rsc",
       children: [
         {
           path: "/about",
@@ -95,9 +95,9 @@ describe("generate-routes", () => {
     const expected = [
       {
         path: "/",
-        slug: "root",
-        rsc: "/root.rsc",
-        html: "/root.html",
+        slug: "index",
+        rsc: "/index.rsc",
+        html: "/index.html",
       },
       {
         path: "/about",
@@ -152,11 +152,11 @@ describe("generate-routes", () => {
     const routesByPage = getRoutesByPagePath(flat);
 
     expect(routesByPage).toEqual({
-      "/root.html": {
+      "/index.html": {
         path: "/",
-        slug: "root",
-        rsc: "/root.rsc",
-        html: "/root.html",
+        slug: "index",
+        rsc: "/index.rsc",
+        html: "/index.html",
       },
       "/about.html": {
         path: "/about",
@@ -217,7 +217,7 @@ import type { App, RouteData, RouteNode } from "@renr/parcel-rsc-router";
 declare module "@renr/parcel-rsc-router" {
   namespace App {
     interface Routes {
-      "/": { slug: "root"; path: "/"; rsc: "/root.rsc"; html: "/root.html" };
+      "/": { slug: "index"; path: "/"; rsc: "/index.rsc"; html: "/index.html" };
       "/about": {
         slug: "about";
         path: "/about";
@@ -243,9 +243,9 @@ declare module "@renr/parcel-rsc-router" {
 export const flatRoutes = [
   {
     path: "/",
-    slug: "root",
-    rsc: "/root.rsc",
-    html: "/root.html",
+    slug: "index",
+    rsc: "/index.rsc",
+    html: "/index.html",
   },
   {
     path: "/about",
@@ -269,9 +269,9 @@ export const flatRoutes = [
 
 export const routeTree = {
   path: "/",
-  slug: "root",
-  html: "/root.html",
-  rsc: "/root.rsc",
+  slug: "index",
+  html: "/index.html",
+  rsc: "/index.rsc",
   children: [
     {
       path: "/about",
@@ -300,11 +300,11 @@ export const routeTree = {
 
 // lookup routes by PageProps url
 export const routesByPage = {
-  "/root.html": {
+  "/index.html": {
     path: "/",
-    slug: "root",
-    rsc: "/root.rsc",
-    html: "/root.html",
+    slug: "index",
+    rsc: "/index.rsc",
+    html: "/index.html",
   },
   "/about.html": {
     path: "/about",
