@@ -1,0 +1,7 @@
+{
+  "extends": "@parcel/config-default",
+  "reporters": [
+    "...",
+    "@renr/parcel-reporter-rsc-router"
+  ]
+}

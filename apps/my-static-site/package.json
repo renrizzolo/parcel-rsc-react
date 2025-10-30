@@ -1,0 +1,32 @@
+{
+  "name": "parcel-react-static-starter",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "targets": {
+    "react-static": {
+      "source": "src/pages/*",
+      "context": "react-server"
+    }
+  },
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "dependencies": {
+    "@parcel/config-default": "^2.16.0",
+    "@parcel/rsc": "^2.16.0",
+    "@renr/parcel-reporter-rsc-router": "workspace:*",
+    "@renr/parcel-rsc-router": "workspace:*",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-server-dom-parcel": "^19.1.0"
+  },
+  "devDependencies": {
+    "@parcel/packager-react-static": "2.16.0",
+    "@parcel/transformer-react-static": "2.16.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "parcel": "^2.16.0"
+  }
+}
