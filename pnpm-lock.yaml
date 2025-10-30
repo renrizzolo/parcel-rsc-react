@@ -97,9 +97,6 @@ importers:
       '@types/node':
         specifier: ^22.15.30
         version: 22.18.12
-      vite-node:
-        specifier: ^3.2.4
-        version: 3.2.4(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6)
 
   packages/parcel-reporter-rsc-router/example:
     dependencies:
