@@ -9,7 +9,7 @@ import {
 const files = [
   "one/two/web-development.md",
   "blog/2024-03-21-test.mdx",
-  "index.tsx",
+  "root.tsx",
   "about.tsx",
   "one/page/two.md",
   "one/page.tsx",
@@ -28,9 +28,9 @@ describe("generate-routes", () => {
     console.log(JSON.stringify(tree, null, 2));
     expect(tree).toEqual({
       path: "/",
-      slug: "index",
-      html: "/index.html",
-      rsc: "/index.rsc",
+      slug: "root",
+      html: "/root.html",
+      rsc: "/root.rsc",
       children: [
         {
           path: "/about",
@@ -95,9 +95,9 @@ describe("generate-routes", () => {
     const expected = [
       {
         path: "/",
-        slug: "index",
-        rsc: "/index.rsc",
-        html: "/index.html",
+        slug: "root",
+        rsc: "/root.rsc",
+        html: "/root.html",
       },
       {
         path: "/about",
@@ -152,11 +152,11 @@ describe("generate-routes", () => {
     const routesByPage = getRoutesByPagePath(flat);
 
     expect(routesByPage).toEqual({
-      "/index.html": {
+      "/root.html": {
         path: "/",
-        slug: "index",
-        rsc: "/index.rsc",
-        html: "/index.html",
+        slug: "root",
+        rsc: "/root.rsc",
+        html: "/root.html",
       },
       "/about.html": {
         path: "/about",

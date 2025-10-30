@@ -16,17 +16,13 @@ const disallowedCharsRegex = /[\s\\?#:*<>|!$%]/;
 export function buildRouteTree(filePaths: string[]): RouteNode {
   const rootNode: RouteNode = {
     path: "/",
-    slug: "index",
-    html: "/index.html",
-    rsc: "/index.rsc",
+    slug: "root",
+    html: "/root.html",
+    rsc: "/root.rsc",
     children: [],
   };
 
-  if (!filePaths.some((filePath) => removeExtension(filePath) === "index")) {
-    throw new Error(
-      `No root index file found. Please ensure there is an index file in the pages directory.`
-    );
-  }
+  let foundRoot = false;
 
   const nodes = filePaths
     .filter((filePath) => {
@@ -38,11 +34,21 @@ export function buildRouteTree(filePaths: string[]): RouteNode {
         );
       }
 
-      // skip the the root - `rootNode` is already created as our initial node
-      // TODO - would be less ambiguous if this is actually called "root"
-      return removeExtension(filePath) !== "index";
+      if (removeExtension(filePath) === "root") {
+        foundRoot = true;
+        // skip the the root - `rootNode` is already created as our initial node
+        return false;
+      }
+
+      return true;
     })
     .map((filePath) => createRouteNode(filePath));
+
+  if (!foundRoot) {
+    throw new Error(
+      `No root file found. Please ensure there is a root file in the pages directory.`
+    );
+  }
 
   // sort nodes by path depth, to make it easier to find parents
   nodes.sort((a, b) => a.path.split("/").length - b.path.split("/").length);

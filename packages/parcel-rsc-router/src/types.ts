@@ -7,7 +7,7 @@ export type RoutePath = keyof App.Routes;
 export type RouteData = Omit<RouteNode, "children">;
 
 type RoutePathToSlug<T extends string> = T extends `/`
-  ? "index"
+  ? "root"
   : T extends `${infer _Prefix}/${infer Slug}`
     ? RoutePathToSlug<Slug>
     : T;

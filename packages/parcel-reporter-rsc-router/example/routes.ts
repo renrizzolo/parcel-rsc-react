@@ -9,7 +9,7 @@ import type { App, RouteData, RouteNode } from "@renr/parcel-rsc-router";
 declare module "@renr/parcel-rsc-router" {
   namespace App {
     interface Routes {
-      "/": { slug: "index"; path: "/"; rsc: "/index.rsc"; html: "/index.html" };
+      "/": { slug: "root"; path: "/"; rsc: "/root.rsc"; html: "/root.html" };
       "/about": {
         slug: "about";
         path: "/about";
@@ -35,9 +35,9 @@ declare module "@renr/parcel-rsc-router" {
 export const flatRoutes = [
   {
     path: "/",
-    slug: "index",
-    rsc: "/index.rsc",
-    html: "/index.html",
+    slug: "root",
+    rsc: "/root.rsc",
+    html: "/root.html",
   },
   {
     path: "/about",
@@ -61,9 +61,9 @@ export const flatRoutes = [
 
 export const routeTree = {
   path: "/",
-  slug: "index",
-  html: "/index.html",
-  rsc: "/index.rsc",
+  slug: "root",
+  html: "/root.html",
+  rsc: "/root.rsc",
   children: [
     {
       path: "/about",
@@ -92,11 +92,11 @@ export const routeTree = {
 
 // lookup routes by PageProps url
 export const routesByPage = {
-  "/index.html": {
+  "/root.html": {
     path: "/",
-    slug: "index",
-    rsc: "/index.rsc",
-    html: "/index.html",
+    slug: "root",
+    rsc: "/root.rsc",
+    html: "/root.html",
   },
   "/about.html": {
     path: "/about",
