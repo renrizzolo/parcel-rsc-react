@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@parcel/plugin": "^2.16.0",
+    "@parcel/diagnostic": "^2.16.0",
     "tinyglobby": "^0.2.15",
     "@renr/parcel-rsc-router": "workspace:*"
   },

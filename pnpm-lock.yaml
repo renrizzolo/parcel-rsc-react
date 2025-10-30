@@ -38,6 +38,9 @@ importers:
 
   packages/parcel-reporter-rsc-router:
     dependencies:
+      '@parcel/diagnostic':
+        specifier: ^2.16.0
+        version: 2.16.0
       '@parcel/plugin':
         specifier: ^2.16.0
         version: 2.16.0(@parcel/core@2.16.0)
