@@ -1,0 +1,21 @@
+{
+  "name": "parcel-reporter-rsc-router-example",
+  "version": "0.0.1",
+  "private": true,
+  "author": "Ren Rizzolo",
+  "license": "MIT",
+  "type": "module",
+  "main": "generate.ts",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "example:generate": "vite-node generate.ts"
+  },
+  "dependencies": {
+    "@renr/parcel-reporter-rsc-router": "workspace:*"
+  },
+  "devDependencies": {
+    "vite-node": "^3.2.4"
+  }
+}

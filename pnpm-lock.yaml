@@ -55,6 +55,16 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@22.18.12)(jiti@2.6.1)(tsx@4.20.6)
 
+  packages/parcel-reporter-rsc-router/example:
+    dependencies:
+      '@renr/parcel-reporter-rsc-router':
+        specifier: workspace:*
+        version: link:..
+    devDependencies:
+      vite-node:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/node@22.18.12)(jiti@2.6.1)(tsx@4.20.6)
+
   packages/parcel-rsc-router: {}
 
 packages:
