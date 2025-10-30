@@ -27,6 +27,9 @@ jobs:
       - name: install dependencies
         run: pnpm install
 
+      - name: build packages
+        run: pnpm build
+
       - name: type Check
         run: pnpm type-check
 

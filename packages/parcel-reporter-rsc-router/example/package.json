@@ -10,7 +10,8 @@
     "src"
   ],
   "scripts": {
-    "example:generate": "vite-node generate.ts"
+    "generate": "vite-node generate.ts",
+    "type-check": "tsgo --noEmit"
   },
   "dependencies": {
     "@renr/parcel-reporter-rsc-router": "workspace:*"
