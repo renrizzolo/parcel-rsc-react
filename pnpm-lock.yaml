@@ -51,13 +51,13 @@ importers:
         specifier: workspace:*
         version: link:../../packages/parcel-rsc-router
       react:
-        specifier: ^19.1.0
+        specifier: ^19.2.0
         version: 19.2.0
       react-dom:
-        specifier: ^19.1.0
+        specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
       react-server-dom-parcel:
-        specifier: ^19.1.0
+        specifier: ^19.2.0
         version: 19.2.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
     devDependencies:
       '@parcel/packager-react-static':
@@ -67,10 +67,10 @@ importers:
         specifier: 2.16.0
         version: 2.16.0(@parcel/core@2.16.0(@swc/helpers@0.5.17))
       '@types/react':
-        specifier: ^19.0.0
+        specifier: ^19.2.0
         version: 19.2.2
       '@types/react-dom':
-        specifier: ^19.0.0
+        specifier: ^19.2.0
         version: 19.2.2(@types/react@19.2.2)
       parcel:
         specifier: ^2.16.0

@@ -1,23 +1,21 @@
 import type { PageProps } from "@parcel/rsc";
 import type { ReactNode } from "react";
-import { Nav } from "../components/Nav";
-import "../page.css";
+import AppLayout from "../Layout";
 import "../client";
 
-interface LayoutProps extends PageProps {
+export default function Layout({
+  children,
+  currentPage,
+}: {
   children: ReactNode;
-}
-
-export default function Layout({ children, pages, currentPage }: LayoutProps) {
+  currentPage: PageProps["currentPage"];
+}) {
   return (
-    <html lang="en">
-      <head>
-        <title>{currentPage.tableOfContents?.[0].title}</title>
-      </head>
-      <body>
-        {children}
-        <Nav pages={pages} currentPage={currentPage} />
-      </body>
-    </html>
+    <AppLayout
+      title={currentPage.tableOfContents?.[0].title}
+      currentPage={currentPage}
+    >
+      {children}
+    </AppLayout>
   );
 }

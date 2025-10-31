@@ -5,12 +5,13 @@
   "type": "module",
   "targets": {
     "react-static": {
-      "source": "src/pages/*",
+      "source": "src/pages/**/*",
       "context": "react-server"
     }
   },
   "scripts": {
     "start": "parcel",
+    "dev": "parcel --no-cache",
     "build": "parcel build"
   },
   "dependencies": {
@@ -18,15 +19,15 @@
     "@parcel/rsc": "^2.16.0",
     "@renr/parcel-reporter-rsc-router": "workspace:*",
     "@renr/parcel-rsc-router": "workspace:*",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-server-dom-parcel": "^19.1.0"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-server-dom-parcel": "^19.2.0"
   },
   "devDependencies": {
     "@parcel/packager-react-static": "2.16.0",
     "@parcel/transformer-react-static": "2.16.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "parcel": "^2.16.0"
   }
 }

@@ -10,6 +10,18 @@ declare module "@renr/parcel-rsc-router" {
   namespace App {
     interface Routes {
       "/": { slug: "index"; path: "/"; rsc: "/index.rsc"; html: "/index.html" };
+      "/blog": {
+        slug: "blog";
+        path: "/blog";
+        rsc: "/blog/index.rsc";
+        html: "/blog/index.html";
+      };
+      "/blog/test_2024-10-31": {
+        slug: "test_2024-10-31";
+        path: "/blog/test_2024-10-31";
+        rsc: "/blog/test_2024-10-31.rsc";
+        html: "/blog/test_2024-10-31.html";
+      };
       "/mdx": { slug: "mdx"; path: "/mdx"; rsc: "/mdx.rsc"; html: "/mdx.html" };
     }
   }
@@ -21,6 +33,18 @@ export const flatRoutes = [
     slug: "index",
     rsc: "/index.rsc",
     html: "/index.html",
+  },
+  {
+    path: "/blog",
+    slug: "blog",
+    rsc: "/blog/index.rsc",
+    html: "/blog/index.html",
+  },
+  {
+    path: "/blog/test_2024-10-31",
+    slug: "test_2024-10-31",
+    rsc: "/blog/test_2024-10-31.rsc",
+    html: "/blog/test_2024-10-31.html",
   },
   {
     path: "/mdx",
@@ -36,6 +60,21 @@ export const routeTree = {
   html: "/index.html",
   rsc: "/index.rsc",
   children: [
+    {
+      path: "/blog",
+      slug: "blog",
+      html: "/blog/index.html",
+      rsc: "/blog/index.rsc",
+      children: [
+        {
+          path: "/blog/test_2024-10-31",
+          slug: "test_2024-10-31",
+          html: "/blog/test_2024-10-31.html",
+          rsc: "/blog/test_2024-10-31.rsc",
+          children: [],
+        },
+      ],
+    },
     {
       path: "/mdx",
       slug: "mdx",
@@ -53,6 +92,18 @@ export const routesByPage = {
     slug: "index",
     rsc: "/index.rsc",
     html: "/index.html",
+  },
+  "/blog/index.html": {
+    path: "/blog",
+    slug: "blog",
+    rsc: "/blog/index.rsc",
+    html: "/blog/index.html",
+  },
+  "/blog/test_2024-10-31.html": {
+    path: "/blog/test_2024-10-31",
+    slug: "test_2024-10-31",
+    rsc: "/blog/test_2024-10-31.rsc",
+    html: "/blog/test_2024-10-31.html",
   },
   "/mdx.html": {
     path: "/mdx",
