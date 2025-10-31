@@ -17,6 +17,7 @@
     "lint:ci": "pnpm oxlint --type-aware --deny-warnings",
     "format:ci": "prettier . --check --experimental-cli",
     "test": "vitest",
+    "test:ci": "vitest run",
     "version": "changeset version && pnpm install --lockfile-only",
     "release": "pnpm build && changeset publish"
   },

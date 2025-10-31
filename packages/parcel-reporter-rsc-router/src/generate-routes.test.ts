@@ -25,7 +25,7 @@ describe("generate-routes", () => {
 
   it("buildRouteTree", () => {
     const tree = buildRouteTree(files);
-    console.log(JSON.stringify(tree, null, 2));
+
     expect(tree).toEqual({
       path: "/",
       slug: "index",
