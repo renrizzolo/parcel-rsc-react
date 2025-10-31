@@ -7,5 +7,8 @@
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": [
+    "parcel-react-static-starter",
+    "parcel-reporter-rsc-router-example"
+  ]
 }

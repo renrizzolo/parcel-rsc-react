@@ -1,0 +1,13 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "parcel-react-static-starter": "0.0.0",
+    "@renr/parcel-reporter-rsc-router": "0.0.1",
+    "parcel-reporter-rsc-router-example": "0.0.1",
+    "@renr/parcel-rsc-router": "0.0.1"
+  },
+  "changesets": [
+    "blue-facts-sip"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "@renr/parcel-rsc-router",
-  "version": "0.0.1",
+  "version": "0.1.0-alpha.0",
   "author": "Ren Rizzolo",
   "license": "MIT",
   "description": "Parcel rsc router",
