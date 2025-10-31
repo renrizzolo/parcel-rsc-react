@@ -26,8 +26,8 @@
   "devDependencies": {
     "@parcel/packager-react-static": "2.16.0",
     "@parcel/transformer-react-static": "2.16.0",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
     "parcel": "^2.16.0"
   }
 }

@@ -33,15 +33,15 @@
     "type-check": "tsgo --noEmit"
   },
   "dependencies": {
-    "dedent": "^1.7.0",
-    "@parcel/plugin": "^2.16.0",
     "@parcel/diagnostic": "^2.16.0",
+    "@parcel/plugin": "^2.16.0",
+    "dedent": "^1.7.0",
     "tinyglobby": "^0.2.15"
   },
   "peerDependencies": {
     "@renr/parcel-rsc-router": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^22.15.30"
+    "@types/node": "^22.18.13"
   }
 }
