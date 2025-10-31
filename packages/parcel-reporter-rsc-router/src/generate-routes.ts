@@ -233,13 +233,14 @@ export async function generateRoutes(
 
     // only write the file if the content has changed
     if (oldContent === formatted) {
-      log(`✅ Routes file at ${routesTypePath} is up to date.`);
+      log(`✅ routes.ts is up to date.`);
       return;
     }
   }
 
   fs.writeFileSync(routesTypePath, formatted, "utf-8");
-  log(`✅ Routes generated at ${routesTypePath}`);
+
+  log(`✅ Routes generated at ${normalizePathToPosix(routesTypePath)}`);
 }
 
 /** normalize file paths to use posix style */
@@ -264,12 +265,10 @@ async function getFilesAndNormalizePaths(
       return fs.statSync(filePath).isFile() && isAllowedFile(filePath);
     })
     .map((file) => {
-      return (
+      return normalizePathToPosix(
         file
           // remove the base path (src/pages/blog/index.tsx -> blog/index.tsx)
           .substring(basePath.length)
-          // normalize Windows paths to use forward slashes
-          .replace(/\\/g, "/")
       );
     });
 
@@ -280,6 +279,11 @@ async function getFilesAndNormalizePaths(
   }
 
   return files;
+}
+
+function normalizePathToPosix(filePath: string): string {
+  // normalize Windows paths to use forward slashes
+  return filePath.replace(/\\/g, "/");
 }
 
 /**

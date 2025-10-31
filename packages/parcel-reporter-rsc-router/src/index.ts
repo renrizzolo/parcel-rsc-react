@@ -30,8 +30,6 @@ export default new Reporter({
           };
         };
 
-        // console.log(config);
-
         if (!config.targets?.["react-static"]?.source) {
           throw new ThrowableDiagnostic({
             diagnostic: {
