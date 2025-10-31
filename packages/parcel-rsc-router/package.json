@@ -25,5 +25,8 @@
     "type-check": "tsgo --noEmit",
     "build": "tsdown"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
 }
