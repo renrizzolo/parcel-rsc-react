@@ -85,8 +85,8 @@ importers:
         specifier: ^2.16.0
         version: 2.16.0(@parcel/core@2.16.0)
       '@renr/parcel-rsc-router':
-        specifier: 0.1.0-alpha.0
-        version: 0.1.0-alpha.0
+        specifier: 0.1.0-alpha.1
+        version: 0.1.0-alpha.1(@parcel/rsc@2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
       dedent:
         specifier: ^1.7.0
         version: 1.7.0
@@ -954,8 +954,11 @@ packages:
   '@quansync/fs@0.1.5':
     resolution: {integrity: sha512-lNS9hL2aS2NZgNW7BBj+6EBl4rOf8l+tQ0eRY6JWCI8jI2kc53gSoqbjojU0OnAWhzoXiOjFyGsHcDGePB3lhA==}
 
-  '@renr/parcel-rsc-router@0.1.0-alpha.0':
-    resolution: {integrity: sha512-GlmfehS+4/x7DPdK9CR1JKeq9pnSME5SC1L29Ay3Z49sANgLZirWqQmpEL9rRru5LdTVCVs7f6cjk7LrmI/ctg==}
+  '@renr/parcel-rsc-router@0.1.0-alpha.1':
+    resolution: {integrity: sha512-MSRqvW6pqOOzDu0N6mi+vof7vDG27YM0tU2RQXSO3CItJaVwifeuOlwrE8P+bAfykg2j0/RdZj9vtwpWY8T++w==}
+    peerDependencies:
+      '@parcel/rsc': ^2
+      react: ^19
 
   '@rolldown/binding-android-arm64@1.0.0-beta.45':
     resolution: {integrity: sha512-bfgKYhFiXJALeA/riil908+2vlyWGdwa7Ju5S+JgWZYdR4jtiPOGdM6WLfso1dojCh+4ZWeiTwPeV9IKQEX+4g==}
@@ -3451,7 +3454,10 @@ snapshots:
     dependencies:
       quansync: 0.2.11
 
-  '@renr/parcel-rsc-router@0.1.0-alpha.0': {}
+  '@renr/parcel-rsc-router@0.1.0-alpha.1(@parcel/rsc@2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)':
+    dependencies:
+      '@parcel/rsc': 2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      react: 19.2.0
 
   '@rolldown/binding-android-arm64@1.0.0-beta.45':
     optional: true
