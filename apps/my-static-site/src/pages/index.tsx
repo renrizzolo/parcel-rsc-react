@@ -1,5 +1,4 @@
 import type { PageProps } from "@parcel/rsc";
-import "../client.js";
 import { Counter } from "../components/Counter.js";
 import Layout from "../Layout.js";
 

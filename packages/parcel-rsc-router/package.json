@@ -15,15 +15,26 @@
   "type": "module",
   "main": "./src/index.ts",
   "files": [
-    "src",
     "dist"
   ],
   "exports": {
-    ".": "./src/index.ts"
+    "default": {
+      "types": "./dist/esm/index.d.ts",
+      "default": "./dist/esm/index.js"
+    }
   },
   "scripts": {
     "type-check": "tsgo --noEmit",
     "build": "tsdown"
+  },
+  "peerDependencies": {
+    "react": "^19",
+    "@parcel/rsc": "^2"
+  },
+  "devDependencies": {
+    "react": "^19.2.0",
+    "@types/react": "^19.2.2",
+    "@parcel/rsc": "^2.16.1"
   },
   "sideEffects": false,
   "publishConfig": {

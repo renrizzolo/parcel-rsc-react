@@ -1,7 +1,6 @@
 import type { PageProps } from "@parcel/rsc";
 import type { ReactNode } from "react";
 import AppLayout from "../Layout";
-import "../client";
 
 export default function Layout({
   children,

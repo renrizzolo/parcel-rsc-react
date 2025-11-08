@@ -1,8 +1,9 @@
 "use client";
+
 import type { PageProps } from "@parcel/rsc";
-import type { RouteNode } from "@renr/parcel-rsc-router";
+import { Link, type RouteNode } from "@renr/parcel-rsc-router";
 import "./Nav.css";
-import { routeTree } from "../../routes";
+import { flatRoutes, routeTree } from "../../routes";
 
 export function Nav({
   currentPage,
@@ -32,12 +33,13 @@ function NavItem({
   return (
     <>
       <li>
-        <a
-          href={node.html}
+        <Link
+          to={node.path}
+          routes={flatRoutes}
           aria-current={node.html === currentPage.url ? "page" : undefined}
         >
           {node.slug === "index" ? "Home" : node.slug}
-        </a>
+        </Link>
       </li>
       <ul>
         {node.children.map((child) => (
