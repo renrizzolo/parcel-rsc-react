@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-rsc-router
 
+## 1.0.0-alpha.3
+
+### Patch Changes
+
+- 743dc4c: Remove cjs output
+
 ## 1.0.0-alpha.2
 
 ### Patch Changes
