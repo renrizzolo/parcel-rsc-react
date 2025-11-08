@@ -1,4 +1,5 @@
 "use client";
+
 import type { PageProps } from "@parcel/rsc";
 import { Link, type RouteNode } from "@renr/parcel-rsc-router";
 import "./Nav.css";
