@@ -18,7 +18,7 @@
     "format:ci": "prettier . --check --experimental-cli",
     "test": "vitest",
     "test:ci": "vitest run",
-    "version": "changeset version && pnpm install --lockfile-only",
+    "version": "changeset version",
     "release": "pnpm build && changeset publish"
   },
   "dependencies": {
