@@ -19,13 +19,9 @@
   ],
   "sideEffects": false,
   "exports": {
-    "import": {
+    "default": {
       "types": "./dist/esm/index.d.ts",
       "default": "./dist/esm/index.js"
-    },
-    "require": {
-      "types": "./dist/esm/index.d.ts",
-      "default": "./dist/cjs/index.cjs"
     }
   },
   "scripts": {

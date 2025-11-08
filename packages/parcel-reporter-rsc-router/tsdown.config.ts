@@ -1,26 +1,11 @@
 import { defineConfig } from "tsdown";
 
-const baseOptions = {
+export default defineConfig({
   entry: ["./src/index.ts"],
   target: "es2018",
-};
-
-export default defineConfig([
-  {
-    ...baseOptions,
-    outputOptions: {
-      format: "cjs",
-      dir: "./dist/cjs",
-      chunkFileNames: "[name]-[hash].cjs",
-      entryFileNames: "[name].cjs",
-    },
+  dts: true,
+  outputOptions: {
+    format: "esm",
+    dir: "./dist/esm",
   },
-  {
-    ...baseOptions,
-    dts: true,
-    outputOptions: {
-      format: "esm",
-      dir: "./dist/esm",
-    },
-  },
-]);
+});

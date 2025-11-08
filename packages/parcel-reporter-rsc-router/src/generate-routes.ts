@@ -101,6 +101,15 @@ export function buildRouteTree(
   return rootNode;
 }
 
+declare module "@renr/parcel-rsc-router" {
+  namespace App {
+    interface Routes {
+      // just enough to satisfy createRouteNode
+      [key: `/${string}`]: RouteData;
+    }
+  }
+}
+
 /**
  * create a RouteNode from a file path
  */
