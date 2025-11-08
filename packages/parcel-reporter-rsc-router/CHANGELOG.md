@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-rsc-router
 
+## 1.0.0-alpha.4
+
+### Patch Changes
+
+- baabc13: bump deps
+
 ## 1.0.0-alpha.3
 
 ### Patch Changes
