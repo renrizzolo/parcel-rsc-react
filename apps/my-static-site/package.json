@@ -15,8 +15,8 @@
     "build": "parcel build"
   },
   "dependencies": {
-    "@parcel/config-default": "^2.16.0",
-    "@parcel/rsc": "^2.16.0",
+    "@parcel/config-default": "^2.16.1",
+    "@parcel/rsc": "^2.16.1",
     "@renr/parcel-reporter-rsc-router": "workspace:*",
     "@renr/parcel-rsc-router": "workspace:*",
     "react": "^19.2.0",
@@ -24,10 +24,10 @@
     "react-server-dom-parcel": "^19.2.0"
   },
   "devDependencies": {
-    "@parcel/packager-react-static": "2.16.0",
-    "@parcel/transformer-react-static": "2.16.0",
+    "@parcel/packager-react-static": "2.16.1",
+    "@parcel/transformer-react-static": "2.16.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "parcel": "^2.16.0"
+    "parcel": "^2.16.1"
   }
 }
