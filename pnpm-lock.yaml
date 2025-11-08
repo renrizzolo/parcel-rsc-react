@@ -108,7 +108,17 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@22.18.13)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6)
 
-  packages/parcel-rsc-router: {}
+  packages/parcel-rsc-router:
+    devDependencies:
+      '@parcel/rsc':
+        specifier: ^2.16.1
+        version: 2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@types/react':
+        specifier: ^19.2.2
+        version: 19.2.2
+      react:
+        specifier: ^19.2.0
+        version: 19.2.0
 
 packages:
 
@@ -700,6 +710,12 @@ packages:
 
   '@parcel/rsc@2.16.0':
     resolution: {integrity: sha512-uFqMDj//vtnrqr6sR7ZzF4jAbX2w62mzDOhPV4kmxl7H9b5aC8GMIqy1DmGau25WCa58Y1o/BI9+e+VwblbHlA==}
+    peerDependencies:
+      react: ^19.1.0
+      react-dom: ^19.1.0
+
+  '@parcel/rsc@2.16.1':
+    resolution: {integrity: sha512-y3s81UDVGhk2Xg8ldtsGFYhIRSq6xFiOybVlcul8VHLG/JZyn+QmvnU3y3LmvUzLYfRRObjm0Ht3LSmPUK0dEg==}
     peerDependencies:
       react: ^19.1.0
       react-dom: ^19.1.0
@@ -3089,6 +3105,13 @@ snapshots:
       - napi-wasm
 
   '@parcel/rsc@2.16.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+    dependencies:
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+      react-server-dom-parcel: 19.2.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      rsc-html-stream: 0.0.6
+
+  '@parcel/rsc@2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
