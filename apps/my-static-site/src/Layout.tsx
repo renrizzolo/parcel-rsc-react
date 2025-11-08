@@ -1,5 +1,6 @@
 import { PageProps } from "@parcel/rsc";
 import { Nav } from "./components/Nav";
+import "./client";
 import "./page.css";
 
 export default function Layout({
