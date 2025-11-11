@@ -1,17 +1,16 @@
 "use client";
 
 import React, { type HTMLAttributeAnchorTarget } from "react";
-import { RouteData, RoutePath } from "./types.js";
-import { navigate } from "./rsc.js";
+import { RoutePath } from "./types.js";
+import { useRouter } from "./Router.js";
 
 export function Link({
   to,
   children,
   hash,
-  onClick,
   target,
   search,
-  routes,
+  onClick,
   ...props
 }: {
   to: RoutePath;
@@ -20,11 +19,10 @@ export function Link({
   children: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   target?: HTMLAttributeAnchorTarget;
-  // TODO we will get routes from context, but for now we pass it in
-  routes: RouteData[];
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+  const { navigate } = useRouter();
   const href = `${to}${hash ? `#${hash}` : ""}${search ? `?${new URLSearchParams(search)}` : ""}`;
-  console.log("Link href", href);
+
   return (
     <a
       href={href}
@@ -44,11 +42,7 @@ export function Link({
         ) {
           // Intercept link clicks to perform RSC navigation.
           e.preventDefault();
-
-          void navigate(href, routes, () => {
-            // add to history on a successful navigation
-            window.history.pushState(null, "", href);
-          });
+          navigate(href);
         }
       }}
       {...props}

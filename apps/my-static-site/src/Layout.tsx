@@ -2,6 +2,7 @@ import { PageProps } from "@parcel/rsc";
 import { Nav } from "./components/Nav";
 import "./client";
 import "./page.css";
+import { AppProvider } from "./appProvider";
 
 export default function Layout({
   children,
@@ -17,11 +18,13 @@ export default function Layout({
       <head>
         <title>{title ?? "Parcel Static React App"}</title>
       </head>
-      <body>
-        <Nav currentPage={currentPage} />
-        <hr />
-        {children}
-      </body>
+      <AppProvider>
+        <body>
+          <Nav currentPage={currentPage} />
+          <hr />
+          {children}
+        </body>
+      </AppProvider>
     </html>
   );
 }

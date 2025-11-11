@@ -1,10 +1,10 @@
 "use client";
 
 import { type RSCRequestInit, fetchRSC } from "@parcel/rsc/client";
-import { type ReactNode, createElement } from "react";
+import { type ReactNode } from "react";
 import { updateRoot } from "./client-entry.js";
-import { getPathData } from "./util.js";
 import { RouteData } from "./types.js";
+import { getPathData } from "./util.js";
 
 // fetch and push an rsc route
 export async function navigate(
@@ -14,7 +14,7 @@ export async function navigate(
   onPush: (url: string) => void,
   { push = true }: { push?: boolean } = {}
 ) {
-  console.log("client navigating to:", pathname);
+  console.debug("client navigating to:", pathname);
 
   let shouldPush = push;
 
@@ -29,10 +29,8 @@ export async function navigate(
         // show the original not found path (rather than 404) in the URL
         onPush(pathname);
       });
-    } else {
-      // render a fallback 404
-      updateRoot(createElement("h1", null, "404 Not Found"));
     }
+
     return;
   }
 
