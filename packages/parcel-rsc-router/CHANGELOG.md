@@ -1,5 +1,14 @@
 # @renr/parcel-rsc-router
 
+## 1.0.0-alpha.2
+
+### Major Changes
+
+- db9a40c: Add router context / client side routing implementation.
+
+  Breaking Changes:
+  - The router context is now required to use `<Link/>`. Make sure to wrap your application with the `RouterProvider` and provide your routes to it.
+
 ## 0.1.0-alpha.1
 
 ### Minor Changes
