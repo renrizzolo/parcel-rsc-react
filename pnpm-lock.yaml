@@ -94,8 +94,8 @@ importers:
         specifier: ^2.16.1
         version: 2.16.1(@parcel/core@2.16.1)
       '@renr/parcel-rsc-router':
-        specifier: 0.1.0-alpha.1
-        version: 0.1.0-alpha.1(@parcel/rsc@2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
+        specifier: 1.0.0-alpha.2
+        version: 1.0.0-alpha.2(@parcel/rsc@2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-server-dom-parcel@19.2.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
       dedent:
         specifier: ^1.7.0
         version: 1.7.0
@@ -1012,11 +1012,12 @@ packages:
   '@quansync/fs@0.1.5':
     resolution: {integrity: sha512-lNS9hL2aS2NZgNW7BBj+6EBl4rOf8l+tQ0eRY6JWCI8jI2kc53gSoqbjojU0OnAWhzoXiOjFyGsHcDGePB3lhA==}
 
-  '@renr/parcel-rsc-router@0.1.0-alpha.1':
-    resolution: {integrity: sha512-MSRqvW6pqOOzDu0N6mi+vof7vDG27YM0tU2RQXSO3CItJaVwifeuOlwrE8P+bAfykg2j0/RdZj9vtwpWY8T++w==}
+  '@renr/parcel-rsc-router@1.0.0-alpha.2':
+    resolution: {integrity: sha512-TfDJS9awoXJZBt8KP7cFDwgtFSZO/FDNLyuWSCuKeQi6zPhiZc4ngVluA346H382t9odkUePtwIw79a5sARTWQ==}
     peerDependencies:
       '@parcel/rsc': ^2
       react: ^19
+      react-server-dom-parcel: ^19
 
   '@rolldown/binding-android-arm64@1.0.0-beta.45':
     resolution: {integrity: sha512-bfgKYhFiXJALeA/riil908+2vlyWGdwa7Ju5S+JgWZYdR4jtiPOGdM6WLfso1dojCh+4ZWeiTwPeV9IKQEX+4g==}
@@ -3772,10 +3773,11 @@ snapshots:
     dependencies:
       quansync: 0.2.11
 
-  '@renr/parcel-rsc-router@0.1.0-alpha.1(@parcel/rsc@2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)':
+  '@renr/parcel-rsc-router@1.0.0-alpha.2(@parcel/rsc@2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-server-dom-parcel@19.2.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@parcel/rsc': 2.16.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react: 19.2.0
+      react-server-dom-parcel: 19.2.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
   '@rolldown/binding-android-arm64@1.0.0-beta.45':
     optional: true
