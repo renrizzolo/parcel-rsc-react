@@ -12,7 +12,7 @@
   "scripts": {
     "start": "parcel",
     "dev": "parcel --no-cache",
-    "build": "parcel build"
+    "build": "parcel build --no-cache"
   },
   "dependencies": {
     "@parcel/config-default": "^2.16.1",

@@ -2,8 +2,10 @@
 
 import type { PageProps } from "@parcel/rsc";
 import { Link, type RouteNode } from "@renr/parcel-rsc-router";
+import { routeTree, routesByPage } from "../../routes";
 import "./Nav.css";
-import { flatRoutes, routeTree } from "../../routes";
+
+const blogPost = routesByPage["/blog/test_2024-10-31.html"];
 
 export function Nav({
   currentPage,
@@ -16,6 +18,17 @@ export function Nav({
       <p>
         <code>components/Nav.tsx</code> shows how to render a list of pages.
       </p>
+      <Link
+        to={blogPost.path}
+        hash="hash-test"
+        aria-current={blogPost.path === currentPage.url ? "page" : undefined}
+      >
+        {blogPost.slug}#hash-test
+      </Link>
+      <br />
+      {/* @ts-expect-error */}
+      <Link to="doesn't exist">doesn't exist</Link>
+      <hr />
       <ul>
         <NavItem node={routeTree} currentPage={currentPage} />
       </ul>
@@ -35,7 +48,6 @@ function NavItem({
       <li>
         <Link
           to={node.path}
-          routes={flatRoutes}
           aria-current={node.html === currentPage.url ? "page" : undefined}
         >
           {node.slug === "index" ? "Home" : node.slug}
