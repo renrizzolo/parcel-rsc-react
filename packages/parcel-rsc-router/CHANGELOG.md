@@ -1,5 +1,11 @@
 # @renr/parcel-rsc-router
 
+## 1.0.0-alpha.3
+
+### Patch Changes
+
+- ab80545: Update readme
+
 ## 1.0.0-alpha.2
 
 ### Major Changes
