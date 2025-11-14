@@ -6,18 +6,20 @@
   "targets": {
     "react-static": {
       "source": "src/pages/**/*",
-      "context": "react-server"
+      "context": "react-server",
+      "includeNodeModules": {
+        "shiki": false
+      }
     }
   },
   "scripts": {
-    "start": "parcel",
+    "start": "npx http-server ./dist",
     "dev": "parcel --no-cache",
     "build": "parcel build --no-cache"
   },
   "dependencies": {
     "@parcel/config-default": "^2.16.1",
     "@parcel/rsc": "^2.16.1",
-    "@renr/parcel-reporter-rsc-router": "workspace:*",
     "@renr/parcel-rsc-router": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -26,8 +28,11 @@
   "devDependencies": {
     "@parcel/packager-react-static": "2.16.1",
     "@parcel/transformer-react-static": "2.16.1",
+    "@renr/parcel-reporter-rsc-router": "workspace:*",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "parcel": "^2.16.1"
+    "parcel": "^2.16.1",
+    "parcel-reporter-static-files-copy": "^1.5.3",
+    "shiki": "^3.15.0"
   }
 }

@@ -22,7 +22,12 @@ declare module "@renr/parcel-rsc-router" {
         rsc: "/blog/test_2024-10-31.rsc";
         html: "/blog/test_2024-10-31.html";
       };
-      "/mdx": { slug: "mdx"; path: "/mdx"; rsc: "/mdx.rsc"; html: "/mdx.html" };
+      "/mdx-page": {
+        slug: "mdx-page";
+        path: "/mdx-page";
+        rsc: "/mdx-page.rsc";
+        html: "/mdx-page.html";
+      };
     }
   }
 }
@@ -47,10 +52,10 @@ export const flatRoutes = [
     html: "/blog/test_2024-10-31.html",
   },
   {
-    path: "/mdx",
-    slug: "mdx",
-    rsc: "/mdx.rsc",
-    html: "/mdx.html",
+    path: "/mdx-page",
+    slug: "mdx-page",
+    rsc: "/mdx-page.rsc",
+    html: "/mdx-page.html",
   },
 ] as const satisfies RouteData[];
 
@@ -76,10 +81,10 @@ export const routeTree = {
       ],
     },
     {
-      path: "/mdx",
-      slug: "mdx",
-      html: "/mdx.html",
-      rsc: "/mdx.rsc",
+      path: "/mdx-page",
+      slug: "mdx-page",
+      html: "/mdx-page.html",
+      rsc: "/mdx-page.rsc",
       children: [],
     },
   ],
@@ -105,11 +110,11 @@ export const routesByPage = {
     rsc: "/blog/test_2024-10-31.rsc",
     html: "/blog/test_2024-10-31.html",
   },
-  "/mdx.html": {
-    path: "/mdx",
-    slug: "mdx",
-    rsc: "/mdx.rsc",
-    html: "/mdx.html",
+  "/mdx-page.html": {
+    path: "/mdx-page",
+    slug: "mdx-page",
+    rsc: "/mdx-page.rsc",
+    html: "/mdx-page.html",
   },
 } satisfies {
   [Key in keyof App.Routes as App.Routes[Key]["html"]]: App.Routes[Key];

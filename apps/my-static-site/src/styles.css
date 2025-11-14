@@ -2,11 +2,20 @@ html {
   color-scheme: light dark;
   font-family: system-ui;
   display: flex;
-  align-items: center;
   justify-content: center;
   height: 100%;
 }
 
 body {
+  height: 100%;
   width: 850px;
+}
+
+nav a {
+  color: ButtonText;
+}
+
+nav a[aria-current] {
+  background: ButtonText;
+  color: Canvas;
 }
