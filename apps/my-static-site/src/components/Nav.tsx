@@ -1,9 +1,6 @@
-"use client";
-
 import type { PageProps } from "@parcel/rsc";
 import { Link, type RouteNode } from "@renr/parcel-rsc-router";
 import { routeTree, routesByPage } from "../../routes";
-import "./Nav.css";
 
 const blogPost = routesByPage["/blog/test_2024-10-31.html"];
 
@@ -21,7 +18,7 @@ export function Nav({
       <Link
         to={blogPost.path}
         hash="hash-test"
-        aria-current={blogPost.path === currentPage.url ? "page" : undefined}
+        aria-current={blogPost.html === currentPage.url ? "page" : undefined}
       >
         {blogPost.slug}#hash-test
       </Link>
@@ -30,19 +27,25 @@ export function Nav({
       <Link to="doesn't exist">doesn't exist</Link>
       <hr />
       <ul>
-        <NavItem node={routeTree} currentPage={currentPage} />
+        <NavTree depth={2} node={routeTree} currentPage={currentPage} />
       </ul>
     </nav>
   );
 }
 
-function NavItem({
+export function NavTree({
   node,
+  depth,
   currentPage,
 }: {
   node: RouteNode;
+  depth?: number;
   currentPage: PageProps["currentPage"];
 }) {
+  if (depth === 0) {
+    return null;
+  }
+
   return (
     <>
       <li>
@@ -52,12 +55,19 @@ function NavItem({
         >
           {node.slug === "index" ? "Home" : node.slug}
         </Link>
+        {node.children.length === 0 ? null : (
+          <ul>
+            {node.children.map((child) => (
+              <NavTree
+                key={child.path}
+                depth={depth !== undefined ? depth - 1 : undefined}
+                node={child}
+                currentPage={currentPage}
+              />
+            ))}
+          </ul>
+        )}
       </li>
-      <ul>
-        {node.children.map((child) => (
-          <NavItem key={child.path} node={child} currentPage={currentPage} />
-        ))}
-      </ul>
     </>
   );
 }
