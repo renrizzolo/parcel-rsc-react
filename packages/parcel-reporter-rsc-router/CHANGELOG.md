@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-rsc-router
 
+## 1.0.0-alpha.7
+
+### Patch Changes
+
+- 778f237: update package.json
+
 ## 1.0.0-alpha.6
 
 ### Patch Changes
