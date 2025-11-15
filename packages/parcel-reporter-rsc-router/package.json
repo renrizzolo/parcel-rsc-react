@@ -15,7 +15,7 @@
   "type": "module",
   "main": "src/index.ts",
   "files": [
-    "src"
+    "dist"
   ],
   "sideEffects": false,
   "exports": {
