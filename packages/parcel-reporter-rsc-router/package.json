@@ -32,7 +32,8 @@
     "@parcel/diagnostic": "^2.16.1",
     "@parcel/plugin": "^2.16.1",
     "dedent": "^1.7.0",
-    "tinyglobby": "^0.2.15"
+    "tinyglobby": "^0.2.15",
+    "prettier": "^3.6.2"
   },
   "peerDependencies": {
     "@renr/parcel-rsc-router": "1.0.0-alpha.3"
