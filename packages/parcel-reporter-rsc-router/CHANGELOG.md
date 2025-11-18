@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-rsc-router
 
+## 1.0.0-alpha.8
+
+### Minor Changes
+
+- f46ad17: Fix the build output
+
 ## 1.0.0-alpha.7
 
 ### Patch Changes
