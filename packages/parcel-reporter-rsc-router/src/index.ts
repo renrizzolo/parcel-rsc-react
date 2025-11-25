@@ -1,11 +1,10 @@
 import ThrowableDiagnostic from "@parcel/diagnostic";
 import { Reporter } from "@parcel/plugin";
+import dedent from "dedent";
 import path from "path";
 import { pathToFileURL } from "url";
+import pacakgeJSON from "../package.json" with { type: "json" };
 import { generateRoutes } from "./generate-routes";
-export { generateRoutes } from "./generate-routes";
-import pacakgeJSON from "../package.json" assert { type: "json" };
-import dedent from "dedent";
 
 const origin = pacakgeJSON.name;
 
