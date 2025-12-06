@@ -1,5 +1,12 @@
 # @renr/parcel-reporter-rsc-router
 
+## 1.0.0-alpha.9
+
+### Patch Changes
+
+- Updated dependencies [cd26ccf]
+  - @renr/parcel-rsc-router@1.0.0-alpha.4
+
 ## 1.0.0-alpha.8
 
 ### Minor Changes
