@@ -1,4 +1,4 @@
-import { createHighlighter, type Highlighter } from "shiki";
+import { type Highlighter } from "shiki";
 
 export async function Code() {
   const highlightedCode = await highlightCode(
@@ -14,6 +14,9 @@ let highlighter: Highlighter | null = null;
 //  TODO how to stop parcel from bundling this into the server build?
 async function highlightCode(code: string, lang = "typescript") {
   console.log("Highlighting code...");
+  const shiki = await import("shiki");
+  const { createHighlighter } = shiki;
+
   try {
     if (!highlighter) {
       highlighter = await createHighlighter({
