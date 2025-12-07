@@ -1,5 +1,11 @@
 # @renr/parcel-rsc-router
 
+## 1.0.0-alpha.4
+
+### Minor Changes
+
+- cd26ccf: update rsc dependencies
+
 ## 1.0.0-alpha.3
 
 ### Patch Changes
