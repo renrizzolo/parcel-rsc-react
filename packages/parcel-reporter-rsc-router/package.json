@@ -36,7 +36,7 @@
     "prettier": "^3.6.2"
   },
   "peerDependencies": {
-    "@renr/parcel-rsc-router": "1.0.0-alpha.4"
+    "@renr/parcel-rsc-router": "*"
   },
   "devDependencies": {
     "@types/node": "^22.19.0"
