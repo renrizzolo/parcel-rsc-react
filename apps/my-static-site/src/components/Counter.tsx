@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-export function Counter() {
-  let [count, setCount] = useState(0);
+export function Counter({ initialCount = 0 }: { initialCount?: number }) {
+  let [count, setCount] = useState(initialCount);
 
   return (
     <span>

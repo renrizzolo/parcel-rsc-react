@@ -2,5 +2,24 @@
   "name": "Counter",
   "path": "src/components/Counter.tsx",
   "fileName": "Counter.tsx",
-  "props": {}
+  "props": {
+    "initialCount": {
+      "defaultValue": {
+        "value": "0"
+      },
+      "description": "",
+      "name": "initialCount",
+      "declarations": [
+        {
+          "fileName": "my-static-site/src/components/Counter.tsx",
+          "name": "TypeLiteral"
+        }
+      ],
+      "required": false,
+      "type": {
+        "name": "number | undefined"
+      },
+      "shortPropTypeName": null
+    }
+  }
 }
