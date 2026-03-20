@@ -1,5 +1,5 @@
 import path from "path";
-import { generateRoutes } from "@renr/parcel-reporter-rsc-router";
+import { generateRoutes } from "../src/generate-routes";
 
 const pagesPattern = "src/pages/**/*.(js|jsx|ts|tsx|md|mdx)";
 const rootDir = path.resolve(__dirname, "");

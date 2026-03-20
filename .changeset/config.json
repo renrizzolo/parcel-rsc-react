@@ -8,7 +8,6 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "parcel-react-static-starter",
-    "parcel-reporter-rsc-router-example"
+    "parcel-react-static-starter"
   ]
 }
