@@ -105,7 +105,7 @@ export async function generateProps(
       log(`Generated props for ${componentName}`);
     }
   } catch (err) {
-    log(`Error generating props: ${err}`);
+    log(`Error generating props: ${(err as Error).message}`);
   }
 }
 
