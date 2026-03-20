@@ -1,5 +1,11 @@
 # @renr/parcel-rsc-router
 
+## 1.0.0-alpha.5
+
+### Patch Changes
+
+- 9a42e35: update React dependencies
+
 ## 1.0.0-alpha.4
 
 ### Minor Changes
