@@ -1,7 +1,6 @@
 packages:
   - apps/*
-  - packages/*
-  - packages/parcel-reporter-rsc-router/example
+  - packages/**
 
 onlyBuiltDependencies:
   - "@parcel/watcher"
