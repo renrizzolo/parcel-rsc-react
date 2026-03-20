@@ -33,7 +33,7 @@
     "react-server-dom-parcel": "^19"
   },
   "devDependencies": {
-    "react": "^19.2.1",
+    "react": "^19.2.3",
     "@types/react": "^19.2.2",
     "@parcel/rsc": "^2.16.1"
   },

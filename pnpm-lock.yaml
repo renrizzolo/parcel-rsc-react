@@ -19,7 +19,7 @@ importers:
         version: 6.9.1
       '@testing-library/react':
         specifier: ^16.3.0
-        version: 16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@typescript/native-preview':
         specifier: 7.0.0-dev.20251031.1
         version: 7.0.0-dev.20251031.1
@@ -52,19 +52,19 @@ importers:
         version: 2.16.1(@parcel/core@2.16.1(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
       '@parcel/rsc':
         specifier: ^2.16.1
-        version: 2.16.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 2.16.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@renr/parcel-rsc-router':
         specifier: workspace:*
         version: link:../../packages/parcel-rsc-router
       react:
-        specifier: ^19.2.1
-        version: 19.2.1
+        specifier: ^19.2.3
+        version: 19.2.3
       react-dom:
-        specifier: ^19.2.1
-        version: 19.2.1(react@19.2.1)
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
       react-server-dom-parcel:
-        specifier: ^19.2.1
-        version: 19.2.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: ^19.2.3
+        version: 19.2.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
     devDependencies:
       '@parcel/packager-react-static':
         specifier: 2.16.1
@@ -101,7 +101,7 @@ importers:
         version: 2.16.1(@parcel/core@2.16.1)
       '@renr/parcel-rsc-router':
         specifier: '*'
-        version: 1.0.0-alpha.3(@parcel/rsc@2.16.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-server-dom-parcel@19.2.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react@19.2.1)
+        version: 1.0.0-alpha.4(@parcel/rsc@2.16.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-server-dom-parcel@19.2.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
       dedent:
         specifier: ^1.7.0
         version: 1.7.0
@@ -116,21 +116,31 @@ importers:
         specifier: ^22.19.0
         version: 22.19.0
 
+  packages/parcel-reporter-rsc-router/example:
+    dependencies:
+      '@renr/parcel-reporter-rsc-router':
+        specifier: workspace:*
+        version: link:..
+    devDependencies:
+      vite-node:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/node@22.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6)
+
   packages/parcel-rsc-router:
     dependencies:
       react-server-dom-parcel:
         specifier: ^19
-        version: 19.2.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 19.2.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
     devDependencies:
       '@parcel/rsc':
         specifier: ^2.16.1
-        version: 2.16.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 2.16.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@types/react':
         specifier: ^19.2.2
         version: 19.2.2
       react:
-        specifier: ^19.2.1
-        version: 19.2.1
+        specifier: ^19.2.3
+        version: 19.2.3
 
 packages:
 
@@ -1011,8 +1021,8 @@ packages:
   '@quansync/fs@0.1.5':
     resolution: {integrity: sha512-lNS9hL2aS2NZgNW7BBj+6EBl4rOf8l+tQ0eRY6JWCI8jI2kc53gSoqbjojU0OnAWhzoXiOjFyGsHcDGePB3lhA==}
 
-  '@renr/parcel-rsc-router@1.0.0-alpha.3':
-    resolution: {integrity: sha512-75hMUQq7l7JRVxEKU2pB7R4qxFW3ssKPg5D9za1J9A40WjLOZr6+MsX+hTR+EuWJiWoizUw5lvNdHck3iaUvkg==}
+  '@renr/parcel-rsc-router@1.0.0-alpha.4':
+    resolution: {integrity: sha512-gS/+TY8nxmJKbun2Ows8x4GeIjHP3EjVE/BlZE8H6k4R4bTEuA8JnRA58mIv6kSuSD4ijShgz5fYV5w7dICMQw==}
     peerDependencies:
       '@parcel/rsc': ^2
       react: ^19
@@ -2186,10 +2196,10 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  react-dom@19.2.1:
-    resolution: {integrity: sha512-ibrK8llX2a4eOskq1mXKu/TGZj9qzomO+sNfO98M6d9zIPOEhlBkMkBUBLd1vgS0gQsLDBzA+8jJBVXDnfHmJg==}
+  react-dom@19.2.3:
+    resolution: {integrity: sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg==}
     peerDependencies:
-      react: ^19.2.1
+      react: ^19.2.3
 
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
@@ -2205,8 +2215,15 @@ packages:
       react: ^19.2.1
       react-dom: ^19.2.1
 
-  react@19.2.1:
-    resolution: {integrity: sha512-DGrYcCWK7tvYMnWh79yrPHt+vdx9tY+1gPZa7nJQtO/p8bLTDaHp4dzwEhQB7pZ4Xe3ok4XKuEPrVuc+wlpkmw==}
+  react-server-dom-parcel@19.2.3:
+    resolution: {integrity: sha512-vutWjo615Ks9erf5TmgMSJN0NsZuxuBfgt/O2ZbZoUUXGtqiwVppz0Dy57tmYkx/hAd1DJx1ZwrZW/ThyUeVaQ==}
+    engines: {node: '>=0.10.0'}
+    peerDependencies:
+      react: ^19.2.3
+      react-dom: ^19.2.3
+
+  react@19.2.3:
+    resolution: {integrity: sha512-Ku/hhYbVjOQnXDZFv2+RibmLFGwFdeeKHFcOTlrt7xplBnya5OGn/hIRDsqDiSUcfORsDC7MPxwork8jBwsIWA==}
     engines: {node: '>=0.10.0'}
 
   read-yaml-file@1.1.0:
@@ -2500,6 +2517,11 @@ packages:
 
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
+
+  vite-node@3.2.4:
+    resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    hasBin: true
 
   vite@7.2.2:
     resolution: {integrity: sha512-BxAKBWmIbrDgrokdGZH1IgkIk/5mMHDreLDmCJ0qpyJaAteP8NvMhkwr/ZCQNqNH97bw/dANTE9PDzqwJghfMQ==}
@@ -3560,11 +3582,11 @@ snapshots:
       - '@parcel/core'
       - napi-wasm
 
-  '@parcel/rsc@2.16.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@parcel/rsc@2.16.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
-      react-server-dom-parcel: 19.2.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+      react-server-dom-parcel: 19.2.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       rsc-html-stream: 0.0.6
 
   '@parcel/runtime-browser-hmr@2.16.1(@parcel/core@2.16.1(@swc/helpers@0.5.17))':
@@ -3900,11 +3922,11 @@ snapshots:
     dependencies:
       quansync: 0.2.11
 
-  '@renr/parcel-rsc-router@1.0.0-alpha.3(@parcel/rsc@2.16.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-server-dom-parcel@19.2.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react@19.2.1)':
+  '@renr/parcel-rsc-router@1.0.0-alpha.4(@parcel/rsc@2.16.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-server-dom-parcel@19.2.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@parcel/rsc': 2.16.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      react: 19.2.1
-      react-server-dom-parcel: 19.2.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@parcel/rsc': 2.16.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react: 19.2.3
+      react-server-dom-parcel: 19.2.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
 
   '@rolldown/binding-android-arm64@1.0.0-beta.45':
     optional: true
@@ -4130,12 +4152,12 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
 
-  '@testing-library/react@16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@testing-library/react@16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@testing-library/dom': 10.4.1
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
     optionalDependencies:
       '@types/react': 19.2.2
       '@types/react-dom': 19.2.2(@types/react@19.2.2)
@@ -4947,21 +4969,26 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  react-dom@19.2.1(react@19.2.1):
+  react-dom@19.2.3(react@19.2.3):
     dependencies:
-      react: 19.2.1
+      react: 19.2.3
       scheduler: 0.27.0
 
   react-is@17.0.2: {}
 
   react-refresh@0.16.0: {}
 
-  react-server-dom-parcel@19.2.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  react-server-dom-parcel@19.2.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
 
-  react@19.2.1: {}
+  react-server-dom-parcel@19.2.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+    dependencies:
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+
+  react@19.2.3: {}
 
   read-yaml-file@1.1.0:
     dependencies:
@@ -5276,6 +5303,27 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
+
+  vite-node@3.2.4(@types/node@22.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6):
+    dependencies:
+      cac: 6.7.14
+      debug: 4.4.3
+      es-module-lexer: 1.7.0
+      pathe: 2.0.3
+      vite: 7.2.2(@types/node@22.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6)
+    transitivePeerDependencies:
+      - '@types/node'
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - yaml
 
   vite@7.2.2(@types/node@22.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6):
     dependencies:
