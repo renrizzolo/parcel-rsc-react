@@ -33,15 +33,15 @@ describe("generateProps", () => {
     const stats1 = await fs.stat(simpleComponentJsonPath);
     expect(stats1.isFile()).toBe(true);
 
-    const simpleComponentJson = JSON.parse(
+    const simpleComponentJsonProps = JSON.parse(
       await fs.readFile(simpleComponentJsonPath, "utf-8")
-    );
+    ).props;
 
-    expect(simpleComponentJson).toHaveProperty("name");
-    expect(simpleComponentJson.name.description).toBe(
+    expect(simpleComponentJsonProps).toHaveProperty("name");
+    expect(simpleComponentJsonProps.name.description).toBe(
       "A description for the name prop."
     );
-    expect(simpleComponentJson.name.type.name).toBe("string");
+    expect(simpleComponentJsonProps.name.type.name).toBe("string");
 
     // Check if JSON file for AnotherComponent was created
     const anotherComponentJsonPath = path.join(
@@ -52,15 +52,15 @@ describe("generateProps", () => {
     const stats2 = await fs.stat(anotherComponentJsonPath);
     expect(stats2.isFile()).toBe(true);
 
-    const anotherComponentJson = JSON.parse(
+    const anotherComponentJsonProps = JSON.parse(
       await fs.readFile(anotherComponentJsonPath, "utf-8")
-    );
+    ).props;
 
-    expect(anotherComponentJson).toHaveProperty("enabled");
-    expect(anotherComponentJson.enabled.description).toBe(
+    expect(anotherComponentJsonProps).toHaveProperty("enabled");
+    expect(anotherComponentJsonProps.enabled.description).toBe(
       "If the component is enabled."
     );
-    expect(anotherComponentJson.enabled.type.name).toBe("boolean");
+    expect(anotherComponentJsonProps.enabled.type.name).toBe("boolean");
 
     // Check that it didn't create a json for the tsconfig
     const tsconfigJsonPath = path.join(outputPath, "tsconfig.json");
