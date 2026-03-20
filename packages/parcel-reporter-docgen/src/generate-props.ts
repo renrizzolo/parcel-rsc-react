@@ -36,7 +36,6 @@ export async function generateProps(
 
   const files = await glob(pagesPattern, {
     cwd: rootDir,
-    // ignore: ["**/*.docs.tsx", "**/*.stories.tsx"],
   });
 
   if (files.length === 0) {
@@ -101,8 +100,9 @@ export async function generateProps(
         null,
         2
       );
+
       const outputFilePath = path.join(outputPath, `${componentName}.json`);
-      await fs.writeFile(outputFilePath, componentJSON);
+      await fs.writeFile(outputFilePath, componentJSON + "\n", "utf-8");
 
       log(`Generated props for ${componentName}`);
     }
