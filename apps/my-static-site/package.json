@@ -13,7 +13,8 @@
     }
   },
   "@renr/parcel-reporter-docgen": {
-    "source": "./src/components/Counter.tsx"
+    "source": "./src/components/Counter.tsx",
+    "output": "docs/components"
   },
   "scripts": {
     "start": "npx http-server ./dist",

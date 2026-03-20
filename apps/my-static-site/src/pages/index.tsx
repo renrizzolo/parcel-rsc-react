@@ -3,7 +3,7 @@ import { Counter } from "../components/Counter.js";
 import Layout from "../Layout.js";
 import { Suspense } from "react";
 import { Code } from "../components/Code.js";
-import counterDocs from "../../docgen/Counter.json" assert { type: "json" };
+import counterDocs from "../../docs/components/Counter.json" assert { type: "json" };
 
 export default function Index({ currentPage }: PageProps) {
   return (
