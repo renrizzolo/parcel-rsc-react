@@ -11,7 +11,7 @@ export async function generateProps(
   pagesPattern: string,
   rootDir: string,
   outputPath: string,
-  log = console.log
+  log = (...args: any[]) => console.log(...args)
 ) {
   // TODO - should this be the root tsconfig, the parcel project tsconfig, or the ui library tsconfig?
   // TODO - make this configurable
@@ -39,19 +39,20 @@ export async function generateProps(
   });
 
   if (files.length === 0) {
-    log("No files found for pattern:", pagesPattern);
+    log("No files found for pattern: ", pagesPattern);
     return;
   }
 
-  log(`Found ${files.length} files for pattern:`, pagesPattern);
+  log(`Found ${files.length} files for pattern: `, pagesPattern);
 
   await fs.mkdir(path.resolve(rootDir, outputPath), { recursive: true });
 
   try {
     for (const file of files) {
-      log("parsing file", file);
-      const componentName = path.basename(file, ".tsx");
-      log("componentName", componentName);
+      log("parsing file: ", file);
+
+      const componentName = path.basename(file, path.extname(file));
+      log("componentName: ", componentName);
       const filePath = path.join(rootDir, file);
 
       const docs = docgenParser.parse(filePath);
@@ -65,7 +66,7 @@ export async function generateProps(
             })
           | undefined;
 
-        log("prop", prop, propName);
+        log("prop", JSON.stringify(prop), propName);
         if (!prop) {
           throw new Error(`No prop found for ${propName} in ${componentName}`);
         }

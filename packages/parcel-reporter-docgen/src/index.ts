@@ -71,7 +71,7 @@ export default new Reporter({
             source,
             options.projectRoot,
             output || "docgen",
-            (log) => logger.info({ origin, message: log })
+            (...args) => logger.info({ origin, message: args.join(" ") })
           );
         } catch (error) {
           throwError(error as Error);
