@@ -72,6 +72,9 @@ importers:
       '@parcel/transformer-react-static':
         specifier: 2.16.1
         version: 2.16.1(@parcel/core@2.16.1(@swc/helpers@0.5.17))
+      '@renr/parcel-reporter-docgen':
+        specifier: workspace:*
+        version: link:../../packages/parcel-reporter-docgen
       '@renr/parcel-reporter-rsc-router':
         specifier: workspace:*
         version: link:../../packages/parcel-reporter-rsc-router
@@ -90,6 +93,41 @@ importers:
       shiki:
         specifier: ^3.15.0
         version: 3.15.0
+
+  packages/parcel-reporter-docgen:
+    dependencies:
+      '@parcel/diagnostic':
+        specifier: ^2.16.1
+        version: 2.16.1
+      '@parcel/plugin':
+        specifier: ^2.16.1
+        version: 2.16.1(@parcel/core@2.16.1)
+      dedent:
+        specifier: ^1.7.0
+        version: 1.7.0
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      react-docgen-typescript:
+        specifier: ^2.4.0
+        version: 2.4.0(typescript@5.9.3)
+      tinyglobby:
+        specifier: ^0.2.15
+        version: 0.2.15
+    devDependencies:
+      '@types/node':
+        specifier: ^22.19.0
+        version: 22.19.0
+
+  packages/parcel-reporter-docgen/example:
+    dependencies:
+      react:
+        specifier: ^19.2.0
+        version: 19.2.3
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.0
+        version: 19.2.2
 
   packages/parcel-reporter-rsc-router:
     dependencies:
@@ -2195,6 +2233,11 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
+
+  react-docgen-typescript@2.4.0:
+    resolution: {integrity: sha512-ZtAp5XTO5HRzQctjPU0ybY0RRCQO19X/8fxn3w7y2VVTUbGHDKULPTL4ky3vB05euSgG5NpALhEhDPvQ56wvXg==}
+    peerDependencies:
+      typescript: '>= 4.3.x'
 
   react-dom@19.2.3:
     resolution: {integrity: sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg==}
@@ -4968,6 +5011,10 @@ snapshots:
   quansync@0.2.11: {}
 
   queue-microtask@1.2.3: {}
+
+  react-docgen-typescript@2.4.0(typescript@5.9.3):
+    dependencies:
+      typescript: 5.9.3
 
   react-dom@19.2.3(react@19.2.3):
     dependencies:

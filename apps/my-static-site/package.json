@@ -12,6 +12,10 @@
       }
     }
   },
+  "@renr/parcel-reporter-docgen": {
+    "source": "./src/components/Counter.tsx",
+    "output": "docs/components"
+  },
   "scripts": {
     "start": "npx http-server ./dist",
     "dev": "parcel --no-cache",
@@ -28,6 +32,7 @@
   "devDependencies": {
     "@parcel/packager-react-static": "2.16.1",
     "@parcel/transformer-react-static": "2.16.1",
+    "@renr/parcel-reporter-docgen": "workspace:*",
     "@renr/parcel-reporter-rsc-router": "workspace:*",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",

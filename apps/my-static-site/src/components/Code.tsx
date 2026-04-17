@@ -1,10 +1,7 @@
-import { createHighlighter, type Highlighter } from "shiki";
+import { type Highlighter } from "shiki";
 
-export async function Code() {
-  const highlightedCode = await highlightCode(
-    `import { fetchRSC } from "@parcel/rsc/client";`,
-    "typescript"
-  );
+export async function Code({ code }: { code: string }) {
+  const highlightedCode = await highlightCode(code, "typescript");
 
   return <div dangerouslySetInnerHTML={{ __html: highlightedCode || "" }} />;
 }
@@ -14,6 +11,9 @@ let highlighter: Highlighter | null = null;
 //  TODO how to stop parcel from bundling this into the server build?
 async function highlightCode(code: string, lang = "typescript") {
   console.log("Highlighting code...");
+  const shiki = await import("shiki");
+  const { createHighlighter } = shiki;
+
   try {
     if (!highlighter) {
       highlighter = await createHighlighter({

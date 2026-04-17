@@ -1,0 +1,11 @@
+{
+  "name": "example-docgen",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0"
+  }
+}

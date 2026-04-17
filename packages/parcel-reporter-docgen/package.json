@@ -1,0 +1,45 @@
+{
+  "name": "@renr/parcel-reporter-docgen",
+  "version": "0.0.1-alpha.1",
+  "author": "Ren Rizzolo",
+  "license": "MIT",
+  "description": "Parcel reporter that generates ui docs via react-docgen-typescript",
+  "keywords": [
+    "parcel",
+    "rsc"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renrizzolo/parcel-rsc-react.git"
+  },
+  "type": "module",
+  "main": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "exports": {
+    "default": {
+      "types": "./dist/esm/index.d.ts",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "type-check": "tsgo --noEmit"
+  },
+  "dependencies": {
+    "react-docgen-typescript": "^2.4.0",
+    "@parcel/diagnostic": "^2.16.1",
+    "@parcel/plugin": "^2.16.1",
+    "dedent": "^1.7.0",
+    "tinyglobby": "^0.2.15",
+    "prettier": "^3.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
