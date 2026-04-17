@@ -5,11 +5,14 @@
     "parcel-react-static-starter": "0.0.0",
     "@renr/parcel-reporter-rsc-router": "0.0.1",
     "parcel-reporter-rsc-router-example": "0.0.1",
-    "@renr/parcel-rsc-router": "0.0.1"
+    "@renr/parcel-rsc-router": "0.0.1",
+    "@renr/parcel-reporter-docgen": "0.0.1-alpha.1",
+    "example-docgen": "1.0.0"
   },
   "changesets": [
     "blue-facts-sip",
     "five-insects-refuse",
+    "heavy-otters-tie",
     "icy-deer-occur",
     "lazy-ads-tell",
     "lazy-beans-relax",
