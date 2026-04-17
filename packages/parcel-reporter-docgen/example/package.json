@@ -1,6 +1,6 @@
 {
   "name": "example-docgen",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "private": true,
   "dependencies": {
     "react": "^19.2.0"

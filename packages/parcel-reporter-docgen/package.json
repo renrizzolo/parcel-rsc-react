@@ -1,6 +1,6 @@
 {
   "name": "@renr/parcel-reporter-docgen",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "author": "Ren Rizzolo",
   "license": "MIT",
   "description": "Parcel reporter that generates ui docs via react-docgen-typescript",
