@@ -3,7 +3,7 @@
   "version": "0.0.1-alpha.1",
   "author": "Ren Rizzolo",
   "license": "MIT",
-  "description": "Parcel reporter that generates ui docs",
+  "description": "Parcel reporter that generates ui docs via react-docgen-typescript",
   "keywords": [
     "parcel",
     "rsc"
