@@ -1,5 +1,11 @@
 # @renr/parcel-rsc-router
 
+## 1.0.0-alpha.6
+
+### Patch Changes
+
+- 16aa443: update dependencies
+
 ## 1.0.0-alpha.5
 
 ### Patch Changes

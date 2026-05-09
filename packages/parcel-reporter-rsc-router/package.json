@@ -1,6 +1,6 @@
 {
   "name": "@renr/parcel-reporter-rsc-router",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "author": "Ren Rizzolo",
   "license": "MIT",
   "description": "Parcel reporter that generates filesystem route definitions on build",
@@ -36,7 +36,7 @@
     "prettier": "^3.6.2"
   },
   "peerDependencies": {
-    "@renr/parcel-rsc-router": "*"
+    "@renr/parcel-rsc-router": "workspace: *"
   },
   "devDependencies": {
     "@types/node": "^22.19.0"

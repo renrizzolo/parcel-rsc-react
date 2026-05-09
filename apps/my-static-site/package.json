@@ -22,21 +22,21 @@
     "build": "parcel build --no-cache"
   },
   "dependencies": {
-    "@parcel/config-default": "^2.16.1",
-    "@parcel/rsc": "^2.16.1",
-    "@renr/parcel-rsc-router": "workspace:*",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "react-server-dom-parcel": "^19.2.3"
+    "@parcel/config-default": "^2.16.4",
+    "@parcel/rsc": "^2.16.4",
+    "@renr/parcel-rsc-router": "workspace: *",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-server-dom-parcel": "^19.2.6"
   },
   "devDependencies": {
-    "@parcel/packager-react-static": "2.16.1",
-    "@parcel/transformer-react-static": "2.16.1",
-    "@renr/parcel-reporter-docgen": "workspace:*",
-    "@renr/parcel-reporter-rsc-router": "workspace:*",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "parcel": "^2.16.1",
+    "@parcel/packager-react-static": "2.16.4",
+    "@parcel/transformer-react-static": "2.16.4",
+    "@renr/parcel-reporter-docgen": "workspace: *",
+    "@renr/parcel-reporter-rsc-router": "workspace: *",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "parcel": "^2.16.4",
     "parcel-reporter-static-files-copy": "^1.5.3",
     "shiki": "^3.15.0"
   }
