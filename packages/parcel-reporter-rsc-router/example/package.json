@@ -14,7 +14,7 @@
     "type-check": "tsgo --noEmit"
   },
   "dependencies": {
-    "@renr/parcel-reporter-rsc-router": "workspace: *"
+    "@renr/parcel-reporter-rsc-router": "workspace:*"
   },
   "devDependencies": {
     "vite-node": "^3.2.4"

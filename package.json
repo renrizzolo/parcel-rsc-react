@@ -18,8 +18,8 @@
     "format:ci": "prettier . --check --experimental-cli",
     "test": "vitest",
     "test:ci": "vitest run",
-    "version": "changeset version && pnpm install --no-frozen-lockfile",
-    "release": "pnpm build && changeset publish && git push --follow-tags"
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.7.0",
