@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-rsc-router
 
+## 1.0.0-alpha.11
+
+### Patch Changes
+
+- 3be6fdc: Fix workspace protocol dependency formatting so Changesets can resolve internal package versions consistently during release automation.
+
 ## 1.0.0-alpha.10
 
 ### Patch Changes
