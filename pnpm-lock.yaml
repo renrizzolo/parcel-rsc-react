@@ -138,7 +138,7 @@ importers:
         specifier: ^2.16.4
         version: 2.16.4(@parcel/core@2.16.4)
       '@renr/parcel-rsc-router':
-        specifier: 'workspace: *'
+        specifier: workspace:*
         version: link:../parcel-rsc-router
       dedent:
         specifier: ^1.7.2
@@ -157,7 +157,7 @@ importers:
   packages/parcel-reporter-rsc-router/example:
     dependencies:
       '@renr/parcel-reporter-rsc-router':
-        specifier: 'workspace: *'
+        specifier: workspace:*
         version: link:..
     devDependencies:
       vite-node:
