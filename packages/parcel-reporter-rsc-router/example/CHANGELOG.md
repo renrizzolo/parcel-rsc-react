@@ -1,5 +1,11 @@
 # parcel-reporter-rsc-router-example
 
+## 0.0.2-alpha.2
+
+### Patch Changes
+
+- @renr/parcel-reporter-rsc-router@1.0.0-alpha.12
+
 ## 0.0.2-alpha.1
 
 ### Patch Changes
