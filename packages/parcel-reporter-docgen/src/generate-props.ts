@@ -7,12 +7,82 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// cache for watch mode across buildStart events
+const fileMtimeCache = new Map<string, number>();
+
 export async function generateProps(
   pagesPattern: string,
   rootDir: string,
   outputPath: string,
   log = console.log
 ) {
+  const files = await glob(pagesPattern, {
+    cwd: rootDir,
+  });
+
+  if (files.length === 0) {
+    log(`No files found for pattern: ${pagesPattern}`);
+    return;
+  }
+
+  const resolvedOutputPath = path.resolve(rootDir, outputPath);
+  await fs.mkdir(resolvedOutputPath, { recursive: true });
+
+  const filesToProcess: {
+    relFile: string;
+    absPath: string;
+    componentName: string;
+  }[] = [];
+
+  for (const file of files) {
+    const filePath = path.resolve(rootDir, file);
+    const componentName = path.basename(file, path.extname(file));
+    const outputFilePath = path.join(
+      resolvedOutputPath,
+      `${componentName}.json`
+    );
+
+    try {
+      const sourceStat = await fs.stat(filePath);
+      const cachedMtime = fileMtimeCache.get(filePath);
+
+      let isUpToDate = false;
+      try {
+        const outStat = await fs.stat(outputFilePath);
+        if (
+          (cachedMtime !== undefined && cachedMtime === sourceStat.mtimeMs) ||
+          outStat.mtimeMs >= sourceStat.mtimeMs
+        ) {
+          isUpToDate = true;
+          fileMtimeCache.set(filePath, sourceStat.mtimeMs);
+        }
+      } catch {
+        // output file does not exist
+      }
+
+      if (isUpToDate) {
+        continue;
+      }
+
+      filesToProcess.push({
+        relFile: file,
+        absPath: filePath,
+        componentName,
+      });
+      fileMtimeCache.set(filePath, sourceStat.mtimeMs);
+    } catch {
+      // source file not accessible
+    }
+  }
+
+  if (filesToProcess.length === 0) {
+    return;
+  }
+
+  log(
+    `Found ${filesToProcess.length} changed file(s) for pattern: ${pagesPattern}`
+  );
+
   // TODO - should this be the root tsconfig, the parcel project tsconfig, or the ui library tsconfig?
   // TODO - make this configurable
   const tsconfigPath = path.resolve(rootDir, "./tsconfig.json");
@@ -34,76 +104,80 @@ export async function generateProps(
     },
   });
 
-  const files = await glob(pagesPattern, {
-    cwd: rootDir,
-  });
-
-  if (files.length === 0) {
-    log(`No files found for pattern: ${pagesPattern}`);
-    return;
-  }
-
-  log(`Found ${files.length} files for pattern: ${pagesPattern}`);
-
-  await fs.mkdir(path.resolve(rootDir, outputPath), { recursive: true });
-
   try {
-    for (const file of files) {
-      log(`parsing file: : ${file}`);
+    const absPaths = filesToProcess.map((f) => f.absPath);
+    const allDocs = docgenParser.parse(absPaths);
 
-      const componentName = path.basename(file, path.extname(file));
-      const filePath = path.join(rootDir, file);
-
-      const docs = docgenParser.parse(filePath);
-      const props = docs[0] ? docs[0].props : {};
-
-      for (const propName in props) {
-        const prop = props[propName] as
-          | (PropItem & {
-              shortPropTypeName: string | null;
-            })
-          | undefined;
-
-        if (!prop) {
-          throw new Error(`No prop found for ${propName} in ${componentName}`);
-        }
-
-        if (prop.type && prop.type.name) {
-          const { type: shortPropTypeName, detailedType } = getShortPropType(
-            propName,
-            prop.type.name
-          );
-
-          const hasExpandedType = Boolean(detailedType);
-
-          prop.type.name =
-            hasExpandedType && prop.type.name.split("|").length > 3
-              ? prop.type.name
-                  .split("|")
-                  .map((line) => `| ${line}\n`)
-                  .join("")
-              : prop.type.name;
-
-          prop.shortPropTypeName = hasExpandedType ? shortPropTypeName : null;
-        }
+    const docsByFilePath = new Map<string, typeof allDocs>();
+    for (const doc of allDocs) {
+      if (doc.filePath) {
+        const key = path.resolve(doc.filePath);
+        const list = docsByFilePath.get(key) || [];
+        list.push(doc);
+        docsByFilePath.set(key, list);
       }
-
-      const componentJSON = JSON.stringify(
-        {
-          name: componentName,
-          path: file,
-          fileName: file.split("/").pop(),
-          props,
-        },
-        null,
-        2
-      );
-
-      const outputFilePath = path.join(outputPath, `${componentName}.json`);
-      await fs.writeFile(outputFilePath, componentJSON + "\n", "utf-8");
-
-      log(`Generated props for ${componentName}`);
     }
+
+    await Promise.all(
+      filesToProcess.map(async ({ relFile, absPath, componentName }) => {
+        log(`parsing file: : ${relFile}`);
+
+        const fileDocs = docsByFilePath.get(path.resolve(absPath));
+        const props = fileDocs && fileDocs[0] ? fileDocs[0].props : {};
+
+        for (const propName in props) {
+          const prop = props[propName] as
+            | (PropItem & {
+                shortPropTypeName: string | null;
+              })
+            | undefined;
+
+          if (!prop) {
+            throw new Error(
+              `No prop found for ${propName} in ${componentName}`
+            );
+          }
+
+          if (prop.type && prop.type.name) {
+            const { type: shortPropTypeName, detailedType } = getShortPropType(
+              propName,
+              prop.type.name
+            );
+
+            const hasExpandedType = Boolean(detailedType);
+
+            prop.type.name =
+              hasExpandedType && prop.type.name.split("|").length > 3
+                ? prop.type.name
+                    .split("|")
+                    .map((line) => `| ${line}\n`)
+                    .join("")
+                : prop.type.name;
+
+            prop.shortPropTypeName = hasExpandedType ? shortPropTypeName : null;
+          }
+        }
+
+        const componentJSON = JSON.stringify(
+          {
+            name: componentName,
+            path: relFile,
+            fileName: relFile.split("/").pop(),
+            props,
+          },
+          null,
+          2
+        );
+
+        const outputFilePath = path.join(
+          resolvedOutputPath,
+          `${componentName}.json`
+        );
+        await fs.writeFile(outputFilePath, componentJSON + "\n", "utf-8");
+
+        log(`Generated props for ${componentName}`);
+      })
+    );
   } catch (err) {
     log(`Error generating props: ${(err as Error).message}`);
   }
