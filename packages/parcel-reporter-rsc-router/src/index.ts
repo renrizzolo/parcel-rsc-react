@@ -3,10 +3,9 @@ import { Reporter } from "@parcel/plugin";
 import dedent from "dedent";
 import path from "path";
 import { pathToFileURL } from "url";
-import pacakgeJSON from "../package.json" with { type: "json" };
 import { generateRoutes } from "./generate-routes";
 
-const origin = pacakgeJSON.name;
+const origin = "@renr/parcel-reporter-rsc-router";
 
 export default new Reporter({
   async report({ event, options, logger }) {
@@ -27,9 +26,15 @@ export default new Reporter({
               context: string;
             };
           };
+          [origin]?: {
+            output: string;
+          };
         };
 
-        if (!config.targets?.["react-static"]?.source) {
+        const source = config.targets?.["react-static"]?.source;
+        const output = config[origin]?.output;
+
+        if (!source) {
           throw new ThrowableDiagnostic({
             diagnostic: {
               origin,
@@ -67,11 +72,12 @@ export default new Reporter({
           });
         }
         try {
-          await generateRoutes(
-            config.targets["react-static"].source,
-            options.projectRoot,
-            (log) => logger.info({ origin, message: log })
-          );
+          await generateRoutes({
+            pagesPattern: source,
+            rootDir: options.projectRoot,
+            outputPath: output,
+            log: (log) => logger.info({ origin, message: log }),
+          });
         } catch (error) {
           throwError(error as Error);
         }
