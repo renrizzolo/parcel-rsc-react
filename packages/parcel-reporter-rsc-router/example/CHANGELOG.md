@@ -1,5 +1,14 @@
 # parcel-reporter-rsc-router-example
 
+## 0.0.2-alpha.3
+
+### Patch Changes
+
+- [#31](https://github.com/renrizzolo/parcel-rsc-react/pull/31) [`b1597f2`](https://github.com/renrizzolo/parcel-rsc-react/commit/b1597f245bd2134604fbc580d74b598d9f0ee88c) Thanks [@renrizzolo](https://github.com/renrizzolo)! - add @renr/parcel-reporter-rsc-router output package.json config
+
+- Updated dependencies [[`b1597f2`](https://github.com/renrizzolo/parcel-rsc-react/commit/b1597f245bd2134604fbc580d74b598d9f0ee88c)]:
+  - @renr/parcel-reporter-rsc-router@1.0.0-alpha.13
+
 ## 0.0.2-alpha.2
 
 ### Patch Changes
