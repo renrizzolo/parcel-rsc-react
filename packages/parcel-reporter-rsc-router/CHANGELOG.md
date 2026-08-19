@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-rsc-router
 
+## 1.0.0-alpha.13
+
+### Patch Changes
+
+- [#31](https://github.com/renrizzolo/parcel-rsc-react/pull/31) [`b1597f2`](https://github.com/renrizzolo/parcel-rsc-react/commit/b1597f245bd2134604fbc580d74b598d9f0ee88c) Thanks [@renrizzolo](https://github.com/renrizzolo)! - add @renr/parcel-reporter-rsc-router output package.json config
+
 ## 1.0.0-alpha.12
 
 ### Patch Changes
