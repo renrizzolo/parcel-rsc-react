@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-rsc-router
 
+## 1.0.0-alpha.14
+
+### Patch Changes
+
+- [#33](https://github.com/renrizzolo/parcel-rsc-react/pull/33) [`8051a0a`](https://github.com/renrizzolo/parcel-rsc-react/commit/8051a0abd5dfae56136cffa4f2e4a74480c87001) Thanks [@renrizzolo](https://github.com/renrizzolo)! - fix: prevent formatting routes file
+
 ## 1.0.0-alpha.13
 
 ### Patch Changes
