@@ -57,9 +57,6 @@ export interface Page<TUrl extends string = RouteHtml> extends Omit<
 
 /**
  * Enhanced PageProps where `pages` and `currentPage` have typed `url`s.
- *
- * - Default: allows any valid HTML route in the app.
- * - Narrowed: `PageProps<'/theme-builder.html'>` for specific page components.
  */
 export interface PageProps<TUrl extends string = RouteHtml> {
   pages: Page<RouteHtml>[];
