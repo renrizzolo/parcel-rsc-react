@@ -1,4 +1,4 @@
-import { PageProps } from "@parcel/rsc";
+import { PageProps } from "@renr/parcel-rsc-router";
 import { Nav } from "./components/Nav";
 import { AppProvider } from "./appProvider";
 import "./client";

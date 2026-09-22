@@ -1,5 +1,4 @@
-import type { PageProps } from "@parcel/rsc";
-import { Link, type RouteNode } from "@renr/parcel-rsc-router";
+import { Link, PageProps, type RouteNode } from "@renr/parcel-rsc-router";
 import { routeTree, routesByPage } from "../../routes";
 
 const blogPost = routesByPage["/blog/test_2024-10-31.html"];

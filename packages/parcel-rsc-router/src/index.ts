@@ -1,8 +1,18 @@
-export type { RouteNode, RouteData, RoutePath, App } from "./types.js";
+export type {
+  App,
+  Page,
+  PageProps,
+  RouteData,
+  RouteHtml,
+  RouteNode,
+  RoutePath,
+  RouteRsc,
+  TocNode,
+} from "./types.js";
 export { Link } from "./Link.js";
 export {
   RouterProvider,
-  useRouter,
-  useLocation,
   useCurrentRoute,
+  useLocation,
+  useRouter,
 } from "./Router.js";

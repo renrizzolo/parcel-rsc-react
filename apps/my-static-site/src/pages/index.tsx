@@ -1,4 +1,4 @@
-import type { PageProps } from "@parcel/rsc";
+import { PageProps } from "@renr/parcel-rsc-router";
 import { Counter } from "../components/Counter.js";
 import Layout from "../Layout.js";
 import { Suspense } from "react";
