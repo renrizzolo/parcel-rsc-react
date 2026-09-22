@@ -127,7 +127,9 @@ function normalizeIndex(filePath: string): string {
 }
 
 /** flatten a RouteNode tree into a list of RouteData pages */
-export function flattenRouteTree(node: GeneratedRouteNode): GeneratedRouteData[] {
+export function flattenRouteTree(
+  node: GeneratedRouteNode
+): GeneratedRouteData[] {
   const pages: GeneratedRouteData[] = [];
 
   if (node.rsc && node.html) {
