@@ -1,5 +1,16 @@
 # parcel-reporter-rsc-router-example
 
+## 0.1.0-alpha.5
+
+### Minor Changes
+
+- [#35](https://github.com/renrizzolo/parcel-rsc-react/pull/35) [`c8c5a7a`](https://github.com/renrizzolo/parcel-rsc-react/commit/c8c5a7aa791f379b0b950a103923afa71113bf4d) Thanks [@renrizzolo](https://github.com/renrizzolo)! - Add a PageProps export with typed currentPage.url
+
+### Patch Changes
+
+- Updated dependencies [[`c8c5a7a`](https://github.com/renrizzolo/parcel-rsc-react/commit/c8c5a7aa791f379b0b950a103923afa71113bf4d)]:
+  - @renr/parcel-reporter-rsc-router@1.0.0-alpha.15
+
 ## 0.0.2-alpha.4
 
 ### Patch Changes
