@@ -4,7 +4,17 @@
 // Do not edit it manually.
 // You should also exclude it from your linting/formatting rules.
 
-import type { App, RouteData, RouteNode } from "@renr/parcel-rsc-router";
+import type {
+  App,
+  Page,
+  PageProps,
+  RouteData,
+  RouteHtml,
+  RouteNode,
+  RoutePath,
+} from "@renr/parcel-rsc-router";
+
+export type { Page, PageProps, RouteHtml, RoutePath };
 
 declare module "@renr/parcel-rsc-router" {
   namespace App {

@@ -1,4 +1,4 @@
-import { type PageProps } from "@parcel/rsc";
+import { PageProps } from "@renr/parcel-rsc-router";
 import { routeTree } from "../../../routes";
 import { NavTree } from "../../components/Nav";
 import Layout from "../../Layout";
