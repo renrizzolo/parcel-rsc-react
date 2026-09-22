@@ -21,7 +21,11 @@ export type RouteRsc = keyof App.Routes extends never
   ? `${string}.rsc`
   : App.Routes[keyof App.Routes]["rsc"];
 
-export type RouteData = Omit<RouteNode, "children">;
+export type RouteData<
+  TPath extends string = RoutePath,
+  THtml extends string = RouteHtml,
+  TRsc extends string = RouteRsc,
+> = Omit<RouteNode<TPath, THtml, TRsc>, "children">;
 
 type RoutePathToSlug<T extends string> = T extends `/`
   ? "index"
@@ -29,12 +33,16 @@ type RoutePathToSlug<T extends string> = T extends `/`
     ? RoutePathToSlug<Slug>
     : T;
 
-export interface RouteNode {
-  children: RouteNode[];
-  path: RoutePath;
-  slug: RoutePathToSlug<RoutePath>;
-  rsc: RouteRsc;
-  html: RouteHtml;
+export interface RouteNode<
+  TPath extends string = RoutePath,
+  THtml extends string = RouteHtml,
+  TRsc extends string = RouteRsc,
+> {
+  children: RouteNode<TPath, THtml, TRsc>[];
+  path: TPath;
+  slug: RoutePathToSlug<TPath>;
+  rsc: TRsc;
+  html: THtml;
 }
 
 /**

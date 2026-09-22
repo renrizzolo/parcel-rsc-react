@@ -4,6 +4,9 @@ import { format } from "prettier";
 import type { RouteNode, RouteData } from "@renr/parcel-rsc-router";
 import { glob } from "tinyglobby";
 
+export type GeneratedRouteNode = RouteNode<string, string, string>;
+export type GeneratedRouteData = RouteData<string, string, string>;
+
 const routerPackageName = "@renr/parcel-rsc-router";
 const packageName = "@renr/parcel-reporter-rsc-router";
 const allowedPageFileExtensions = [".tsx", ".mdx", ".ts", ".jsx", ".js", ".md"];
@@ -16,8 +19,8 @@ const disallowedCharsRegex = /[\s\\?#:*<>|!$%]/;
 export function buildRouteTree(
   filePaths: string[],
   log?: (message: string) => void
-): RouteNode {
-  const rootNode: RouteNode = {
+): GeneratedRouteNode {
+  const rootNode: GeneratedRouteNode = {
     path: "/",
     slug: "index",
     html: "/index.html",
@@ -64,7 +67,7 @@ export function buildRouteTree(
     let bestParentPathLength = 0;
 
     // recursively find the parent this node should be inserted under
-    function findParent(potentialParent: RouteNode) {
+    function findParent(potentialParent: GeneratedRouteNode) {
       let isPotentialParent = false;
       if (potentialParent.path === "/") {
         // if potential parent is root, any node that is not root itself is a potential child
@@ -100,20 +103,10 @@ export function buildRouteTree(
 
   return rootNode;
 }
-
-declare module "@renr/parcel-rsc-router" {
-  namespace App {
-    interface Routes {
-      // just enough to satisfy createRouteNode
-      [key: `/${string}`]: RouteData;
-    }
-  }
-}
-
 /**
  * create a RouteNode from a file path
  */
-function createRouteNode(filePath: string): RouteNode {
+function createRouteNode(filePath: string): GeneratedRouteNode {
   const path = normalizeIndex(removeExtension(filePath));
 
   return {
@@ -134,8 +127,8 @@ function normalizeIndex(filePath: string): string {
 }
 
 /** flatten a RouteNode tree into a list of RouteData pages */
-export function flattenRouteTree(node: RouteNode): RouteData[] {
-  const pages: RouteData[] = [];
+export function flattenRouteTree(node: GeneratedRouteNode): GeneratedRouteData[] {
+  const pages: GeneratedRouteData[] = [];
 
   if (node.rsc && node.html) {
     pages.push({
@@ -154,13 +147,13 @@ export function flattenRouteTree(node: RouteNode): RouteData[] {
 }
 
 /** generate a lookup of routes by their html path (parcel RSC's Page['url']) */
-export function getRoutesByPagePath(pages: RouteData[]) {
+export function getRoutesByPagePath(pages: GeneratedRouteData[]) {
   return pages.reduce(
     (acc, page) => {
       acc[page.html] = page;
       return acc;
     },
-    {} as Record<string, RouteData>
+    {} as Record<string, GeneratedRouteData>
   );
 }
 
@@ -338,7 +331,7 @@ function getBasePathFromGlob(globPattern: string): string {
   return basePath;
 }
 
-function buildRoutesType(pages: RouteData[]) {
+function buildRoutesType(pages: GeneratedRouteData[]) {
   const routes = pages.map((page) => {
     const { path, slug, rsc, html } = page;
     return `'${path}': { slug: '${slug}', path:'${path}', rsc: '${rsc}', html: '${html}' };`;
