@@ -62,6 +62,30 @@ describe("generateProps", () => {
     );
     expect(anotherComponentJsonProps.enabled.type.name).toBe("boolean");
 
+    // Check CompoundComponent with static property assignment
+    const compoundJsonPath = path.join(outputPath, "CompoundComponent.json");
+    const compoundJson = JSON.parse(
+      await fs.readFile(compoundJsonPath, "utf-8")
+    );
+    expect(compoundJson.props).toHaveProperty("label");
+    expect(compoundJson.subcomponents).toBeDefined();
+    expect(compoundJson.subcomponents).toHaveProperty("Sub");
+    expect(compoundJson.subcomponents.Sub.name).toBe("CompoundComponent.Sub");
+    expect(compoundJson.subcomponents.Sub.props).toHaveProperty("subProp");
+    expect(compoundJson.subcomponents.Sub.props.subProp.type.name).toBe("number");
+    // Check AssignedCompound with Object.assign pattern
+    const assignedJsonPath = path.join(outputPath, "AssignedCompound.json");
+    const assignedJson = JSON.parse(
+      await fs.readFile(assignedJsonPath, "utf-8")
+    );
+    expect(assignedJson.props).toHaveProperty("height");
+    expect(assignedJson.subcomponents).toBeDefined();
+    expect(assignedJson.subcomponents).toHaveProperty("Main");
+    expect(assignedJson.subcomponents.Main.name).toBe("AssignedCompound.Main");
+    expect(assignedJson.subcomponents.Main.props).toHaveProperty("as");
+    expect(assignedJson.subcomponents.Main.props.as.type.name).toBe(
+      "string | undefined"
+    );
     // Check that it didn't create a json for the tsconfig
     const tsconfigJsonPath = path.join(outputPath, "tsconfig.json");
     await expect(fs.stat(tsconfigJsonPath)).rejects.toThrow();

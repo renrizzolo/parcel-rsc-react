@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import { PropItem, withCustomConfig } from "react-docgen-typescript";
 import { glob } from "tinyglobby";
+import ts from "typescript";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -122,48 +123,111 @@ export async function generateProps(
       filesToProcess.map(async ({ relFile, absPath, componentName }) => {
         log(`parsing file: : ${relFile}`);
 
-        const fileDocs = docsByFilePath.get(path.resolve(absPath));
-        const props = fileDocs && fileDocs[0] ? fileDocs[0].props : {};
+        const fileDocs = docsByFilePath.get(path.resolve(absPath)) || [];
 
-        for (const propName in props) {
-          const prop = props[propName] as
-            | (PropItem & {
-                shortPropTypeName: string | null;
-              })
-            | undefined;
+        // Check if the component was composed using Object.assign(Base, { SubName: Target, ... })
+        const sourceText = await fs.readFile(absPath, "utf-8");
+        const assignedInfo = getAssignedInfo(sourceText, componentName);
 
-          if (!prop) {
-            throw new Error(
-              `No prop found for ${propName} in ${componentName}`
-            );
+        // 1. Identify primary component doc matching componentName or assigned base
+        const primaryDoc =
+          fileDocs.find((d) => d.displayName === componentName) ||
+          (assignedInfo.baseIdentifier
+            ? fileDocs.find((d) => d.displayName === assignedInfo.baseIdentifier)
+            : undefined) ||
+          fileDocs.find((d) => Object.keys(d.props).length > 0) ||
+          fileDocs[0];
+
+        // If primaryDoc was created by Object.assign and lost props, recover from base
+        let primaryProps = primaryDoc ? primaryDoc.props : {};
+        if (
+          assignedInfo.baseIdentifier &&
+          primaryDoc &&
+          primaryDoc.displayName === componentName
+        ) {
+          const baseDoc = fileDocs.find(
+            (d) => d.displayName === assignedInfo.baseIdentifier
+          );
+          if (
+            baseDoc &&
+            Object.keys(baseDoc.props).length > Object.keys(primaryProps).length
+          ) {
+            primaryProps = baseDoc.props;
+          }
+        }
+
+        const formattedPrimaryProps = formatProps(primaryProps);
+
+        // 2. Identify subcomponents
+        const subcomponents: Record<
+          string,
+          {
+            name: string;
+            description?: string;
+            props: ReturnType<typeof formatProps>;
+          }
+        > = {};
+
+        // a) Handle subcomponents explicitly assigned via Object.assign(Base, { SubName: Target })
+        for (const [subName, targetName] of assignedInfo.subcomponentsMap) {
+          const subDoc = fileDocs.find(
+            (d) =>
+              d.displayName === targetName ||
+              d.displayName === `${componentName}.${subName}`
+          );
+          if (subDoc) {
+            subcomponents[subName] = {
+              name: `${componentName}.${subName}`,
+              description: subDoc.description || undefined,
+              props: formatProps(subDoc.props),
+            };
+          }
+        }
+
+        // b) Handle subcomponents matching standard React dot notation or component prefix
+        for (const doc of fileDocs) {
+          if (doc === primaryDoc) continue;
+          if (
+            assignedInfo.baseIdentifier &&
+            doc.displayName === assignedInfo.baseIdentifier
+          ) {
+            continue;
           }
 
-          if (prop.type && prop.type.name) {
-            const { type: shortPropTypeName, detailedType } = getShortPropType(
-              propName,
-              prop.type.name
-            );
+          let subName: string | undefined;
+          if (doc.displayName.startsWith(`${componentName}.`)) {
+            subName = doc.displayName.slice(componentName.length + 1);
+          } else if (doc.displayName.startsWith(componentName)) {
+            subName = doc.displayName.slice(componentName.length);
+          }
 
-            const hasExpandedType = Boolean(detailedType);
+          if (subName) {
+            const existing = subcomponents[subName];
+            if (
+              existing &&
+              Object.keys(existing.props).length >=
+                Object.keys(doc.props).length
+            ) {
+              continue;
+            }
 
-            prop.type.name =
-              hasExpandedType && prop.type.name.split("|").length > 3
-                ? prop.type.name
-                    .split("|")
-                    .map((line) => `| ${line}\n`)
-                    .join("")
-                : prop.type.name;
-
-            prop.shortPropTypeName = hasExpandedType ? shortPropTypeName : null;
+            subcomponents[subName] = {
+              name: `${componentName}.${subName}`,
+              description: doc.description || undefined,
+              props: formatProps(doc.props),
+            };
           }
         }
 
         const componentJSON = JSON.stringify(
           {
             name: componentName,
+            description: primaryDoc?.description || undefined,
             path: relFile,
             fileName: relFile.split("/").pop(),
-            props,
+            props: formattedPrimaryProps,
+            subcomponents:
+              Object.keys(subcomponents).length > 0 ? subcomponents : undefined,
           },
           null,
           2
@@ -215,3 +279,102 @@ function getShortPropType(name: string, type: string) {
 
   return { type: "Union", detailedType: true };
 }
+
+function formatProps(rawProps: Record<string, PropItem>) {
+  const props: Record<
+    string,
+    PropItem & {
+      shortPropTypeName: string | null;
+    }
+  > = {};
+
+  for (const propName in rawProps) {
+    const rawProp = rawProps[propName];
+    if (!rawProp) {
+      continue;
+    }
+
+    const prop = { ...rawProp } as PropItem & {
+      shortPropTypeName: string | null;
+    };
+
+    if (prop.type && prop.type.name) {
+      const { type: shortPropTypeName, detailedType } = getShortPropType(
+        propName,
+        prop.type.name
+      );
+
+      const hasExpandedType = Boolean(detailedType);
+
+      prop.type.name =
+        hasExpandedType && prop.type.name.split("|").length > 3
+          ? prop.type.name
+              .split("|")
+              .map((line) => `| ${line}\n`)
+              .join("")
+          : prop.type.name;
+
+      prop.shortPropTypeName = hasExpandedType ? shortPropTypeName : null;
+    }
+
+    props[propName] = prop;
+  }
+
+  return props;
+}
+
+function getAssignedInfo(sourceText: string, compName: string) {
+  const sourceFile = ts.createSourceFile(
+    "temp.tsx",
+    sourceText,
+    ts.ScriptTarget.Latest,
+    true
+  );
+  let baseIdentifier: string | null = null;
+  const subcomponentsMap = new Map<string, string>();
+
+  ts.forEachChild(sourceFile, (node) => {
+    if (ts.isVariableStatement(node)) {
+      for (const decl of node.declarationList.declarations) {
+        if (
+          decl.name.getText(sourceFile) === compName &&
+          decl.initializer &&
+          ts.isCallExpression(decl.initializer)
+        ) {
+          const call = decl.initializer;
+          const exprText = call.expression.getText(sourceFile);
+          if (
+            (exprText === "Object.assign" || exprText.endsWith(".assign")) &&
+            call.arguments.length > 0
+          ) {
+            const firstArg = call.arguments[0];
+            if (firstArg) {
+              baseIdentifier = firstArg.getText(sourceFile);
+            }
+            if (
+              call.arguments.length > 1 &&
+              ts.isObjectLiteralExpression(call.arguments[1]!)
+            ) {
+              for (const prop of call.arguments[1]!.properties) {
+                if (ts.isPropertyAssignment(prop)) {
+                  subcomponentsMap.set(
+                    prop.name.getText(sourceFile),
+                    prop.initializer.getText(sourceFile)
+                  );
+                } else if (ts.isShorthandPropertyAssignment(prop)) {
+                  subcomponentsMap.set(
+                    prop.name.getText(sourceFile),
+                    prop.name.getText(sourceFile)
+                  );
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+
+  return { baseIdentifier, subcomponentsMap };
+}
+
