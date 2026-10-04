@@ -25,19 +25,19 @@
     "@parcel/config-default": "^2.16.4",
     "@parcel/rsc": "^2.16.4",
     "@renr/parcel-rsc-router": "workspace:*",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
-    "react-server-dom-parcel": "^19.2.6"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-server-dom-parcel": "^19.3.0"
   },
   "devDependencies": {
     "@parcel/packager-react-static": "2.16.4",
     "@parcel/transformer-react-static": "2.16.4",
     "@renr/parcel-reporter-docgen": "workspace:*",
     "@renr/parcel-reporter-rsc-router": "workspace:*",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "parcel": "^2.16.4",
     "parcel-reporter-static-files-copy": "^1.5.3",
-    "shiki": "^4.0.2"
+    "shiki": "^4.5.0"
   }
 }

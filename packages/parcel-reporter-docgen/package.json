@@ -26,16 +26,16 @@
   },
   "scripts": {
     "build": "tsdown",
-    "type-check": "tsgo --noEmit"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "react-docgen-typescript": "^2.4.0",
     "@parcel/diagnostic": "^2.16.4",
     "@parcel/plugin": "^2.16.4",
     "dedent": "^1.7.2",
-    "tinyglobby": "^0.2.16",
-    "prettier": "^3.8.3",
-    "typescript": "^6.0.3"
+    "tinyglobby": "^0.2.17",
+    "prettier": "^3.9.9",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "devDependencies": {
     "@types/node": "^25.6.2"

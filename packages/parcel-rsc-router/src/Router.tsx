@@ -68,18 +68,20 @@ export const RouterProvider = ({
     getSsrSnapshot
   );
 
+  const href = location?.href;
+
   const navigate = React.useCallback(
     (to: string) => {
-      if (!location?.href) {
+      if (!href) {
         throw new Error("Location is not available");
       }
 
-      if (location.href === new URL(to, location.href).href) {
+      if (href === new URL(to, href).href) {
         return;
       }
 
       // save scroll position for the current entry
-      history.replace(location.href, {
+      history.replace(href, {
         ...history.snapshot.state,
         key: history.snapshot.state?.key ?? Math.random().toString(36).slice(2),
         scrollX: window.scrollX,
@@ -94,7 +96,7 @@ export const RouterProvider = ({
         });
       });
     },
-    [routes, location?.href]
+    [routes, href]
   );
 
   const routerContextValue = React.useMemo(() => ({ navigate }), [navigate]);
