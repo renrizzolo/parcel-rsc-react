@@ -133,7 +133,9 @@ export async function generateProps(
         const primaryDoc =
           fileDocs.find((d) => d.displayName === componentName) ||
           (assignedInfo.baseIdentifier
-            ? fileDocs.find((d) => d.displayName === assignedInfo.baseIdentifier)
+            ? fileDocs.find(
+                (d) => d.displayName === assignedInfo.baseIdentifier
+              )
             : undefined) ||
           fileDocs.find((d) => Object.keys(d.props).length > 0) ||
           fileDocs[0];
@@ -377,4 +379,3 @@ function getAssignedInfo(sourceText: string, compName: string) {
 
   return { baseIdentifier, subcomponentsMap };
 }
-

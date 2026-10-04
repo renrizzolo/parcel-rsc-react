@@ -72,7 +72,9 @@ describe("generateProps", () => {
     expect(compoundJson.subcomponents).toHaveProperty("Sub");
     expect(compoundJson.subcomponents.Sub.name).toBe("CompoundComponent.Sub");
     expect(compoundJson.subcomponents.Sub.props).toHaveProperty("subProp");
-    expect(compoundJson.subcomponents.Sub.props.subProp.type.name).toBe("number");
+    expect(compoundJson.subcomponents.Sub.props.subProp.type.name).toBe(
+      "number"
+    );
     // Check AssignedCompound with Object.assign pattern
     const assignedJsonPath = path.join(outputPath, "AssignedCompound.json");
     const assignedJson = JSON.parse(
