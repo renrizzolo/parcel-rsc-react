@@ -114,6 +114,9 @@ importers:
       tinyglobby:
         specifier: ^0.2.16
         version: 0.2.16
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
     devDependencies:
       '@types/node':
         specifier: ^25.6.2
