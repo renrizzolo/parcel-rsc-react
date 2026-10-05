@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "generate": "vite-node generate.ts",
-    "type-check": "tsgo --noEmit"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@renr/parcel-reporter-rsc-router": "workspace:*"
