@@ -1,9 +1,7 @@
 "use client-entry";
 
 import { hydrate } from "@parcel/rsc/client";
+import type { ReactNode } from "react";
 
-//TODO https://github.com/microsoft/TypeScript/issues/42873#issuecomment-1416128545
-export const updateRoot: ReturnType<typeof hydrate> = hydrate({
-  // TODO - can't build due to reading window
-  // onHmrReload() {},
-});
+export const updateRoot: (value: ReactNode, cb?: () => void) => void =
+  hydrate();

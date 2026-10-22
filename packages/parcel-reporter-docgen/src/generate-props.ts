@@ -14,8 +14,9 @@ const fileMtimeCache = new Map<string, number>();
 export async function generateProps(
   pagesPattern: string,
   rootDir: string,
-  outputPath: string,
-  log = console.log
+  outputPath: string = "docgen",
+  log: (...args: unknown[]) => void = console.log,
+  customTsconfigPath?: string
 ) {
   const files = await glob(pagesPattern, {
     cwd: rootDir,
@@ -84,11 +85,11 @@ export async function generateProps(
     `Found ${filesToProcess.length} changed file(s) for pattern: ${pagesPattern}`
   );
 
-  // TODO - should this be the root tsconfig, the parcel project tsconfig, or the ui library tsconfig?
-  // TODO - make this configurable
-  const tsconfigPath = path.resolve(rootDir, "./tsconfig.json");
+  const resolvedTsconfigPath = customTsconfigPath
+    ? path.resolve(rootDir, customTsconfigPath)
+    : path.resolve(rootDir, "./tsconfig.json");
 
-  const docgenParser = withCustomConfig(tsconfigPath, {
+  const docgenParser = withCustomConfig(resolvedTsconfigPath, {
     shouldExtractLiteralValuesFromEnum: true,
     savePropValueAsString: true,
     propFilter: (prop) => {
@@ -225,8 +226,8 @@ export async function generateProps(
           {
             name: componentName,
             description: primaryDoc?.description || undefined,
-            path: relFile,
-            fileName: relFile.split("/").pop(),
+            path: relFile.replace(/\\/g, "/"),
+            fileName: path.basename(relFile),
             props: formattedPrimaryProps,
             subcomponents:
               Object.keys(subcomponents).length > 0 ? subcomponents : undefined,

@@ -12,6 +12,7 @@
     "noImplicitOverride": true,
     "moduleResolution": "nodenext",
     "module": "nodenext",
+    "jsx": "react-jsx",
     // emit .d.ts files
     "declaration": true,
     // for monorepos

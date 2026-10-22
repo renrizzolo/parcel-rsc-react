@@ -7,12 +7,13 @@ A client-side router designed for React Server Components (RSC) applications bui
 ## Features
 
 - **Client-side navigation:** Navigate between pages using the `<Link>` component.
+- **Route prefetching:** Automatically prefetches RSC payloads on hover or focus for instant navigation.
 - **Type safety:** Type-safe route definitions via `@renr/parcel-reporter-rsc-router` (the Link's `to` prop is typed).
 - **Programmatic navigation:** Control navigation programmatically using the `useRouter` hook.
 - **Location access:** Access the current URL and its properties with the `useLocation` hook.
 - **Route data access:** Retrieve data associated with the current route using the `useCurrentRoute` hook.
 - **Automatic scroll restoration:** Remembers and restores scroll positions when navigating back and forth.
-- **Hash scrolling:** Automatically scrolls to elements identified by URL hash.
+- **Instant hash navigation & scrolling:** Automatically scrolls to elements identified by URL hash, handling in-page hash changes instantly without refetching.
 - **RSC integration:** Navigations fetch the rsc payload for the target route and update the UI without a full page reload.
 
 ## Installation
@@ -172,6 +173,7 @@ A component for declarative client-side navigation.
   children={React.ReactNode}
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void
   target?: HTMLAttributeAnchorTarget
+  prefetch?: boolean // Defaults to true; prefetches RSC payload on hover and focus
   {...restProps: React.AnchorHTMLAttributes<HTMLAnchorElement>}
 />
 ```
@@ -182,17 +184,19 @@ A component for declarative client-side navigation.
 - `children`: The content to render inside the link.
 - `onClick`: Optional click handler.
 - `target`: Standard `target` attribute for `<a>` tags (e.g., `"_blank"`).
+- `prefetch`: Whether to prefetch the route's RSC stream on hover and focus (default: `true`).
 - `{...restProps}`: Any other standard HTML `<a>` tag attributes.
 
 ### Hooks
 
 #### `useRouter()`
 
-Returns an object with methods for programmatic navigation.
+Returns an object with methods for programmatic navigation and prefetching.
 
 ```typescript
-const { navigate } = useRouter();
+const { navigate, prefetch } = useRouter();
 navigate(to: string); // Navigates to the specified path.
+await prefetch(to: string); // Prefetches the RSC payload for the path.
 ```
 
 #### `useLocation()`

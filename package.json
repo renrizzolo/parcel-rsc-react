@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/renrizzolo/parcel-rsc-react.git"

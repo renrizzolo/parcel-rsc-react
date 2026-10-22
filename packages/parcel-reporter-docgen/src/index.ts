@@ -3,18 +3,21 @@ import { Reporter } from "@parcel/plugin";
 import path from "path";
 import { pathToFileURL } from "url";
 import { generateProps } from "./generate-props.js";
-import pacakgeJSON from "../package.json" with { type: "json" };
+import packageJSON from "../package.json" with { type: "json" };
 import dedent from "dedent";
 
-const origin = pacakgeJSON.name;
+const origin = packageJSON.name;
 
 export default new Reporter({
   async report({ event, options, logger }) {
     if (event.type === "buildStart") {
       try {
-        const packageJSON = path.join(options.projectRoot, "package.json");
+        const projectPackageJSON = path.join(
+          options.projectRoot,
+          "package.json"
+        );
 
-        const fileURL = pathToFileURL(packageJSON).toString();
+        const fileURL = pathToFileURL(projectPackageJSON).toString();
 
         const config = (await import(fileURL, {
           with: {
@@ -24,21 +27,21 @@ export default new Reporter({
           [origin]?: {
             source: string;
             output?: string;
+            tsconfig?: string;
           };
         };
 
         const source = config[origin]?.source;
         const output = config[origin]?.output;
+        const tsconfig = config[origin]?.tsconfig;
 
         if (!source) {
-          // @ts-expect-error compiled verison needs to use default
-          throw new ThrowableDiagnostic.default({
+          throw new ThrowableDiagnostic({
             diagnostic: {
               origin,
               message: dedent`No "@renr/parcel-reporter-docgen" source found in package.json. 
                 NOTE: if you are using a monorepo, you need to run parcel from the package that contains your pages rather than the project root.
                 See https://github.com/parcel-bundler/parcel/issues/7206 for a workaround.`,
-              // TODO why isn't the hint/documentation showing up in the terminal/error page?
               hints: [
                 'Add a "@renr/parcel-reporter-docgen" source to your package.json with a source e.g `../packages/ui/src/**/*.{ts,tsx}`.',
               ],
@@ -54,7 +57,7 @@ export default new Reporter({
                     },
                   ],
                   language: "json",
-                  filePath: packageJSON,
+                  filePath: projectPackageJSON,
                   code: dedent`{
                         "@renr/parcel-reporter-docgen": {
                           "source": "../packages/ui/src/**/*.{ts,tsx}",
@@ -71,7 +74,8 @@ export default new Reporter({
             source,
             options.projectRoot,
             output || "docgen",
-            (...args) => logger.info({ origin, message: args.join(" ") })
+            (...args) => logger.info({ origin, message: args.join(" ") }),
+            tsconfig
           );
         } catch (error) {
           throwError(error as Error);
@@ -85,8 +89,7 @@ export default new Reporter({
 });
 
 function throwError(error: Error) {
-  // @ts-expect-error compiled verison needs to use default
-  throw new ThrowableDiagnostic.default({
+  throw new ThrowableDiagnostic({
     diagnostic: {
       origin,
       message: error.message,

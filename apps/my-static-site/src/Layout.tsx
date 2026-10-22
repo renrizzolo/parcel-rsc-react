@@ -2,8 +2,7 @@ import { PageProps } from "@renr/parcel-rsc-router";
 import { Nav } from "./components/Nav";
 import { AppProvider } from "./appProvider";
 import "./client";
-// TODO - this creates a unique css file per page, but there doesn't seem to be a good way to
-// handle global css with parcel react-static.
+// Note: Parcel's react-static packager bundles CSS per page entrypoint.
 import "./styles.css";
 
 export default function Layout({

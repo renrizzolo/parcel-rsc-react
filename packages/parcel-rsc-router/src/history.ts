@@ -16,6 +16,13 @@ export function createHistory() {
   };
 
   const getSnapshot = () => {
+    if (typeof window === "undefined") {
+      return {
+        location: null,
+        state: null,
+      };
+    }
+
     const newSnapshot = {
       location: window.location,
       state: window.history.state as HistoryState | null,
@@ -53,13 +60,17 @@ export function createHistory() {
     },
 
     push(url: string, state: HistoryState) {
-      window.history.pushState(state, "", url);
+      if (typeof window !== "undefined") {
+        window.history.pushState(state, "", url);
+      }
       // notify listeners - do it in a microtask to avoid scheduling react updates
       queueMicrotask(() => listeners.forEach((listener) => listener()));
     },
 
     replace(url: string, state: HistoryState) {
-      window.history.replaceState(state, "", url);
+      if (typeof window !== "undefined") {
+        window.history.replaceState(state, "", url);
+      }
       // don't notify listeners on replace, as it's for non-navigation changes
     },
   };
