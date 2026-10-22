@@ -14,7 +14,6 @@ export async function navigate(
   onPush: (url: string) => void,
   { push = true }: { push?: boolean } = {}
 ) {
-
   let shouldPush = push;
 
   const path = getPathData(pathname, routes);
@@ -60,7 +59,6 @@ async function fetchRSCWithPreloadCache<T>(
   options?: RSCRequestInit
 ): Promise<T> {
   if (fetchCache.has(url)) {
-
     return fetchCache.get(url) as Promise<T>;
   }
 
