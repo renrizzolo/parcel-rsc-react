@@ -41,7 +41,6 @@ export default new Reporter({
               message: dedent`No react-static target found in package.json. 
                 NOTE: if you are using a monorepo, you need to run parcel from the package that contains your pages rather than the project root.
                 See https://github.com/parcel-bundler/parcel/issues/7206 for a workaround.`,
-              // TODO why isn't the hint/documentation showing up in the terminal/error page?
               hints: [
                 "Add a react-static target to your package.json with a source e.g `src/pages/**/*.{tsx,mdx}`.",
               ],

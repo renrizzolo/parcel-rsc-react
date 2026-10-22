@@ -7,7 +7,6 @@ import {
   removeExtension,
   resolveOutputPath,
 } from "./generate-routes.js";
-import { spawn } from "child_process";
 import path from "path";
 import fs from "fs";
 import os from "os";
@@ -271,21 +270,10 @@ describe("generate-routes", () => {
 
 describe("example", () => {
   beforeAll(async () => {
-    // run example generate script
-    await new Promise<void>((resolve, reject) => {
-      const process = spawn("npm", ["run", "generate"], {
-        cwd: path.join(__dirname, "../example"),
-        shell: true,
-        stdio: "inherit",
-      });
-
-      process.on("close", (code) => {
-        if (code === 0) {
-          resolve();
-        } else {
-          reject(new Error(`Process exited with code ${code}`));
-        }
-      });
+    await generateRoutes({
+      pagesPattern: "src/pages/**/*.(js|jsx|ts|tsx|md|mdx)",
+      rootDir: path.join(__dirname, "../example"),
+      log: () => {},
     });
   });
 

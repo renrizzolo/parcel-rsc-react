@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { format } from "prettier";
+import { format, resolveConfig } from "prettier";
 import type { RouteNode, RouteData } from "@renr/parcel-rsc-router";
 import { glob } from "tinyglobby";
 
@@ -32,9 +32,8 @@ export function buildRouteTree(
 
   const nodes = filePaths
     .filter((filePath) => {
-      let match;
-
-      while ((match = disallowedCharsRegex.exec(filePath)) !== null) {
+      const match = disallowedCharsRegex.exec(filePath);
+      if (match) {
         throw new Error(
           `File path "${filePath}" contains unsupported character: "${match[0]}".`
         );
@@ -225,8 +224,9 @@ export async function generateRoutes({
     [Key in keyof App.Routes as App.Routes[Key]["html"]]: App.Routes[Key];
   };
 `;
-  // TODO - see if we can use the consumer's prettier config
+  const prettierConfig = await resolveConfig(routesTypePath);
   const formatted = await format(routesTypeContent, {
+    ...prettierConfig,
     parser: "typescript",
   });
 
