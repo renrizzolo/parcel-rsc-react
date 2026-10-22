@@ -1,5 +1,17 @@
 # @renr/parcel-reporter-rsc-router
 
+## 1.0.0-beta.17
+
+### Minor Changes
+
+- [#39](https://github.com/renrizzolo/parcel-rsc-react/pull/39) [`a54a268`](https://github.com/renrizzolo/parcel-rsc-react/commit/a54a2681a4004672ec46092bf88636133f9c2572) Thanks [@renrizzolo](https://github.com/renrizzolo)! - - Add link prefetch
+  - Add prettier config resolution
+
+### Patch Changes
+
+- Updated dependencies [[`a54a268`](https://github.com/renrizzolo/parcel-rsc-react/commit/a54a2681a4004672ec46092bf88636133f9c2572)]:
+  - @renr/parcel-rsc-router@1.0.0-beta.10
+
 ## 1.0.0-alpha.16
 
 ### Patch Changes

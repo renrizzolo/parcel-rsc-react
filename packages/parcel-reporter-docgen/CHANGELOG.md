@@ -1,5 +1,12 @@
 # @renr/parcel-reporter-docgen
 
+## 0.1.0-beta.6
+
+### Minor Changes
+
+- [#39](https://github.com/renrizzolo/parcel-rsc-react/pull/39) [`a54a268`](https://github.com/renrizzolo/parcel-rsc-react/commit/a54a2681a4004672ec46092bf88636133f9c2572) Thanks [@renrizzolo](https://github.com/renrizzolo)! - - Add link prefetch
+  - Add prettier config resolution
+
 ## 0.1.0-alpha.5
 
 ### Minor Changes
