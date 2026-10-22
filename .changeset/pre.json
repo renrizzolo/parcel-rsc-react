@@ -1,6 +1,6 @@
 {
   "mode": "pre",
-  "tag": "alpha",
+  "tag": "beta",
   "initialVersions": {
     "parcel-react-static-starter": "0.0.0",
     "@renr/parcel-reporter-rsc-router": "0.0.1",
