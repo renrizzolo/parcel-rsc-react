@@ -13,12 +13,14 @@ import {
   useLocation,
   useRouter,
 } from "./Router.js";
-import { navigate as rscNavigate } from "./rsc.js";
+import { Link } from "./Link.js";
+import { navigate as rscNavigate, prefetch as rscPrefetch } from "./rsc.js";
 import { RouteData } from "./types.js";
 
-// Mock rscNavigate
+// Mock rscNavigate and rscPrefetch
 vi.mock("./rsc", () => ({
   navigate: vi.fn(),
+  prefetch: vi.fn(),
 }));
 
 // Mock window.scrollTo
@@ -69,6 +71,9 @@ describe("Router", () => {
         <button onClick={() => navigate("/about")}>Go to About</button>
         <button onClick={() => navigate("/blog#section1")}>
           Go to Blog with Hash
+        </button>
+        <button onClick={() => navigate("/blog#section2")}>
+          Go to Section 2
         </button>
       </div>
     );
@@ -159,5 +164,118 @@ describe("Router", () => {
       // oxlint-disable-next-line unbound-method
       expect(screen.getByTestId("section1").scrollIntoView).toHaveBeenCalled();
     });
+  });
+
+  it("should provide prefetch function via useRouter", async () => {
+    const PrefetchComponent = () => {
+      const { prefetch } = useRouter();
+      return (
+        <button onClick={() => void prefetch("/about")}>Prefetch About</button>
+      );
+    };
+
+    render(
+      <RouterProvider routes={mockRoutes}>
+        <PrefetchComponent />
+      </RouterProvider>
+    );
+
+    fireEvent.click(screen.getByText("Prefetch About"));
+
+    await waitFor(() => {
+      expect(rscPrefetch).toHaveBeenCalledWith("/about", mockRoutes);
+    });
+  });
+
+  it("should prefetch on Link hover and focus", async () => {
+    render(
+      <RouterProvider routes={mockRoutes}>
+        <Link to="/about">About Link</Link>
+      </RouterProvider>
+    );
+
+    const link = screen.getByText("About Link");
+
+    fireEvent.mouseEnter(link);
+    await waitFor(() => {
+      expect(rscPrefetch).toHaveBeenCalledWith("/about", mockRoutes);
+    });
+
+    vi.mocked(rscPrefetch).mockClear();
+
+    fireEvent.focus(link);
+    await waitFor(() => {
+      expect(rscPrefetch).toHaveBeenCalledWith("/about", mockRoutes);
+    });
+  });
+
+  it("should handle in-page hash navigation without refetching RSC", async () => {
+    const { unmount } = render(
+      <RouterProvider routes={mockRoutes}>
+        <TestComponent />
+      </RouterProvider>
+    );
+
+    // Initial navigation to /blog#section1
+    fireEvent.click(screen.getByText("Go to Blog with Hash"));
+    await waitFor(() => {
+      expect(rscNavigate).toHaveBeenCalledTimes(1);
+    });
+
+    vi.mocked(rscNavigate).mockClear();
+
+    // Now on /blog#section1, clicking a different hash on the same page
+    fireEvent.click(screen.getByText("Go to Section 2"));
+
+    await waitFor(() => {
+      expect(window.location.hash).toBe("#section2");
+    });
+
+    // Should NOT call rscNavigate because it's on the same page, only hash changed
+    expect(rscNavigate).not.toHaveBeenCalled();
+    unmount();
+  });
+
+  it("should safely scroll to hash elements with numeric or special characters in ID", async () => {
+    const numericElement = document.createElement("div");
+    numericElement.id = "123-title";
+    numericElement.setAttribute("data-testid", "numeric-section");
+    numericElement.scrollIntoView = vi.fn();
+    document.body.appendChild(numericElement);
+
+    const NumericHashComponent = () => {
+      const { navigate } = useRouter();
+      return (
+        <button onClick={() => navigate("/blog#123-title")}>
+          Go to 123-title
+        </button>
+      );
+    };
+
+    render(
+      <RouterProvider routes={mockRoutes}>
+        <NumericHashComponent />
+      </RouterProvider>
+    );
+
+    fireEvent.click(screen.getByText("Go to 123-title"));
+
+    await waitFor(() => {
+      // oxlint-disable-next-line unbound-method
+      expect(numericElement.scrollIntoView).toHaveBeenCalled();
+    });
+
+    document.body.removeChild(numericElement);
+  });
+
+  it("should throw when useLocation is called outside RouterProvider", () => {
+    const BadComponent = () => {
+      useLocation();
+      return null;
+    };
+
+    expect(() => render(<BadComponent />)).toThrow(
+      "useLocation must be used within a RouterProvider"
+    );
   });
 });

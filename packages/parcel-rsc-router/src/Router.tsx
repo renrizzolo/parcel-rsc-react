@@ -3,9 +3,12 @@
 import * as React from "react";
 import { useSyncExternalStore } from "react";
 import { createHistory } from "./history.js";
-import { navigate as rscNavigate } from "./rsc.js";
+import { navigate as rscNavigate, prefetch as rscPrefetch } from "./rsc.js";
 import { RouteData } from "./types.js";
 import { getPathData } from "./util.js";
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
 
 const RoutesContext = React.createContext<RouteData[] | null>(null);
 
@@ -19,6 +22,7 @@ export const useRoutes = () => {
 
 const RouterContext = React.createContext<{
   navigate: (to: string) => void;
+  prefetch: (to: string) => Promise<void>;
 } | null>(null);
 
 export function useRouter() {
@@ -29,20 +33,22 @@ export function useRouter() {
   return context;
 }
 
-const LocationContext = React.createContext<Location | null>(null);
+const LocationContext = React.createContext<Location | null | undefined>(
+  undefined
+);
 
-export function useLocation() {
+export function useLocation(): Location {
   const context = React.useContext(LocationContext);
-  if (context === null) {
+  if (context === undefined) {
     throw new Error("useLocation must be used within a RouterProvider");
   }
-  return context;
+  return context as Location;
 }
 
 export function useCurrentRoute() {
   const location = useLocation();
   const routes = useRoutes();
-  return getPathData(location.pathname, routes);
+  return location ? getPathData(location.pathname, routes) : null;
 }
 
 const history = createHistory();
@@ -76,7 +82,9 @@ export const RouterProvider = ({
         throw new Error("Location is not available");
       }
 
-      if (href === new URL(to, href).href) {
+      const targetUrl = new URL(to, href);
+
+      if (href === targetUrl.href) {
         return;
       }
 
@@ -88,6 +96,20 @@ export const RouterProvider = ({
         scrollY: window.scrollY,
       });
 
+      // If only hash changed on the current page, skip RSC refetch and navigate directly
+      if (
+        location?.pathname === targetUrl.pathname &&
+        location?.search === targetUrl.search &&
+        location?.hash !== targetUrl.hash
+      ) {
+        history.push(targetUrl.pathname + targetUrl.search + targetUrl.hash, {
+          key: Math.random().toString(36).slice(2),
+          scrollX: window.scrollX,
+          scrollY: window.scrollY,
+        });
+        return;
+      }
+
       void rscNavigate(to, routes, (url) => {
         history.push(url, {
           key: Math.random().toString(36).slice(2),
@@ -96,10 +118,20 @@ export const RouterProvider = ({
         });
       });
     },
-    [routes, href]
+    [routes, href, location?.pathname, location?.search, location?.hash]
   );
 
-  const routerContextValue = React.useMemo(() => ({ navigate }), [navigate]);
+  const prefetch = React.useCallback(
+    async (to: string) => {
+      await rscPrefetch(to, routes);
+    },
+    [routes]
+  );
+
+  const routerContextValue = React.useMemo(
+    () => ({ navigate, prefetch }),
+    [navigate, prefetch]
+  );
 
   React.useEffect(() => {
     const handlePopState = () => {
@@ -117,13 +149,19 @@ export const RouterProvider = ({
     return () => window.removeEventListener("popstate", handlePopState);
   }, [routes]);
 
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     // hash scrolling takes priority
     if (location?.hash) {
-      const element = document.querySelector(location.hash);
-      if (element) {
-        element.scrollIntoView();
-        return;
+      try {
+        const id = decodeURIComponent(location.hash.slice(1));
+        const element =
+          document.getElementById(id) ?? document.querySelector(location.hash);
+        if (element) {
+          element.scrollIntoView();
+          return;
+        }
+      } catch {
+        // Ignore invalid CSS selector syntax in hash
       }
     }
 

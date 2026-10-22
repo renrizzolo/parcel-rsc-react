@@ -14,7 +14,6 @@ export async function navigate(
   onPush: (url: string) => void,
   { push = true }: { push?: boolean } = {}
 ) {
-  console.debug("client navigating to:", pathname);
 
   let shouldPush = push;
 
@@ -52,7 +51,7 @@ export async function navigate(
     // note everything is static currently, we don't need to clear the cache
     // fetchCache.clear();
   } catch (e) {
-    console.log(`Error fetching ${path.path} RSC`, e);
+    console.error(`Error fetching ${path.path} RSC`, e);
   }
 }
 
@@ -61,7 +60,6 @@ async function fetchRSCWithPreloadCache<T>(
   options?: RSCRequestInit
 ): Promise<T> {
   if (fetchCache.has(url)) {
-    console.log("Cache hit", url);
 
     return fetchCache.get(url) as Promise<T>;
   }
@@ -108,16 +106,16 @@ export async function prefetch(
   try {
     await fetchRSCWithPreloadCache<ReactNode>(path.rsc, { signal });
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(`Error fetching ${pathname} RSC`, error);
-
+    // don't throw or log if the signal is aborted - this is expected
+    if (
+      signal?.aborted ||
+      (error instanceof Error && error.name === "AbortError")
+    ) {
       return;
     }
 
-    // don't throw if the signal is aborted - this is expected
-    if (signal?.aborted) {
-      console.log(signal.reason);
-
+    if (error instanceof Error) {
+      console.error(`Error prefetching ${pathname} RSC`, error);
       return;
     }
   }

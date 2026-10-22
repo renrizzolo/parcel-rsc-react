@@ -27,13 +27,13 @@ export const denormalizeRoutePath = (path: string) => {
 
 export function getPathData(pathname: string, routes: RouteData[]) {
   const path = pathname.startsWith("/") ? pathname : `/${pathname}`;
-
-  // path for the URL (including query string/hash)
-  const normalizedPath = normalizeRoutePath(path);
+  const origin =
+    typeof window !== "undefined" && window.location?.origin
+      ? window.location.origin
+      : "http://localhost";
 
   // we want the pathname without the query string/hash to match the route
-  const url = new URL(pathname, window.location.origin);
-
+  const url = new URL(path, origin);
   const routePathName = normalizeRoutePath(url.pathname);
 
   const route = routes.find((route) => route.path === routePathName);
@@ -41,6 +41,9 @@ export function getPathData(pathname: string, routes: RouteData[]) {
   if (!route) {
     return null;
   }
+
+  // Preserve query string and hash while normalizing the path portion
+  const normalizedPath = `${normalizeRoutePath(url.pathname)}${url.search}${url.hash}`;
 
   return {
     ...route,
