@@ -13,14 +13,17 @@
     "url": "https://github.com/renrizzolo/parcel-rsc-react.git"
   },
   "type": "module",
-  "main": "src/index.ts",
+  "main": "./dist/esm/index.mjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/esm/index.d.mts",
   "files": [
     "dist"
   ],
   "sideEffects": false,
   "exports": {
-    "default": {
+    ".": {
       "types": "./dist/esm/index.d.mts",
+      "import": "./dist/esm/index.mjs",
       "default": "./dist/esm/index.mjs"
     }
   },

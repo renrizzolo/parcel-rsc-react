@@ -88,8 +88,35 @@ describe("generateProps", () => {
     expect(assignedJson.subcomponents.Main.props.as.type.name).toBe(
       "string | undefined"
     );
+    expect(assignedJson.fileName).toBe("AssignedCompound.tsx");
+    expect(assignedJson.path).toBe("src/AssignedCompound.tsx");
+
     // Check that it didn't create a json for the tsconfig
     const tsconfigJsonPath = path.join(outputPath, "tsconfig.json");
     await expect(fs.stat(tsconfigJsonPath)).rejects.toThrow();
+  });
+
+  it("should support a custom tsconfig path", async () => {
+    const customOutputPath = path.join(exampleDir, "dist-custom");
+    await fs.mkdir(customOutputPath, { recursive: true });
+
+    try {
+      await generateProps(
+        "src/SimpleComponent.tsx",
+        rootDir,
+        customOutputPath,
+        () => {},
+        "./tsconfig.json"
+      );
+
+      const simpleComponentJsonPath = path.join(
+        customOutputPath,
+        "SimpleComponent.json"
+      );
+      const stat = await fs.stat(simpleComponentJsonPath);
+      expect(stat.isFile()).toBe(true);
+    } finally {
+      await fs.rm(customOutputPath, { recursive: true, force: true });
+    }
   });
 });
