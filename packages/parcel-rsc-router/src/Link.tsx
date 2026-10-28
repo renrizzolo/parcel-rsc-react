@@ -4,6 +4,8 @@ import React, { type HTMLAttributeAnchorTarget } from "react";
 import { RoutePath } from "./types.js";
 import { useRouter } from "./Router.js";
 
+const PREFETCH_DELAY_MS = 50;
+
 export function Link({
   to,
   children,
@@ -12,7 +14,11 @@ export function Link({
   search,
   onClick,
   onMouseEnter,
+  onMouseLeave,
   onFocus,
+  onBlur,
+  onPointerDown,
+  onTouchStart,
   prefetch = true,
   ...props
 }: {
@@ -25,12 +31,37 @@ export function Link({
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   const { navigate, prefetch: prefetchRoute } = useRouter();
   const href = `${to}${hash ? `#${hash}` : ""}${search ? `?${new URLSearchParams(search)}` : ""}`;
+  const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+
+  const cancelPrefetch = React.useCallback(() => {
+    if (hoverTimeoutRef.current !== null) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+  }, []);
 
   const handlePrefetch = React.useCallback(() => {
+    cancelPrefetch();
     if (prefetch && (!target || target === "_self") && prefetchRoute) {
       void prefetchRoute(to);
     }
-  }, [prefetch, target, prefetchRoute, to]);
+  }, [cancelPrefetch, prefetch, target, prefetchRoute, to]);
+
+  const schedulePrefetch = React.useCallback(() => {
+    cancelPrefetch();
+    if (prefetch && (!target || target === "_self") && prefetchRoute) {
+      hoverTimeoutRef.current = setTimeout(() => {
+        hoverTimeoutRef.current = null;
+        void prefetchRoute(to);
+      }, PREFETCH_DELAY_MS);
+    }
+  }, [cancelPrefetch, prefetch, target, prefetchRoute, to]);
+
+  React.useEffect(() => {
+    return cancelPrefetch;
+  }, [cancelPrefetch]);
 
   return (
     <a
@@ -39,11 +70,35 @@ export function Link({
         if (onMouseEnter) {
           onMouseEnter(e);
         }
-        handlePrefetch();
+        schedulePrefetch();
+      }}
+      onMouseLeave={(e) => {
+        if (onMouseLeave) {
+          onMouseLeave(e);
+        }
+        cancelPrefetch();
       }}
       onFocus={(e) => {
         if (onFocus) {
           onFocus(e);
+        }
+        schedulePrefetch();
+      }}
+      onBlur={(e) => {
+        if (onBlur) {
+          onBlur(e);
+        }
+        cancelPrefetch();
+      }}
+      onPointerDown={(e) => {
+        if (onPointerDown) {
+          onPointerDown(e);
+        }
+        handlePrefetch();
+      }}
+      onTouchStart={(e) => {
+        if (onTouchStart) {
+          onTouchStart(e);
         }
         handlePrefetch();
       }}
