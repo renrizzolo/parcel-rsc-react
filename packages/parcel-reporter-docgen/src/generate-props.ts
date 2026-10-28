@@ -126,20 +126,48 @@ export async function generateProps(
 
         const fileDocs = docsByFilePath.get(path.resolve(absPath)) || [];
 
-        // Check if the component was composed using Object.assign(Base, { SubName: Target, ... })
+        // Check if the component was composed using Object.assign or exports compound parts
         const sourceText = await fs.readFile(absPath, "utf-8");
         const assignedInfo = getAssignedInfo(sourceText, componentName);
 
-        // 1. Identify primary component doc matching componentName or assigned base
-        const primaryDoc =
-          fileDocs.find((d) => d.displayName === componentName) ||
-          (assignedInfo.baseIdentifier
-            ? fileDocs.find(
-                (d) => d.displayName === assignedInfo.baseIdentifier
-              )
-            : undefined) ||
-          fileDocs.find((d) => Object.keys(d.props).length > 0) ||
-          fileDocs[0];
+        // Determine if this component has a .Root part
+        const hasRoot =
+          assignedInfo.subcomponentsMap.has("Root") ||
+          fileDocs.some(
+            (d) =>
+              d.displayName === "Root" ||
+              d.displayName === `${componentName}Root` ||
+              d.displayName === `${componentName}.Root`
+          );
+
+        // 1. Identify primary component doc matching componentName or assigned base / Root
+        const rootTarget = assignedInfo.subcomponentsMap.get("Root");
+        const primaryDoc = hasRoot
+          ? (rootTarget
+              ? fileDocs.find((d) => d.displayName === rootTarget)
+              : undefined) ||
+            (assignedInfo.baseIdentifier
+              ? fileDocs.find(
+                  (d) => d.displayName === assignedInfo.baseIdentifier
+                )
+              : undefined) ||
+            fileDocs.find(
+              (d) =>
+                d.displayName === `${componentName}.Root` ||
+                d.displayName === `${componentName}Root` ||
+                d.displayName === "Root"
+            ) ||
+            fileDocs.find((d) => d.displayName === componentName) ||
+            fileDocs.find((d) => Object.keys(d.props).length > 0) ||
+            fileDocs[0]
+          : fileDocs.find((d) => d.displayName === componentName) ||
+            (assignedInfo.baseIdentifier
+              ? fileDocs.find(
+                  (d) => d.displayName === assignedInfo.baseIdentifier
+                )
+              : undefined) ||
+            fileDocs.find((d) => Object.keys(d.props).length > 0) ||
+            fileDocs[0];
 
         // If primaryDoc was created by Object.assign and lost props, recover from base
         let primaryProps = primaryDoc ? primaryDoc.props : {};
@@ -171,12 +199,17 @@ export async function generateProps(
           }
         > = {};
 
-        // a) Handle subcomponents explicitly assigned via Object.assign(Base, { SubName: Target })
+        // a) Handle subcomponents explicitly assigned or exported
         for (const [subName, targetName] of assignedInfo.subcomponentsMap) {
+          if (hasRoot && subName === "Root") {
+            continue;
+          }
           const subDoc = fileDocs.find(
             (d) =>
               d.displayName === targetName ||
-              d.displayName === `${componentName}.${subName}`
+              d.displayName === `${componentName}.${subName}` ||
+              d.displayName === `${componentName}${subName}` ||
+              d.displayName === subName
           );
           if (subDoc) {
             subcomponents[subName] = {
@@ -205,6 +238,7 @@ export async function generateProps(
           }
 
           if (subName) {
+            if (hasRoot && subName === "Root") continue;
             const existing = subcomponents[subName];
             if (
               existing &&
@@ -224,7 +258,7 @@ export async function generateProps(
 
         const componentJSON = JSON.stringify(
           {
-            name: componentName,
+            name: hasRoot ? `${componentName}.Root` : componentName,
             description: primaryDoc?.description || undefined,
             path: relFile.replace(/\\/g, "/"),
             fileName: path.basename(relFile),
@@ -337,6 +371,31 @@ function getAssignedInfo(sourceText: string, compName: string) {
   const subcomponentsMap = new Map<string, string>();
 
   ts.forEachChild(sourceFile, (node) => {
+    // 1. export { Local as Exported, ... }
+    if (ts.isExportDeclaration(node)) {
+      if (
+        !node.isTypeOnly &&
+        node.exportClause &&
+        ts.isNamedExports(node.exportClause)
+      ) {
+        for (const element of node.exportClause.elements) {
+          if (!element.isTypeOnly) {
+            const exportName = element.name.getText(sourceFile);
+            const localName = element.propertyName
+              ? element.propertyName.getText(sourceFile)
+              : exportName;
+            if (/^[A-Z]/.test(exportName)) {
+              subcomponentsMap.set(exportName, localName);
+              if (exportName === "Root") {
+                baseIdentifier = localName;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 2. export const Comp = Object.assign(Base, { SubName: Target, ... })
     if (ts.isVariableStatement(node)) {
       for (const decl of node.declarationList.declarations) {
         if (
@@ -360,17 +419,75 @@ function getAssignedInfo(sourceText: string, compName: string) {
             ) {
               for (const prop of call.arguments[1]!.properties) {
                 if (ts.isPropertyAssignment(prop)) {
-                  subcomponentsMap.set(
-                    prop.name.getText(sourceFile),
-                    prop.initializer.getText(sourceFile)
-                  );
+                  const propName = prop.name.getText(sourceFile);
+                  const initName = prop.initializer.getText(sourceFile);
+                  subcomponentsMap.set(propName, initName);
+                  if (propName === "Root") {
+                    baseIdentifier = initName;
+                  }
                 } else if (ts.isShorthandPropertyAssignment(prop)) {
-                  subcomponentsMap.set(
-                    prop.name.getText(sourceFile),
-                    prop.name.getText(sourceFile)
-                  );
+                  const propName = prop.name.getText(sourceFile);
+                  subcomponentsMap.set(propName, propName);
+                  if (propName === "Root") {
+                    baseIdentifier = propName;
+                  }
                 }
               }
+            }
+          }
+        }
+      }
+    }
+
+    // 3. Comp.Sub = Target
+    if (
+      ts.isExpressionStatement(node) &&
+      ts.isBinaryExpression(node.expression)
+    ) {
+      const bin = node.expression;
+      if (
+        bin.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+        ts.isPropertyAccessExpression(bin.left)
+      ) {
+        const objText = bin.left.expression.getText(sourceFile);
+        const propText = bin.left.name.getText(sourceFile);
+        if (objText === compName && /^[A-Z]/.test(propText)) {
+          const targetName = bin.right.getText(sourceFile);
+          subcomponentsMap.set(propText, targetName);
+          if (propText === "Root") {
+            baseIdentifier = targetName;
+          }
+        }
+      }
+    }
+
+    // 4. export function Root(...) or export const Root = (...)
+    if (ts.isFunctionDeclaration(node) && node.name) {
+      const isExported = node.modifiers?.some(
+        (m) => m.kind === ts.SyntaxKind.ExportKeyword
+      );
+      if (isExported) {
+        const fnName = node.name.getText(sourceFile);
+        if (/^[A-Z]/.test(fnName)) {
+          subcomponentsMap.set(fnName, fnName);
+          if (fnName === "Root") {
+            baseIdentifier = fnName;
+          }
+        }
+      }
+    }
+
+    if (ts.isVariableStatement(node)) {
+      const isExported = node.modifiers?.some(
+        (m) => m.kind === ts.SyntaxKind.ExportKeyword
+      );
+      if (isExported) {
+        for (const decl of node.declarationList.declarations) {
+          const varName = decl.name.getText(sourceFile);
+          if (varName !== compName && /^[A-Z]/.test(varName)) {
+            subcomponentsMap.set(varName, varName);
+            if (varName === "Root") {
+              baseIdentifier = varName;
             }
           }
         }

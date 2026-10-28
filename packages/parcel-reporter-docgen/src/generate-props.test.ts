@@ -91,6 +91,21 @@ describe("generateProps", () => {
     expect(assignedJson.fileName).toBe("AssignedCompound.tsx");
     expect(assignedJson.path).toBe("src/AssignedCompound.tsx");
 
+    // Check ExportedCompound with named export pattern (Dialog-style)
+    const exportedJsonPath = path.join(outputPath, "ExportedCompound.json");
+    const exportedJson = JSON.parse(
+      await fs.readFile(exportedJsonPath, "utf-8")
+    );
+    expect(exportedJson.name).toBe("ExportedCompound.Root");
+    expect(exportedJson.props).toHaveProperty("open");
+    expect(exportedJson.subcomponents).toBeDefined();
+    expect(exportedJson.subcomponents).toHaveProperty("Trigger");
+    expect(exportedJson.subcomponents.Trigger.name).toBe(
+      "ExportedCompound.Trigger"
+    );
+    expect(exportedJson.subcomponents.Trigger.props).toHaveProperty("onClick");
+    expect(exportedJson.subcomponents).not.toHaveProperty("Root");
+
     // Check that it didn't create a json for the tsconfig
     const tsconfigJsonPath = path.join(outputPath, "tsconfig.json");
     await expect(fs.stat(tsconfigJsonPath)).rejects.toThrow();
