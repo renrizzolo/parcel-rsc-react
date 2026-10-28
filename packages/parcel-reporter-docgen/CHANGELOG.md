@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-docgen
 
+## 0.1.0-beta.8
+
+### Minor Changes
+
+- [#43](https://github.com/renrizzolo/parcel-rsc-react/pull/43) [`9d93b2a`](https://github.com/renrizzolo/parcel-rsc-react/commit/9d93b2a41db08aa8510503fb8f537b99f315bd31) Thanks [@renrizzolo](https://github.com/renrizzolo)! - Fix redundant sub components, promote *.Root to primary if no primary component is found
+
 ## 0.1.0-beta.7
 
 ### Minor Changes
