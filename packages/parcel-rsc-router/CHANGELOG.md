@@ -1,5 +1,11 @@
 # @renr/parcel-rsc-router
 
+## 1.0.0-beta.11
+
+### Minor Changes
+
+- [#45](https://github.com/renrizzolo/parcel-rsc-react/pull/45) [`818e6cd`](https://github.com/renrizzolo/parcel-rsc-react/commit/818e6cdf1ae13fed81597a62395c5a9004a850fe) Thanks [@renrizzolo](https://github.com/renrizzolo)! - increase prefetch cache size, add prefetch delay
+
 ## 1.0.0-beta.10
 
 ### Minor Changes
