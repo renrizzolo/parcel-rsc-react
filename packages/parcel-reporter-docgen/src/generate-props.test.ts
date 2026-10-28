@@ -33,10 +33,13 @@ describe("generateProps", () => {
     const stats1 = await fs.stat(simpleComponentJsonPath);
     expect(stats1.isFile()).toBe(true);
 
-    const simpleComponentJsonProps = JSON.parse(
+    const simpleComponentJson = JSON.parse(
       await fs.readFile(simpleComponentJsonPath, "utf-8")
-    ).props;
+    );
+    const simpleComponentJsonProps = simpleComponentJson.props;
 
+    expect(simpleComponentJson.name).toBe("SimpleComponent");
+    expect(simpleComponentJson.subcomponents).toBeUndefined();
     expect(simpleComponentJsonProps).toHaveProperty("name");
     expect(simpleComponentJsonProps.name.description).toBe(
       "A description for the name prop."
@@ -52,10 +55,13 @@ describe("generateProps", () => {
     const stats2 = await fs.stat(anotherComponentJsonPath);
     expect(stats2.isFile()).toBe(true);
 
-    const anotherComponentJsonProps = JSON.parse(
+    const anotherComponentJson = JSON.parse(
       await fs.readFile(anotherComponentJsonPath, "utf-8")
-    ).props;
+    );
+    const anotherComponentJsonProps = anotherComponentJson.props;
 
+    expect(anotherComponentJson.name).toBe("AnotherComponent");
+    expect(anotherComponentJson.subcomponents).toBeUndefined();
     expect(anotherComponentJsonProps).toHaveProperty("enabled");
     expect(anotherComponentJsonProps.enabled.description).toBe(
       "If the component is enabled."
@@ -67,9 +73,10 @@ describe("generateProps", () => {
     const compoundJson = JSON.parse(
       await fs.readFile(compoundJsonPath, "utf-8")
     );
+    expect(compoundJson.name).toBe("CompoundComponent");
     expect(compoundJson.props).toHaveProperty("label");
     expect(compoundJson.subcomponents).toBeDefined();
-    expect(compoundJson.subcomponents).toHaveProperty("Sub");
+    expect(Object.keys(compoundJson.subcomponents)).toEqual(["Sub"]);
     expect(compoundJson.subcomponents.Sub.name).toBe("CompoundComponent.Sub");
     expect(compoundJson.subcomponents.Sub.props).toHaveProperty("subProp");
     expect(compoundJson.subcomponents.Sub.props.subProp.type.name).toBe(
@@ -80,9 +87,10 @@ describe("generateProps", () => {
     const assignedJson = JSON.parse(
       await fs.readFile(assignedJsonPath, "utf-8")
     );
+    expect(assignedJson.name).toBe("AssignedCompound");
     expect(assignedJson.props).toHaveProperty("height");
     expect(assignedJson.subcomponents).toBeDefined();
-    expect(assignedJson.subcomponents).toHaveProperty("Main");
+    expect(Object.keys(assignedJson.subcomponents)).toEqual(["Main"]);
     expect(assignedJson.subcomponents.Main.name).toBe("AssignedCompound.Main");
     expect(assignedJson.subcomponents.Main.props).toHaveProperty("as");
     expect(assignedJson.subcomponents.Main.props.as.type.name).toBe(
@@ -99,12 +107,11 @@ describe("generateProps", () => {
     expect(exportedJson.name).toBe("ExportedCompound.Root");
     expect(exportedJson.props).toHaveProperty("open");
     expect(exportedJson.subcomponents).toBeDefined();
-    expect(exportedJson.subcomponents).toHaveProperty("Trigger");
+    expect(Object.keys(exportedJson.subcomponents)).toEqual(["Trigger"]);
     expect(exportedJson.subcomponents.Trigger.name).toBe(
       "ExportedCompound.Trigger"
     );
     expect(exportedJson.subcomponents.Trigger.props).toHaveProperty("onClick");
-    expect(exportedJson.subcomponents).not.toHaveProperty("Root");
 
     // Check that it didn't create a json for the tsconfig
     const tsconfigJsonPath = path.join(outputPath, "tsconfig.json");
