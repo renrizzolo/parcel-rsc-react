@@ -54,20 +54,30 @@ export async function navigate(
   }
 }
 
+export const MAX_CACHE_SIZE = 50;
+
 async function fetchRSCWithPreloadCache<T>(
   url: string | URL | Request,
   options?: RSCRequestInit
 ): Promise<T> {
-  if (fetchCache.has(url)) {
-    return fetchCache.get(url) as Promise<T>;
+  const existing = fetchCache.get(url);
+  if (existing) {
+    // Refresh insertion order so Map acts as an LRU cache
+    fetchCache.delete(url);
+    fetchCache.set(url, existing);
+    return existing as Promise<T>;
   }
 
-  const promise = fetchRSC<T>(url, options);
+  const promise = fetchRSC<T>(url, options).catch((error) => {
+    fetchCache.delete(url);
+
+    throw error;
+  });
 
   fetchCache.set(url, promise);
 
-  // keep the cache small, removing the oldest entries
-  while (fetchCache.size > 5) {
+  // keep the cache bounded, removing the least-recently-used entries
+  while (fetchCache.size > MAX_CACHE_SIZE) {
     const firstKey = fetchCache.keys().next().value;
 
     if (!firstKey) {
@@ -77,15 +87,7 @@ async function fetchRSCWithPreloadCache<T>(
     fetchCache.delete(firstKey);
   }
 
-  return promise
-    .then((data) => {
-      return data;
-    })
-    .catch((error) => {
-      fetchCache.delete(url);
-
-      throw error;
-    });
+  return promise;
 }
 
 export const fetchCache = new Map<string | URL | Request, Promise<unknown>>();

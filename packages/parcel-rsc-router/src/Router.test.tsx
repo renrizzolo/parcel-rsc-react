@@ -187,7 +187,7 @@ describe("Router", () => {
     });
   });
 
-  it("should prefetch on Link hover and focus", async () => {
+  it("should prefetch on Link hover and focus after intent delay", async () => {
     render(
       <RouterProvider routes={mockRoutes}>
         <Link to="/about">About Link</Link>
@@ -207,6 +207,32 @@ describe("Router", () => {
     await waitFor(() => {
       expect(rscPrefetch).toHaveBeenCalledWith("/about", mockRoutes);
     });
+  });
+
+  it("should cancel scheduled prefetch if mouse leaves before delay", () => {
+    vi.useFakeTimers();
+    try {
+      render(
+        <RouterProvider routes={mockRoutes}>
+          <Link to="/about">About Link</Link>
+        </RouterProvider>
+      );
+
+      const link = screen.getByText("About Link");
+
+      fireEvent.mouseEnter(link);
+      vi.advanceTimersByTime(20);
+      fireEvent.mouseLeave(link);
+      vi.advanceTimersByTime(100);
+
+      expect(rscPrefetch).not.toHaveBeenCalled();
+
+      // Pointer down triggers immediately without waiting for hover delay
+      fireEvent.pointerDown(link);
+      expect(rscPrefetch).toHaveBeenCalledWith("/about", mockRoutes);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("should handle in-page hash navigation without refetching RSC", async () => {
