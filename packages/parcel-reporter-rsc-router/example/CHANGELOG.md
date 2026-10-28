@@ -1,5 +1,12 @@
 # parcel-reporter-rsc-router-example
 
+## 0.1.0-beta.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @renr/parcel-reporter-rsc-router@1.0.0-beta.18
+
 ## 0.1.0-beta.7
 
 ### Patch Changes
