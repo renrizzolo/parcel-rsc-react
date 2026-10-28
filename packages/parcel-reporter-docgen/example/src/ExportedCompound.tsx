@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface ExportedCompoundRootProps {
   /** If the compound is open */
@@ -6,7 +6,7 @@ export interface ExportedCompoundRootProps {
 }
 
 export function ExportedCompoundRoot({ open }: ExportedCompoundRootProps) {
-  return <div>{open ? 'open' : 'closed'}</div>;
+  return <div>{open ? "open" : "closed"}</div>;
 }
 
 export interface ExportedCompoundTriggerProps {
@@ -14,11 +14,10 @@ export interface ExportedCompoundTriggerProps {
   onClick?: () => void;
 }
 
-export function ExportedCompoundTrigger({ onClick }: ExportedCompoundTriggerProps) {
+export function ExportedCompoundTrigger({
+  onClick,
+}: ExportedCompoundTriggerProps) {
   return <button onClick={onClick}>Toggle</button>;
 }
 
-export {
-  ExportedCompoundRoot as Root,
-  ExportedCompoundTrigger as Trigger,
-};
+export { ExportedCompoundRoot as Root, ExportedCompoundTrigger as Trigger };

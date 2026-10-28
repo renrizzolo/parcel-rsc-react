@@ -373,7 +373,11 @@ function getAssignedInfo(sourceText: string, compName: string) {
   ts.forEachChild(sourceFile, (node) => {
     // 1. export { Local as Exported, ... }
     if (ts.isExportDeclaration(node)) {
-      if (!node.isTypeOnly && node.exportClause && ts.isNamedExports(node.exportClause)) {
+      if (
+        !node.isTypeOnly &&
+        node.exportClause &&
+        ts.isNamedExports(node.exportClause)
+      ) {
         for (const element of node.exportClause.elements) {
           if (!element.isTypeOnly) {
             const exportName = element.name.getText(sourceFile);
@@ -436,7 +440,10 @@ function getAssignedInfo(sourceText: string, compName: string) {
     }
 
     // 3. Comp.Sub = Target
-    if (ts.isExpressionStatement(node) && ts.isBinaryExpression(node.expression)) {
+    if (
+      ts.isExpressionStatement(node) &&
+      ts.isBinaryExpression(node.expression)
+    ) {
       const bin = node.expression;
       if (
         bin.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
