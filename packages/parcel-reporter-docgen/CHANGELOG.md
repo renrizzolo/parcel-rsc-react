@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-docgen
 
+## 0.1.0-beta.7
+
+### Minor Changes
+
+- [#41](https://github.com/renrizzolo/parcel-rsc-react/pull/41) [`ca02d57`](https://github.com/renrizzolo/parcel-rsc-react/commit/ca02d578a34966bb21a8d8f87ed3534da0e1f82d) Thanks [@renrizzolo](https://github.com/renrizzolo)! - - Document compound components with .Root as Component.Root instead of Component
+
 ## 0.1.0-beta.6
 
 ### Minor Changes
