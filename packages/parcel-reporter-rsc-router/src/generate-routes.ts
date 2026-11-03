@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { pathToFileURL } from "url";
 import { format, type FormatConfig } from "oxfmt";
 import type { RouteNode, RouteData } from "@renr/parcel-rsc-router";
 import { glob } from "tinyglobby";
@@ -22,10 +23,12 @@ export const lastGeneratedContentCache = new Map<
   string,
   { unformatted: string; formatted: string }
 >();
+export const formattingConfigCache = new Map<string, FormatConfig | null>();
 
 export function clearRouteCaches() {
   pageFilesCache.clear();
   lastGeneratedContentCache.clear();
+  formattingConfigCache.clear();
 }
 
 export function buildRouteTree(
@@ -285,11 +288,11 @@ export async function generateRoutes({
     return;
   }
 
-  const oxfmtConfig = await resolveOxfmtConfig(routesTypePath);
+  const formattingConfig = await resolveFormattingConfig(routesTypePath);
   const { code: formatted } = await format(
     routesTypePath,
     routesTypeContent,
-    oxfmtConfig
+    formattingConfig
   );
 
   if (oldContent === formatted) {
@@ -332,28 +335,95 @@ async function updatePageFilesCache(
   }
 }
 
-export async function resolveOxfmtConfig(
+async function loadConfigFile(filePath: string): Promise<FormatConfig | null> {
+  const ext = path.extname(filePath);
+  if ([".ts", ".mts", ".js", ".mjs", ".cjs"].includes(ext)) {
+    try {
+      const fileUrl = pathToFileURL(filePath).href;
+      const mod = await import(fileUrl);
+      let config = mod.default ?? mod;
+      if (typeof config === "function") {
+        config = await config();
+      }
+      if (typeof config === "object" && config !== null) {
+        return config as FormatConfig;
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  try {
+    const content = await fs.promises.readFile(filePath, "utf-8");
+    return JSON.parse(content) as FormatConfig;
+  } catch {
+    return null;
+  }
+}
+
+const CONFIG_FILES = [
+  "oxfmt.config.ts",
+  "oxfmt.config.js",
+  "oxfmt.config.mjs",
+  ".oxfmtrc.json",
+  ".oxfmtrc",
+  "prettier.config.js",
+  "prettier.config.ts",
+  "prettier.config.mjs",
+  ".prettierrc.json",
+  ".prettierrc",
+];
+
+export async function resolveFormattingConfig(
   filePath: string
 ): Promise<FormatConfig | undefined> {
-  let dir = path.dirname(path.resolve(filePath));
+  const dirPath = path.dirname(path.resolve(filePath));
+  if (formattingConfigCache.has(dirPath)) {
+    return formattingConfigCache.get(dirPath) ?? undefined;
+  }
+
+  let dir = dirPath;
   while (true) {
-    const candidate = path.join(dir, ".oxfmtrc.json");
-    if (fs.existsSync(candidate)) {
-      try {
-        const text = await fs.promises.readFile(candidate, "utf-8");
-        return JSON.parse(text) as FormatConfig;
-      } catch {
-        // ignore parse error
+    for (const name of CONFIG_FILES) {
+      const candidate = path.join(dir, name);
+      if (fs.existsSync(candidate)) {
+        const loaded = await loadConfigFile(candidate);
+        if (loaded) {
+          formattingConfigCache.set(dirPath, loaded);
+          return loaded;
+        }
       }
     }
+
+    const pkgPath = path.join(dir, "package.json");
+    if (fs.existsSync(pkgPath)) {
+      try {
+        const content = await fs.promises.readFile(pkgPath, "utf-8");
+        const pkg = JSON.parse(content);
+        const config = (pkg?.oxfmt || pkg?.prettier) as
+          | FormatConfig
+          | undefined;
+        if (config && typeof config === "object") {
+          formattingConfigCache.set(dirPath, config);
+          return config;
+        }
+      } catch {
+        // ignore
+      }
+    }
+
     const parent = path.dirname(dir);
     if (parent === dir) {
       break;
     }
     dir = parent;
   }
+
+  formattingConfigCache.set(dirPath, null);
   return undefined;
 }
+
+export const resolveOxfmtConfig = resolveFormattingConfig;
 
 export function resolveOutputPath(
   rootDir: string,

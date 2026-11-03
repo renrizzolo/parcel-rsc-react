@@ -1,4 +1,12 @@
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import {
   buildRouteTree,
   clearRouteCaches,
@@ -7,6 +15,7 @@ import {
   getRoutesByPagePath,
   pageFilesCache,
   removeExtension,
+  resolveFormattingConfig,
   resolveOutputPath,
 } from "./generate-routes.js";
 import path from "path";
@@ -359,6 +368,106 @@ describe("generate-routes", () => {
       // cleanup
       fs.rmSync(tmpDir, { recursive: true, force: true });
       clearRouteCaches();
+    });
+  });
+
+  describe("resolveFormattingConfig", () => {
+    const testTmpRoot = path.join(__dirname, "../.test-tmp");
+
+    beforeEach(() => {
+      fs.mkdirSync(testTmpRoot, { recursive: true });
+    });
+
+    afterEach(() => {
+      fs.rmSync(testTmpRoot, { recursive: true, force: true });
+    });
+
+    it("resolves oxfmt.config.ts", async () => {
+      clearRouteCaches();
+      const tmpDir = fs.mkdtempSync(
+        path.join(testTmpRoot, "oxfmt-config-ts-test-")
+      );
+      fs.writeFileSync(
+        path.join(tmpDir, "oxfmt.config.ts"),
+        "export default { printWidth: 120, semi: false };"
+      );
+
+      const config = await resolveFormattingConfig(
+        path.join(tmpDir, "src", "routes.ts")
+      );
+      expect(config).toEqual(
+        expect.objectContaining({
+          printWidth: 120,
+          semi: false,
+        })
+      );
+    });
+
+    it("resolves prettier.config.js and .prettierrc fallback", async () => {
+      clearRouteCaches();
+      const tmpDir = fs.mkdtempSync(
+        path.join(testTmpRoot, "prettier-config-test-")
+      );
+      fs.writeFileSync(
+        path.join(tmpDir, "prettier.config.js"),
+        "export default { printWidth: 115, singleQuote: true };"
+      );
+
+      const config = await resolveFormattingConfig(
+        path.join(tmpDir, "nested", "dir", "routes.ts")
+      );
+      expect(config).toEqual(
+        expect.objectContaining({
+          printWidth: 115,
+          singleQuote: true,
+        })
+      );
+    });
+
+    it("resolves package.json oxfmt and prettier fields", async () => {
+      clearRouteCaches();
+      const tmpDir = fs.mkdtempSync(path.join(testTmpRoot, "pkg-config-test-"));
+      fs.writeFileSync(
+        path.join(tmpDir, "package.json"),
+        JSON.stringify({
+          name: "test-pkg",
+          prettier: { printWidth: 70, useTabs: true },
+        })
+      );
+
+      const config = await resolveFormattingConfig(
+        path.join(tmpDir, "routes.ts")
+      );
+      expect(config).toEqual(
+        expect.objectContaining({
+          printWidth: 70,
+          useTabs: true,
+        })
+      );
+    });
+
+    it("parses .oxfmtrc.json", async () => {
+      clearRouteCaches();
+      const tmpDir = fs.mkdtempSync(
+        path.join(testTmpRoot, "oxfmtrc-json-test-")
+      );
+      fs.writeFileSync(
+        path.join(tmpDir, ".oxfmtrc.json"),
+        JSON.stringify({
+          printWidth: 95,
+          semi: false,
+        })
+      );
+
+      const config = await resolveFormattingConfig(
+        path.join(tmpDir, "routes.ts")
+      );
+      expect(config).toEqual(
+        expect.objectContaining({
+          printWidth: 95,
+          semi: false,
+        })
+      );
     });
   });
 });
