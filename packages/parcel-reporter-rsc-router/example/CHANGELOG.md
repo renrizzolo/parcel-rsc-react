@@ -1,5 +1,12 @@
 # parcel-reporter-rsc-router-example
 
+## 0.1.0-beta.9
+
+### Patch Changes
+
+- Updated dependencies [[`40bddbe`](https://github.com/renrizzolo/parcel-rsc-react/commit/40bddbe4fa71e8d0ed19c8e7ff9ddd0e637fd96b)]:
+  - @renr/parcel-reporter-rsc-router@1.0.0-beta.19
+
 ## 0.1.0-beta.8
 
 ### Patch Changes
