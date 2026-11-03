@@ -1,9 +1,11 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import {
   buildRouteTree,
+  clearRouteCaches,
   flattenRouteTree,
   generateRoutes,
   getRoutesByPagePath,
+  pageFilesCache,
   removeExtension,
   resolveOutputPath,
 } from "./generate-routes.js";
@@ -30,7 +32,9 @@ describe("generate-routes", () => {
   });
 
   it("buildRouteTree", () => {
-    const tree = buildRouteTree(files);
+    const logSpy = vi.fn();
+    const tree = buildRouteTree(files, logSpy);
+    expect(logSpy).not.toHaveBeenCalled();
 
     expect(tree).toEqual({
       path: "/",
@@ -264,6 +268,97 @@ describe("generate-routes", () => {
 
       // cleanup
       fs.rmSync(tmpDir, { recursive: true, force: true });
+    });
+  });
+
+  describe("watch-mode caching and logging", () => {
+    it("bails out on unchanged files and logs page count on generation", async () => {
+      clearRouteCaches();
+
+      const tmpDir = fs.mkdtempSync(
+        path.join(os.tmpdir(), "parcel-rsc-router-cache-test-")
+      );
+      const pagesDir = path.join(tmpDir, "src", "pages");
+      fs.mkdirSync(pagesDir, { recursive: true });
+      const indexFile = path.join(pagesDir, "index.tsx");
+      const aboutFile = path.join(pagesDir, "about.tsx");
+      fs.writeFileSync(indexFile, "export default () => null;");
+      fs.writeFileSync(aboutFile, "export default () => null;");
+
+      const logSpy = vi.fn();
+
+      // 1. First run: generates routes and logs summary
+      await generateRoutes({
+        pagesPattern: "src/pages/**/*.{tsx,ts}",
+        rootDir: tmpDir,
+        log: logSpy,
+      });
+
+      const routesPath = path.join(tmpDir, "routes.ts");
+      expect(fs.existsSync(routesPath)).toBe(true);
+      expect(logSpy).toHaveBeenCalledTimes(1);
+      expect(logSpy).toHaveBeenCalledWith(
+        expect.stringMatching(/✅ Routes generated at .*routes\.ts \(2 pages\)/)
+      );
+      expect(pageFilesCache.size).toBe(2);
+
+      // 2. Second run with no changes: fast path bails out immediately without logging
+      logSpy.mockClear();
+      await generateRoutes({
+        pagesPattern: "src/pages/**/*.{tsx,ts}",
+        rootDir: tmpDir,
+        log: logSpy,
+      });
+      expect(logSpy).not.toHaveBeenCalled();
+
+      // 3. Delete routes.ts: fast path does not bail out, regenerates routes
+      logSpy.mockClear();
+      fs.unlinkSync(routesPath);
+      await generateRoutes({
+        pagesPattern: "src/pages/**/*.{tsx,ts}",
+        rootDir: tmpDir,
+        log: logSpy,
+      });
+      expect(fs.existsSync(routesPath)).toBe(true);
+      expect(logSpy).toHaveBeenCalledTimes(1);
+      expect(logSpy).toHaveBeenCalledWith(
+        expect.stringMatching(/✅ Routes generated at .*routes\.ts \(2 pages\)/)
+      );
+
+      // 4. Modify about.tsx mtime without changing file paths or route tree content
+      logSpy.mockClear();
+      // change mtime by adding 5 seconds
+      const now = Date.now() / 1000 + 5;
+      fs.utimesSync(aboutFile, now, now);
+
+      await generateRoutes({
+        pagesPattern: "src/pages/**/*.{tsx,ts}",
+        rootDir: tmpDir,
+        log: logSpy,
+      });
+      // Detected change, content matches cache, avoided format and write, logged up to date
+      expect(logSpy).toHaveBeenCalledTimes(1);
+      expect(logSpy).toHaveBeenCalledWith("✅ routes.ts is up to date.");
+
+      // 5. Add a new page file: should regenerate routes with 3 pages
+      logSpy.mockClear();
+      const blogFile = path.join(pagesDir, "blog.tsx");
+      fs.writeFileSync(blogFile, "export default () => null;");
+
+      await generateRoutes({
+        pagesPattern: "src/pages/**/*.{tsx,ts}",
+        rootDir: tmpDir,
+        log: logSpy,
+      });
+      expect(logSpy).toHaveBeenCalledTimes(1);
+      expect(logSpy).toHaveBeenCalledWith(
+        expect.stringMatching(/✅ Routes generated at .*routes\.ts \(3 pages\)/)
+      );
+      expect(pageFilesCache.size).toBe(3);
+
+      // cleanup
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+      clearRouteCaches();
     });
   });
 });
