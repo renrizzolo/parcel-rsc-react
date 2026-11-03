@@ -1,35 +1,71 @@
 import ThrowableDiagnostic from "@parcel/diagnostic";
 import { Reporter } from "@parcel/plugin";
 import dedent from "dedent";
+import fs from "fs";
 import path from "path";
-import { pathToFileURL } from "url";
 import { generateRoutes } from "./generate-routes";
 
 const origin = "@renr/parcel-reporter-rsc-router";
+
+interface TargetConfig {
+  source?: string;
+  context?: string;
+}
+
+interface PackageConfig {
+  targets?: {
+    "react-static"?: TargetConfig;
+  };
+  [origin]?: {
+    output?: string;
+  };
+}
+
+async function loadPackageJson(
+  filePath: string
+): Promise<PackageConfig | null> {
+  try {
+    if (fs.existsSync(filePath)) {
+      const content = await fs.promises.readFile(filePath, "utf-8");
+      return JSON.parse(content) as PackageConfig;
+    }
+  } catch {
+    // ignore parse error
+  }
+  return null;
+}
 
 export default new Reporter({
   async report({ event, options, logger }) {
     if (event.type === "buildStart") {
       try {
-        const packageJSON = path.join(options.projectRoot, "package.json");
+        const cwdPackageJSON = path.join(process.cwd(), "package.json");
+        const projectPackageJSON = path.join(
+          options.projectRoot,
+          "package.json"
+        );
 
-        const fileURL = pathToFileURL(packageJSON).toString();
+        const cwdConfig = await loadPackageJson(cwdPackageJSON);
+        let config: PackageConfig | null = null;
+        let packageJSON = cwdPackageJSON;
+        let rootDir = process.cwd();
 
-        const config = (await import(fileURL, {
-          with: {
-            type: "json",
-          },
-        }).then((mod) => mod.default)) as {
-          targets?: {
-            "react-static"?: {
-              source: string;
-              context: string;
-            };
-          };
-          [origin]?: {
-            output: string;
-          };
-        };
+        if (cwdConfig?.targets?.["react-static"]?.source) {
+          config = cwdConfig;
+          packageJSON = cwdPackageJSON;
+          rootDir = process.cwd();
+        } else {
+          const projectConfig = await loadPackageJson(projectPackageJSON);
+          if (projectConfig?.targets?.["react-static"]?.source) {
+            config = projectConfig;
+            packageJSON = projectPackageJSON;
+            rootDir = options.projectRoot;
+          } else {
+            config = cwdConfig || projectConfig || {};
+            packageJSON = cwdConfig ? cwdPackageJSON : projectPackageJSON;
+            rootDir = cwdConfig ? process.cwd() : options.projectRoot;
+          }
+        }
 
         const source = config.targets?.["react-static"]?.source;
         const output = config[origin]?.output;
@@ -73,7 +109,7 @@ export default new Reporter({
         try {
           await generateRoutes({
             pagesPattern: source,
-            rootDir: options.projectRoot,
+            rootDir,
             outputPath: output,
             log: (log) => logger.info({ origin, message: log }),
           });
