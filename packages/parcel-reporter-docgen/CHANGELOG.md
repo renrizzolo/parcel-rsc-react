@@ -1,10 +1,20 @@
 # @renr/parcel-reporter-docgen
 
+## 0.1.0-beta.9
+
+### Minor Changes
+
+- [#47](https://github.com/renrizzolo/parcel-rsc-react/pull/47) [`40bddbe`](https://github.com/renrizzolo/parcel-rsc-react/commit/40bddbe4fa71e8d0ed19c8e7ff9ddd0e637fd96b) Thanks [@renrizzolo](https://github.com/renrizzolo)! - - Switch code formatting to oxfmt
+  - Add watch-mode file mtime caching in `generateRoutes`
+  - Only log route summary with page count when routes are written
+  - Avoid running code formatting unconditionally
+  - Check `process.cwd()` package.json first for `react-static` target before falling back to `options.projectRoot`
+
 ## 0.1.0-beta.8
 
 ### Minor Changes
 
-- [#43](https://github.com/renrizzolo/parcel-rsc-react/pull/43) [`9d93b2a`](https://github.com/renrizzolo/parcel-rsc-react/commit/9d93b2a41db08aa8510503fb8f537b99f315bd31) Thanks [@renrizzolo](https://github.com/renrizzolo)! - Fix redundant sub components, promote *.Root to primary if no primary component is found
+- [#43](https://github.com/renrizzolo/parcel-rsc-react/pull/43) [`9d93b2a`](https://github.com/renrizzolo/parcel-rsc-react/commit/9d93b2a41db08aa8510503fb8f537b99f315bd31) Thanks [@renrizzolo](https://github.com/renrizzolo)! - Fix redundant sub components, promote \*.Root to primary if no primary component is found
 
 ## 0.1.0-beta.7
 
