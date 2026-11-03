@@ -1,0 +1,9 @@
+**/build
+**/coverage
+**/dist
+pnpm-lock.yaml
+**/snapshots
+**/node_modules
+node_modules
+.changeset
+
