@@ -40,11 +40,11 @@ export async function navigate(
   try {
     const root = await fetchRSCWithPreloadCache<ReactNode>(path.rsc);
 
-    updateRoot(root, () => {
-      if (shouldPush) {
-        onPush(path.url);
-      }
-    });
+    if (shouldPush) {
+      onPush(path.url);
+    }
+
+    updateRoot(root);
 
     // after a successful navigation, we can clear the cache
     // note everything is static currently, we don't need to clear the cache
