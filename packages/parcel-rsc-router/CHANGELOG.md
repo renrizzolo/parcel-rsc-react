@@ -1,5 +1,11 @@
 # @renr/parcel-rsc-router
 
+## 1.0.0-beta.12
+
+### Patch Changes
+
+- [#49](https://github.com/renrizzolo/parcel-rsc-react/pull/49) [`2b717ba`](https://github.com/renrizzolo/parcel-rsc-react/commit/2b717ba3b3bf9d1ebc059c777d18f45f5ef54ec9) Thanks [@renrizzolo](https://github.com/renrizzolo)! - Fix scroll restoration: push history state before rendering new root, set manual scrollRestoration, and track URL/state changes reliably.
+
 ## 1.0.0-beta.11
 
 ### Minor Changes
@@ -62,6 +68,7 @@
 - db9a40c: Add router context / client side routing implementation.
 
   Breaking Changes:
+
   - The router context is now required to use `<Link/>`. Make sure to wrap your application with the `RouterProvider` and provide your routes to it.
 
 ## 0.1.0-alpha.1
