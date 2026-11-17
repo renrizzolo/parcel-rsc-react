@@ -54,10 +54,10 @@ describe("generateProps", () => {
       '"alpha" | "beta" | "zeta" | undefined'
     );
     expect(simpleComponentJsonProps.variant.type.value).toEqual([
-      { value: "undefined" },
       { value: '"alpha"' },
       { value: '"beta"' },
       { value: '"zeta"' },
+      { value: "undefined" },
     ]);
 
     // Check if JSON file for AnotherComponent was created

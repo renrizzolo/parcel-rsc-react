@@ -93,6 +93,7 @@ export async function generateProps(
 
   const docgenParser = withCustomConfig(resolvedTsconfigPath, {
     shouldExtractLiteralValuesFromEnum: true,
+    shouldSortUnions: true,
     savePropValueAsString: true,
     propFilter: (prop) => {
       if (Array.isArray(prop.declarations) && prop.declarations[0]) {
@@ -407,20 +408,6 @@ function sortUnionString(str: string): string {
   return parts.join(" | ");
 }
 
-function getEnumOptionValue(option: unknown): string {
-  if (
-    typeof option === "object" &&
-    option !== null &&
-    "value" in option &&
-    (typeof option.value === "string" ||
-      typeof option.value === "number" ||
-      typeof option.value === "boolean")
-  ) {
-    return `${option.value}`;
-  }
-  return "";
-}
-
 function formatProps(rawProps: Record<string, PropItem>) {
   const props: Record<
     string,
@@ -443,18 +430,6 @@ function formatProps(rawProps: Record<string, PropItem>) {
 
     if (prop.type && prop.type.name) {
       prop.type = { ...prop.type };
-
-      if (Array.isArray(prop.type.value)) {
-        prop.type.value = [...prop.type.value].sort(
-          (a: unknown, b: unknown) => {
-            const valA = getEnumOptionValue(a);
-            const valB = getEnumOptionValue(b);
-            if (valA === "undefined" && valB !== "undefined") return -1;
-            if (valB === "undefined" && valA !== "undefined") return 1;
-            return compareStrings(valA, valB);
-          }
-        );
-      }
 
       if (typeof prop.type.raw === "string") {
         prop.type.raw = sortUnionString(prop.type.raw);
