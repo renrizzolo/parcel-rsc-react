@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-docgen
 
+## 0.1.0-beta.10
+
+### Patch Changes
+
+- [#51](https://github.com/renrizzolo/parcel-rsc-react/pull/51) [`f7587d9`](https://github.com/renrizzolo/parcel-rsc-react/commit/f7587d9c8a5b383ba19f5e66919da4a7987f05e7) Thanks [@renrizzolo](https://github.com/renrizzolo)! - Make component prop keys and union/enum type values deterministic to prevent unnecessary diffs across builds.
+
 ## 0.1.0-beta.9
 
 ### Minor Changes
