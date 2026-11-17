@@ -18,9 +18,11 @@ export async function generateProps(
   log: (...args: unknown[]) => void = console.log,
   customTsconfigPath?: string
 ) {
-  const files = await glob(pagesPattern, {
-    cwd: rootDir,
-  });
+  const files = (
+    await glob(pagesPattern, {
+      cwd: rootDir,
+    })
+  ).sort(compareStrings);
 
   if (files.length === 0) {
     log(`No files found for pattern: ${pagesPattern}`);
@@ -91,6 +93,7 @@ export async function generateProps(
 
   const docgenParser = withCustomConfig(resolvedTsconfigPath, {
     shouldExtractLiteralValuesFromEnum: true,
+    shouldSortUnions: true,
     savePropValueAsString: true,
     propFilter: (prop) => {
       if (Array.isArray(prop.declarations) && prop.declarations[0]) {
@@ -333,6 +336,78 @@ function getShortPropType(name: string, type: string) {
   return { type: "Union", detailedType: true };
 }
 
+function compareStrings(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
+function sortUnionString(str: string): string {
+  if (!str.includes("|")) {
+    return str;
+  }
+
+  const parts: string[] = [];
+  let current = "";
+  let depthParen = 0;
+  let depthAngle = 0;
+  let depthBrace = 0;
+  let depthBracket = 0;
+  let inQuote: string | null = null;
+
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i]!;
+    if (inQuote) {
+      current += ch;
+      if (ch === inQuote && str[i - 1] !== "\\") {
+        inQuote = null;
+      }
+      continue;
+    }
+
+    if (ch === '"' || ch === "'") {
+      inQuote = ch;
+      current += ch;
+      continue;
+    }
+
+    if (ch === "(") depthParen++;
+    else if (ch === ")") depthParen = Math.max(0, depthParen - 1);
+    else if (ch === "<") depthAngle++;
+    else if (ch === ">" && str[i - 1] !== "=")
+      depthAngle = Math.max(0, depthAngle - 1);
+    else if (ch === "{") depthBrace++;
+    else if (ch === "}") depthBrace = Math.max(0, depthBrace - 1);
+    else if (ch === "[") depthBracket++;
+    else if (ch === "]") depthBracket = Math.max(0, depthBracket - 1);
+
+    if (
+      ch === "|" &&
+      depthParen === 0 &&
+      depthAngle === 0 &&
+      depthBrace === 0 &&
+      depthBracket === 0
+    ) {
+      parts.push(current.trim());
+      current = "";
+    } else {
+      current += ch;
+    }
+  }
+
+  parts.push(current.trim());
+
+  if (parts.length <= 1) {
+    return str;
+  }
+
+  parts.sort((a, b) => {
+    if (a === "undefined" && b !== "undefined") return 1;
+    if (b === "undefined" && a !== "undefined") return -1;
+    return compareStrings(a, b);
+  });
+
+  return parts.join(" | ");
+}
+
 function formatProps(rawProps: Record<string, PropItem>) {
   const props: Record<
     string,
@@ -341,7 +416,9 @@ function formatProps(rawProps: Record<string, PropItem>) {
     }
   > = {};
 
-  for (const propName in rawProps) {
+  const sortedPropNames = Object.keys(rawProps).sort(compareStrings);
+
+  for (const propName of sortedPropNames) {
     const rawProp = rawProps[propName];
     if (!rawProp) {
       continue;
@@ -352,20 +429,27 @@ function formatProps(rawProps: Record<string, PropItem>) {
     };
 
     if (prop.type && prop.type.name) {
+      prop.type = { ...prop.type };
+
+      if (typeof prop.type.raw === "string") {
+        prop.type.raw = sortUnionString(prop.type.raw);
+      }
+
+      const sortedTypeName = sortUnionString(prop.type.name);
       const { type: shortPropTypeName, detailedType } = getShortPropType(
         propName,
-        prop.type.name
+        sortedTypeName
       );
 
       const hasExpandedType = Boolean(detailedType);
 
       prop.type.name =
-        hasExpandedType && prop.type.name.split("|").length > 3
-          ? prop.type.name
+        hasExpandedType && sortedTypeName.split("|").length > 3
+          ? sortedTypeName
               .split("|")
               .map((line) => `| ${line}\n`)
               .join("")
-          : prop.type.name;
+          : sortedTypeName;
 
       prop.shortPropTypeName = hasExpandedType ? shortPropTypeName : null;
     }
