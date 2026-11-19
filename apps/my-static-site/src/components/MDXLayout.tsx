@@ -1,3 +1,4 @@
+"use server-entry";
 import { PageProps } from "@renr/parcel-rsc-router";
 import type { ReactNode } from "react";
 import AppLayout from "../Layout";

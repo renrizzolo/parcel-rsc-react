@@ -20,12 +20,6 @@ declare module "@renr/parcel-rsc-router" {
   namespace App {
     interface Routes {
       "/": { slug: "index"; path: "/"; rsc: "/index.rsc"; html: "/index.html" };
-      "/about": {
-        slug: "about";
-        path: "/about";
-        rsc: "/about.rsc";
-        html: "/about.html";
-      };
       "/blog": {
         slug: "blog";
         path: "/blog";
@@ -37,6 +31,12 @@ declare module "@renr/parcel-rsc-router" {
         path: "/blog/test_2024-10-31";
         rsc: "/blog/test_2024-10-31.rsc";
         html: "/blog/test_2024-10-31.html";
+      };
+      "/mdx-page": {
+        slug: "mdx-page";
+        path: "/mdx-page";
+        rsc: "/mdx-page.rsc";
+        html: "/mdx-page.html";
       };
     }
   }
@@ -50,12 +50,6 @@ export const flatRoutes = [
     html: "/index.html",
   },
   {
-    path: "/about",
-    slug: "about",
-    rsc: "/about.rsc",
-    html: "/about.html",
-  },
-  {
     path: "/blog",
     slug: "blog",
     rsc: "/blog/index.rsc",
@@ -67,6 +61,12 @@ export const flatRoutes = [
     rsc: "/blog/test_2024-10-31.rsc",
     html: "/blog/test_2024-10-31.html",
   },
+  {
+    path: "/mdx-page",
+    slug: "mdx-page",
+    rsc: "/mdx-page.rsc",
+    html: "/mdx-page.html",
+  },
 ] as const satisfies RouteData[];
 
 export const routeTree = {
@@ -75,13 +75,6 @@ export const routeTree = {
   html: "/index.html",
   rsc: "/index.rsc",
   children: [
-    {
-      path: "/about",
-      slug: "about",
-      html: "/about.html",
-      rsc: "/about.rsc",
-      children: [],
-    },
     {
       path: "/blog",
       slug: "blog",
@@ -97,6 +90,13 @@ export const routeTree = {
         },
       ],
     },
+    {
+      path: "/mdx-page",
+      slug: "mdx-page",
+      html: "/mdx-page.html",
+      rsc: "/mdx-page.rsc",
+      children: [],
+    },
   ],
 } as const satisfies RouteNode;
 
@@ -107,12 +107,6 @@ export const routesByPage = {
     slug: "index",
     rsc: "/index.rsc",
     html: "/index.html",
-  },
-  "/about.html": {
-    path: "/about",
-    slug: "about",
-    rsc: "/about.rsc",
-    html: "/about.html",
   },
   "/blog/index.html": {
     path: "/blog",
@@ -125,6 +119,12 @@ export const routesByPage = {
     slug: "test_2024-10-31",
     rsc: "/blog/test_2024-10-31.rsc",
     html: "/blog/test_2024-10-31.html",
+  },
+  "/mdx-page.html": {
+    path: "/mdx-page",
+    slug: "mdx-page",
+    rsc: "/mdx-page.rsc",
+    html: "/mdx-page.html",
   },
 } satisfies {
   [Key in keyof App.Routes as App.Routes[Key]["html"]]: App.Routes[Key];

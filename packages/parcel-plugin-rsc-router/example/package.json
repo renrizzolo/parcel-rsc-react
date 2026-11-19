@@ -1,5 +1,5 @@
 {
-  "name": "parcel-reporter-rsc-router-example",
+  "name": "parcel-plugin-rsc-router-example",
   "version": "0.1.0-beta.9",
   "private": true,
   "author": "Ren Rizzolo",
@@ -14,7 +14,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@renr/parcel-reporter-rsc-router": "workspace:*"
+    "@renr/parcel-plugin-rsc-router": "workspace:*"
   },
   "devDependencies": {
     "vite-node": "^3.2.4"

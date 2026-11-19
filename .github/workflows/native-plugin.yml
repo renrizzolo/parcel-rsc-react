@@ -1,0 +1,26 @@
+name: Native Plugin
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/parcel-plugin-rsc-router/**"
+      - "packages/parcel-reporter-docgen/**"
+      - ".github/workflows/native-plugin.yml"
+  pull_request:
+    paths:
+      - "packages/parcel-plugin-rsc-router/**"
+      - "packages/parcel-reporter-docgen/**"
+      - ".github/workflows/native-plugin.yml"
+
+jobs:
+  build-native-plugin:
+    permissions:
+      contents: read
+    uses: parcel-bundler/parcel/.github/workflows/native-plugin.yml@v3.0.0-alpha.3
+    with:
+      paths: |
+        packages/parcel-plugin-rsc-router
+        packages/parcel-reporter-docgen
+      publish: false

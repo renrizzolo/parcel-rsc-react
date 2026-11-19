@@ -1,14 +1,15 @@
 # parcel-rsc-react
 
-A modular toolkit for building React Server Components (RSC) applications with [Parcel](https://parceljs.org/recipes/rsc/#static-rendering).
+A modular toolkit for building React Server Components (RSC) applications with [Parcel](https://v3.parceljs.org/recipes/rsc/).
 
 ## Packages
 
-| Package                                                                     | Description                                                                                                                                                        |
-| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`@renr/parcel-rsc-router`](./packages/parcel-rsc-router)                   | Client-side router designed for Parcel static RSC applications, featuring declarative & programmatic navigation, type safety, prefetching, and scroll restoration. |
-| [`@renr/parcel-reporter-rsc-router`](./packages/parcel-reporter-rsc-router) | Parcel reporter that scans RSC pages and generates typed filesystem route definitions, tree structures, and module augmentations.                                  |
-| [`@renr/parcel-reporter-docgen`](./packages/parcel-reporter-docgen)         | Parcel reporter that extracts UI component documentation and prop types as JSON using `react-docgen-typescript`.                                                   |
+| Package                                                                 | Description                                                                                                                                                        |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`@renr/parcel-rsc-router`](./packages/parcel-rsc-router)               | Client-side router designed for Parcel static RSC applications, featuring declarative & programmatic navigation, type safety, prefetching, and scroll restoration. |
+| [`@renr/parcel-plugin-rsc-router`](./packages/parcel-plugin-rsc-router) | Native Parcel v3 plugin that scans RSC pages, generates typed filesystem route definitions and module augmentations, and statically prerenders HTML/RSC output.    |
+| [`@renr/parcel-config-rsc-router`](./packages/parcel-config-rsc-router) | Shared Parcel v3 configuration preset that wires up `@renr/parcel-plugin-rsc-router`.                                                                              |
+| [`@renr/parcel-reporter-docgen`](./packages/parcel-reporter-docgen)     | Parcel reporter that extracts UI component documentation and prop types as JSON using `react-docgen-typescript`.                                                   |
 
 ## Apps & Examples
 

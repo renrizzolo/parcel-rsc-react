@@ -1,6 +1,6 @@
 # @renr/parcel-rsc-router
 
-A client-side router designed for React Server Components (RSC) applications built with Parcel's `react-static` packager.
+A client-side router designed for static React Server Components (RSC) applications built with Parcel 3.
 
 ⚠️ This package is an alpha / work in progress.
 
@@ -8,7 +8,7 @@ A client-side router designed for React Server Components (RSC) applications bui
 
 - **Client-side navigation:** Navigate between pages using the `<Link>` component.
 - **Route prefetching:** Automatically prefetches RSC payloads on hover or focus for instant navigation.
-- **Type safety:** Type-safe route definitions via `@renr/parcel-reporter-rsc-router` (the Link's `to` prop is typed).
+- **Type safety:** Type-safe route definitions via `@renr/parcel-plugin-rsc-router` (the Link's `to` prop is typed).
 - **Programmatic navigation:** Control navigation programmatically using the `useRouter` hook.
 - **Location access:** Access the current URL and its properties with the `useLocation` hook.
 - **Route data access:** Retrieve data associated with the current route using the `useCurrentRoute` hook.
@@ -18,7 +18,7 @@ A client-side router designed for React Server Components (RSC) applications bui
 
 ## Installation
 
-For the initial Parcel static RSC site setup see https://parceljs.org/recipes/rsc/#static-rendering, or check out the example app [here](https://github.com/renrizzolo/parcel-rsc-react/tree/main/apps/my-static-site).
+For the initial Parcel static RSC site setup see https://v3.parceljs.org/recipes/rsc/, or check out the example app [here](https://github.com/renrizzolo/parcel-rsc-react/tree/main/apps/my-static-site).
 
 Install the package using your preferred package manager:
 
@@ -30,14 +30,14 @@ npm install @renr/parcel-rsc-router
 yarn add @renr/parcel-rsc-router
 ```
 
-Install the required peer dependency:
+Install the required Parcel config and plugin:
 
 ```bash
-pnpm add @renr/parcel-reporter-rsc-router
+pnpm add -D @renr/parcel-config-rsc-router
 # or
-npm install @renr/parcel-reporter-rsc-router
+npm install -D @renr/parcel-config-rsc-router
 # or
-yarn add @renr/parcel-reporter-rsc-router
+yarn add -D @renr/parcel-config-rsc-router
 ```
 
 ## Usage

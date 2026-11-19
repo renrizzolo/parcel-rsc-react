@@ -2,7 +2,6 @@ import { PageProps } from "@renr/parcel-rsc-router";
 import { Nav } from "./components/Nav";
 import { AppProvider } from "./appProvider";
 import "./client";
-// Note: Parcel's react-static packager bundles CSS per page entrypoint.
 import "./styles.css";
 
 export default function Layout({

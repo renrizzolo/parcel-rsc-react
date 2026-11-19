@@ -1,0 +1,11 @@
+diff --git a/bin/parcel b/bin/parcel
+--- a/bin/parcel
++++ b/bin/parcel
+@@ -215,6 +215,6 @@ function run() {
+   // Replacing this process rather than forking one keeps signals, the exit code
+   // and terminal handling native. Node gained execve in 23.11 and never has it
+   // on Windows, hence the fallback.
+-  if (typeof process.execve === 'function') {
++  if (process.platform !== 'win32' && typeof process.execve === 'function') {
+     process.execve(binPath, [binPath, ...args], process.env);
+   }

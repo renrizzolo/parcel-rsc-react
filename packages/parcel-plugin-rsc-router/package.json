@@ -1,0 +1,70 @@
+{
+  "name": "@renr/parcel-plugin-rsc-router",
+  "version": "1.0.0-beta.19",
+  "author": "Ren Rizzolo",
+  "license": "MIT",
+  "description": "Parcel v3 native plugin that generates typed filesystem routes and statically prerenders RSC apps",
+  "keywords": [
+    "parcel",
+    "rsc"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renrizzolo/parcel-rsc-react.git"
+  },
+  "type": "module",
+  "main": "./dist/esm/index.mjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/esm/index.d.mts",
+  "bin": {
+    "parcel-rsc-routes": "./dist/esm/cli.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.mts",
+      "import": "./dist/esm/index.mjs",
+      "default": "./dist/esm/index.mjs"
+    }
+  },
+  "engines": {
+    "parcel": "^3.0.0-alpha.3"
+  },
+  "parcel": {
+    "abi": 1,
+    "devLibrary": "./target/release/libparcel_plugin_rsc_router",
+    "artifacts": {
+      "aarch64-apple-darwin": "@renr/parcel-plugin-rsc-router-darwin-arm64",
+      "x86_64-apple-darwin": "@renr/parcel-plugin-rsc-router-darwin-x64",
+      "x86_64-pc-windows-msvc": "@renr/parcel-plugin-rsc-router-win32-x64-msvc",
+      "aarch64-pc-windows-msvc": "@renr/parcel-plugin-rsc-router-win32-arm64-msvc",
+      "x86_64-unknown-linux-gnu": "@renr/parcel-plugin-rsc-router-linux-x64-gnu",
+      "aarch64-unknown-linux-gnu": "@renr/parcel-plugin-rsc-router-linux-arm64-gnu",
+      "x86_64-unknown-linux-musl": "@renr/parcel-plugin-rsc-router-linux-x64-musl",
+      "aarch64-unknown-linux-musl": "@renr/parcel-plugin-rsc-router-linux-arm64-musl"
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-rust.mjs && tsdown",
+    "build:rust": "node ../../scripts/build-rust.mjs",
+    "test:rust": "node ../../scripts/build-rust.mjs --test",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "oxfmt": "^0.75.0",
+    "tinyglobby": "^0.2.17"
+  },
+  "peerDependencies": {
+    "@renr/parcel-rsc-router": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.2",
+    "dedent": "^1.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

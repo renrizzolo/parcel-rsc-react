@@ -3,10 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "source": "routes.ts",
+  "@renr/parcel-plugin-rsc-router": {
+    "source": "src/pages/**/*.{tsx,mdx}"
+  },
   "targets": {
-    "react-static": {
-      "source": "src/pages/**/*",
+    "default": {
       "context": "react-server",
+      "distDir": "dist",
       "includeNodeModules": {
         "shiki": false
       }
@@ -18,26 +22,22 @@
   },
   "scripts": {
     "start": "npx http-server ./dist",
-    "dev": "parcel --no-cache",
-    "build": "parcel build --no-cache"
+    "dev": "parcel serve",
+    "build": "parcel build"
   },
   "dependencies": {
-    "@parcel/config-default": "^2.16.4",
-    "@parcel/rsc": "^2.16.4",
+    "@parcel/rsc": "^3.0.0-alpha.3",
     "@renr/parcel-rsc-router": "workspace:*",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-server-dom-parcel": "^19.3.0"
   },
   "devDependencies": {
-    "@parcel/packager-react-static": "2.16.4",
-    "@parcel/transformer-react-static": "2.16.4",
+    "@renr/parcel-config-rsc-router": "workspace:*",
     "@renr/parcel-reporter-docgen": "workspace:*",
-    "@renr/parcel-reporter-rsc-router": "workspace:*",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "parcel": "^2.16.4",
-    "parcel-reporter-static-files-copy": "^1.5.3",
+    "parcel": "^3.0.0-alpha.3",
     "shiki": "^4.5.0"
   }
 }

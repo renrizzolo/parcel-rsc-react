@@ -10,7 +10,7 @@
   },
   "author": "Ren Rizzolo",
   "scripts": {
-    "dev": "pnpm -r dev",
+    "dev": "pnpm --stream -r dev",
     "build": "pnpm -r build",
     "type-check": "pnpm -r type-check",
     "lint": "pnpm oxlint --type-aware",
@@ -35,5 +35,10 @@
     "typescript": "^7.0.2",
     "vitest": "^5.0.3"
   },
-  "packageManager": "pnpm@10.13.1"
+  "packageManager": "pnpm@10.13.1",
+  "pnpm": {
+    "patchedDependencies": {
+      "parcel@3.0.0-alpha.3": "patches/parcel@3.0.0-alpha.3.patch"
+    }
+  }
 }
