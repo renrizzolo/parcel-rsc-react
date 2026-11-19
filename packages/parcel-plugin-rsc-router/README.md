@@ -51,6 +51,7 @@ yarn add -D @renr/parcel-plugin-rsc-router
 ```
 
 Why both? Parcel `.parcelrc` lists plugins by the pipeline stage they participate in. Inside one native package, `@renr/parcel-plugin-rsc-router` handles three distinct phases:
+
 1. **`build_start` (Reporter)**: scans `src/pages/**/*` and writes the clean, typed `routes.ts` to disk before bundling.
 2. **`transform` on `routes.ts` (Transformer)**: runs **only** in the `ReactServer` environment to append an in-memory `prerenderStaticSite` + dynamic `await import(...)` bootstrap footer, leaving `routes.ts` clean on disk and untouched for `ReactClient` imports.
 3. **`build_success` (Reporter)**: runs the built `ReactServer` `routes.js` bundle with `PARCEL_RSC_PRERENDER=1` to write static `.html` and `.rsc` files to your target `distDir`.
