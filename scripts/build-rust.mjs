@@ -34,7 +34,59 @@ const env = {
   PATH: `${cargoBinDir}${path.delimiter}${process.env.PATH ?? process.env.Path ?? ""}`,
 };
 
+function ensureCargoReady() {
+  const check = spawnSync("cargo", ["--version"], { cwd, env, stdio: "pipe" });
+  if (check.status === 0) return;
+
+  // On environments like Netlify where rustup is installed without a default toolchain,
+  // serialize `rustup default stable` across parallel pnpm prepack workers.
+  const lockPath = path.join(os.tmpdir(), "rustup-default-stable.lock");
+  const sleepBuf = new Int32Array(new SharedArrayBuffer(4));
+  let acquired = false;
+
+  for (let attempt = 0; attempt < 180; attempt++) {
+    try {
+      const fd = fs.openSync(lockPath, "wx");
+      fs.closeSync(fd);
+      acquired = true;
+      break;
+    } catch {
+      Atomics.wait(sleepBuf, 0, 0, 1000);
+      const recheck = spawnSync("cargo", ["--version"], {
+        cwd,
+        env,
+        stdio: "pipe",
+      });
+      if (recheck.status === 0) return;
+    }
+  }
+
+  if (acquired) {
+    try {
+      const recheck = spawnSync("cargo", ["--version"], {
+        cwd,
+        env,
+        stdio: "pipe",
+      });
+      if (recheck.status !== 0) {
+        spawnSync("rustup", ["default", "stable"], {
+          cwd,
+          env,
+          stdio: "inherit",
+        });
+      }
+    } finally {
+      try {
+        fs.unlinkSync(lockPath);
+      } catch {
+        // Ignore cleanup errors
+      }
+    }
+  }
+}
+
 if (isTest) {
+  ensureCargoReady();
   const testResult = spawnSync("cargo", ["test", "--offline"], {
     cwd,
     env,
@@ -83,6 +135,8 @@ if (existingLib) {
     }
   }
 }
+
+ensureCargoReady();
 
 const result = spawnSync("cargo", ["build", "--release", "--offline"], {
   cwd,
