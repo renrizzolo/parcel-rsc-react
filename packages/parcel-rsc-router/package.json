@@ -33,7 +33,8 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "build": "tsdown"
+    "build": "tsdown",
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "react": "^19",
