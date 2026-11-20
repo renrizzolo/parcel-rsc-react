@@ -1,9 +1,11 @@
+"use server-entry";
 import { PageProps } from "@renr/parcel-rsc-router";
 import { Counter } from "../components/Counter.js";
+import { CumuloDemo } from "../components/CumuloDemo.js";
 import Layout from "../Layout.js";
 import { Suspense } from "react";
 import { Code } from "../components/Code.js";
-import counterDocs from "../../docs/components/Counter.json" assert { type: "json" };
+import counterDocs from "../../docs/components/Counter.json" with { type: "json" };
 
 export default function Index({ currentPage }: PageProps) {
   return (
@@ -16,6 +18,7 @@ export default function Index({ currentPage }: PageProps) {
       <p>
         Here is a client component: <Counter />
       </p>
+      <CumuloDemo />
       <p>Here is some generated documentation for the count component:</p>
       <table>
         <thead>

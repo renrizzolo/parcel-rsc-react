@@ -14,7 +14,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@renr/parcel-reporter-rsc-router": "workspace:*"
+    "@renr/parcel-plugin-rsc-router": "workspace:*"
   },
   "devDependencies": {
     "vite-node": "^3.2.4"

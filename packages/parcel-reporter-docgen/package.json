@@ -16,8 +16,14 @@
   "main": "./dist/esm/index.mjs",
   "module": "./dist/esm/index.mjs",
   "types": "./dist/esm/index.d.mts",
+  "bin": {
+    "parcel-docgen": "./dist/esm/cli.mjs"
+  },
   "files": [
-    "dist"
+    "dist",
+    "target/release/libparcel_reporter_docgen.so",
+    "target/release/libparcel_reporter_docgen.dylib",
+    "target/release/parcel_reporter_docgen.dll"
   ],
   "sideEffects": false,
   "exports": {
@@ -27,14 +33,31 @@
       "default": "./dist/esm/index.mjs"
     }
   },
+  "engines": {
+    "parcel": "^3.0.0-alpha.3"
+  },
+  "parcel": {
+    "abi": 1,
+    "devLibrary": "./target/release/libparcel_reporter_docgen",
+    "artifacts": {
+      "aarch64-apple-darwin": "@renr/parcel-reporter-docgen-darwin-arm64",
+      "x86_64-apple-darwin": "@renr/parcel-reporter-docgen-darwin-x64",
+      "x86_64-pc-windows-msvc": "@renr/parcel-reporter-docgen-win32-x64-msvc",
+      "aarch64-pc-windows-msvc": "@renr/parcel-reporter-docgen-win32-arm64-msvc",
+      "x86_64-unknown-linux-gnu": "@renr/parcel-reporter-docgen-linux-x64-gnu",
+      "aarch64-unknown-linux-gnu": "@renr/parcel-reporter-docgen-linux-arm64-gnu",
+      "x86_64-unknown-linux-musl": "@renr/parcel-reporter-docgen-linux-x64-musl",
+      "aarch64-unknown-linux-musl": "@renr/parcel-reporter-docgen-linux-arm64-musl"
+    }
+  },
   "scripts": {
-    "build": "tsdown",
+    "build": "node ../../scripts/build-rust.mjs && tsdown",
+    "build:rust": "node ../../scripts/build-rust.mjs",
+    "test:rust": "node ../../scripts/build-rust.mjs --test",
+    "prepack": "pnpm run build",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@parcel/diagnostic": "^2.16.4",
-    "@parcel/plugin": "^2.16.4",
-    "dedent": "^1.7.2",
     "react-docgen-typescript": "^2.4.0",
     "tinyglobby": "^0.2.17",
     "typescript": "npm:@typescript/typescript6@^6.0.2"

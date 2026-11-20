@@ -24,21 +24,28 @@
       "types": "./dist/esm/index.d.mts",
       "import": "./dist/esm/index.mjs",
       "default": "./dist/esm/index.mjs"
+    },
+    "./prerender": {
+      "types": "./dist/esm/prerender.d.mts",
+      "import": "./dist/esm/prerender.mjs",
+      "default": "./dist/esm/prerender.mjs"
     }
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "build": "tsdown"
+    "build": "tsdown",
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "react": "^19",
-    "@parcel/rsc": "^2",
+    "@parcel/rsc": "^3.0.0-alpha.3",
     "react-server-dom-parcel": "^19"
   },
   "devDependencies": {
+    "@types/node": "^25.6.2",
     "react": "^19.3.0",
     "@types/react": "^19.3.0",
-    "@parcel/rsc": "^2.16.4"
+    "@parcel/rsc": "^3.0.0-alpha.3"
   },
   "sideEffects": false,
   "publishConfig": {

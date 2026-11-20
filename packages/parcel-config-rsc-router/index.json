@@ -1,0 +1,7 @@
+{
+  "extends": "@parcel/config-default",
+  "transformers": {
+    "routes.ts": ["@renr/parcel-plugin-rsc-router", "..."]
+  },
+  "reporters": ["...", "@renr/parcel-plugin-rsc-router"]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@renr/parcel-config-rsc-router",
+  "version": "1.0.0-beta.0",
+  "author": "Ren Rizzolo",
+  "license": "MIT",
+  "description": "Shared Parcel v3 configuration for @renr/parcel-plugin-rsc-router",
+  "keywords": [
+    "parcel",
+    "parcel-config",
+    "rsc"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renrizzolo/parcel-rsc-react.git"
+  },
+  "main": "index.json",
+  "files": [
+    "index.json"
+  ],
+  "engines": {
+    "parcel": "^3.0.0-alpha.3"
+  },
+  "dependencies": {
+    "@renr/parcel-plugin-rsc-router": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

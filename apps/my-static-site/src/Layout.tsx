@@ -1,9 +1,20 @@
+import "@cumulo/core/theme.css";
+import { Container, Panel, ThemeScript, vars } from "@cumulo/core";
+import { cx, style } from "@cumulo/css";
 import { PageProps } from "@renr/parcel-rsc-router";
 import { Nav } from "./components/Nav";
 import { AppProvider } from "./appProvider";
 import "./client";
-// Note: Parcel's react-static packager bundles CSS per page entrypoint.
 import "./styles.css";
+import { ThemeToggle } from "@cumulo/core/components/ThemeToggle";
+
+const headerBarStyle = style({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  gap: vars.spacing.sm,
+  marginBottom: vars.spacing.sm,
+});
 
 export default function Layout({
   children,
@@ -15,8 +26,9 @@ export default function Layout({
   currentPage: PageProps["currentPage"];
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <ThemeScript />
         <title>{title ?? "Parcel Static React App"}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -41,9 +53,20 @@ export default function Layout({
       </head>
       <AppProvider>
         <body>
-          <Nav currentPage={currentPage} />
-          <hr />
-          {children}
+          <Container size="lg" padding="md">
+            <Panel
+              as="header"
+              divider="bottom"
+              padding="sm"
+              className={cx(headerBarStyle)}
+            >
+              <Nav currentPage={currentPage} />
+              <ThemeToggle />
+            </Panel>
+            <Panel as="main" padding="md">
+              {children}
+            </Panel>
+          </Container>
         </body>
       </AppProvider>
     </html>
