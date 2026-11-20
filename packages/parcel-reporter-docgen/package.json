@@ -20,7 +20,10 @@
     "parcel-docgen": "./dist/esm/cli.mjs"
   },
   "files": [
-    "dist"
+    "dist",
+    "target/release/libparcel_reporter_docgen.so",
+    "target/release/libparcel_reporter_docgen.dylib",
+    "target/release/parcel_reporter_docgen.dll"
   ],
   "sideEffects": false,
   "exports": {
@@ -51,6 +54,7 @@
     "build": "node ../../scripts/build-rust.mjs && tsdown",
     "build:rust": "node ../../scripts/build-rust.mjs",
     "test:rust": "node ../../scripts/build-rust.mjs --test",
+    "prepack": "pnpm run build",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
