@@ -10,6 +10,8 @@ export type HistoryState = {
 
 export function createHistory() {
   const listeners = new Set<() => void>();
+  let lastHref: string | null = null;
+  let lastState: HistoryState | null = null;
   let currentSnapshot: {
     location: Location | null;
     state: HistoryState | null;
@@ -23,22 +25,30 @@ export function createHistory() {
       };
     }
 
-    const newSnapshot = {
-      location: window.location,
-      state: window.history.state as HistoryState | null,
-    };
+    const currentHref = window.location.href;
+    const currentState = window.history.state as HistoryState | null;
+
     // Only update currentSnapshot if something actually changed to prevent infinite loops
     if (
       !currentSnapshot ||
-      currentSnapshot.location !== newSnapshot.location ||
-      currentSnapshot.state !== newSnapshot.state
+      currentHref !== lastHref ||
+      currentState !== lastState
     ) {
-      currentSnapshot = newSnapshot;
+      lastHref = currentHref;
+      lastState = currentState;
+      currentSnapshot = {
+        location: window.location,
+        state: currentState,
+      };
     }
     return currentSnapshot;
   };
 
   if (typeof window !== "undefined") {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
     window.addEventListener("popstate", () => {
       // notify listeners - do it in a microtask to avoid scheduling react updates
       queueMicrotask(() => listeners.forEach((listener) => listener()));

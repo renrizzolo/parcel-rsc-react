@@ -40,11 +40,25 @@ describe("generateProps", () => {
 
     expect(simpleComponentJson.name).toBe("SimpleComponent");
     expect(simpleComponentJson.subcomponents).toBeUndefined();
+    expect(Object.keys(simpleComponentJsonProps)).toEqual([
+      "age",
+      "name",
+      "variant",
+    ]);
     expect(simpleComponentJsonProps).toHaveProperty("name");
     expect(simpleComponentJsonProps.name.description).toBe(
       "A description for the name prop."
     );
     expect(simpleComponentJsonProps.name.type.name).toBe("string");
+    expect(simpleComponentJsonProps.variant.type.raw).toBe(
+      '"alpha" | "beta" | "zeta" | undefined'
+    );
+    expect(simpleComponentJsonProps.variant.type.value).toEqual([
+      { value: '"alpha"' },
+      { value: '"beta"' },
+      { value: '"zeta"' },
+      { value: "undefined" },
+    ]);
 
     // Check if JSON file for AnotherComponent was created
     const anotherComponentJsonPath = path.join(
@@ -62,6 +76,12 @@ describe("generateProps", () => {
 
     expect(anotherComponentJson.name).toBe("AnotherComponent");
     expect(anotherComponentJson.subcomponents).toBeUndefined();
+    expect(Object.keys(anotherComponentJsonProps)).toEqual([
+      "className",
+      "enabled",
+      "ref",
+      "variant",
+    ]);
     expect(anotherComponentJsonProps).toHaveProperty("enabled");
     expect(anotherComponentJsonProps.enabled.description).toBe(
       "If the component is enabled."
@@ -118,7 +138,7 @@ describe("generateProps", () => {
     await expect(fs.stat(tsconfigJsonPath)).rejects.toThrow();
   });
 
-  it("should support a custom tsconfig path", async () => {
+  it("should support a custom tsconfig path and produce identical deterministic output on single-file runs", async () => {
     const customOutputPath = path.join(exampleDir, "dist-custom");
     await fs.mkdir(customOutputPath, { recursive: true });
 
@@ -137,6 +157,16 @@ describe("generateProps", () => {
       );
       const stat = await fs.stat(simpleComponentJsonPath);
       expect(stat.isFile()).toBe(true);
+
+      const singleFileOutput = await fs.readFile(
+        simpleComponentJsonPath,
+        "utf-8"
+      );
+      const batchOutput = await fs.readFile(
+        path.join(outputPath, "SimpleComponent.json"),
+        "utf-8"
+      );
+      expect(singleFileOutput).toBe(batchOutput);
     } finally {
       await fs.rm(customOutputPath, { recursive: true, force: true });
     }

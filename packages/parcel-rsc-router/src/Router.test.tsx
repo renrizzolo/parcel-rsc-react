@@ -69,6 +69,7 @@ describe("Router", () => {
         <span data-testid="pathname">{location.pathname}</span>
         <span data-testid="current-route-path">{currentRoute?.path}</span>
         <button onClick={() => navigate("/about")}>Go to About</button>
+        <button onClick={() => navigate("/blog")}>Go to Blog</button>
         <button onClick={() => navigate("/blog#section1")}>
           Go to Blog with Hash
         </button>
@@ -147,6 +148,54 @@ describe("Router", () => {
     // Expect scroll to be restored
     await waitFor(() => {
       expect(window.scrollTo).toHaveBeenCalledWith(50, 100);
+    });
+  });
+
+  it("should reset scroll to (0, 0) on consecutive route navigations and not use previous scroll position", async () => {
+    window.scrollY = 250;
+    window.scrollX = 0;
+
+    render(
+      <RouterProvider routes={mockRoutes}>
+        <TestComponent />
+      </RouterProvider>
+    );
+
+    // Navigate to /about
+    fireEvent.click(screen.getByText("Go to About"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("pathname").textContent).toBe("/about");
+    });
+
+    await waitFor(() => {
+      expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
+    });
+
+    // Simulate user scrolling on /about
+    window.scrollY = 600;
+    window.scrollX = 20;
+
+    // Navigate to /blog
+    vi.mocked(window.scrollTo).mockClear();
+    fireEvent.click(screen.getByText("Go to Blog"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("pathname").textContent).toBe("/blog");
+    });
+
+    await waitFor(() => {
+      expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
+    });
+
+    // Go back to /about
+    act(() => {
+      window.history.back();
+    });
+
+    // Expect scroll to be restored for /about
+    await waitFor(() => {
+      expect(window.scrollTo).toHaveBeenCalledWith(20, 600);
     });
   });
 

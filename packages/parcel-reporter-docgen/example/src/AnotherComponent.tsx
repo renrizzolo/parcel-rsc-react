@@ -3,6 +3,7 @@ import React from "react";
 export interface AnotherComponentProps {
   /** If the component is enabled. */
   enabled: boolean;
+  variant?: "beta" | "zeta" | "alpha";
 }
 
 export const AnotherComponent = ({
