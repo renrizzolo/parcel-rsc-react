@@ -54,7 +54,7 @@
     "build": "node ../../scripts/build-rust.mjs && tsdown",
     "build:rust": "node ../../scripts/build-rust.mjs",
     "test:rust": "node ../../scripts/build-rust.mjs --test",
-    "prepack": "pnpm run build",
+    "prepack": "node ../../scripts/prepack-plugin.mjs",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

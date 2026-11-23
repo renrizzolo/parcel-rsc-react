@@ -186,7 +186,9 @@ describe("prerenderStaticSite", () => {
       ],
       pages: {
         "/index.html": { default: SyncPage },
-        "/async.html": { default: AsyncPage as unknown as ComponentType<PageProps> },
+        "/async.html": {
+          default: AsyncPage as unknown as ComponentType<PageProps>,
+        },
       },
       outDir,
       staticDir: path.join(outDir, "nonexistent-static"),
