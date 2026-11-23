@@ -1,5 +1,5 @@
 ---
-"@renr/parcel-reporter-rsc-router": minor
+"@renr/parcel-plugin-rsc-router": minor
 "@renr/parcel-reporter-docgen": minor
 ---
 

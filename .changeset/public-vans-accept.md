@@ -1,6 +1,6 @@
 ---
 "parcel-reporter-rsc-router-example": minor
-"@renr/parcel-reporter-rsc-router": minor
+"@renr/parcel-plugin-rsc-router": minor
 "@renr/parcel-rsc-router": minor
 ---
 
