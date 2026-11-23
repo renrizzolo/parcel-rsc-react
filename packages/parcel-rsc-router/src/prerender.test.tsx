@@ -164,9 +164,9 @@ describe("prerenderStaticSite", () => {
       </Layout>
     ));
 
-    let asyncPageCalls = 0;
+    const onAsyncRender = vi.fn();
     async function AsyncPage({ currentPage }: PageProps) {
-      asyncPageCalls += 1;
+      onAsyncRender();
       return (
         <Layout>
           <h1>{currentPage.name}</h1>
@@ -197,7 +197,7 @@ describe("prerenderStaticSite", () => {
     // Probed only once for fallback discovery, then reused during render.
     expect(SyncPage).toHaveBeenCalledTimes(1);
     // Async page is never invoked outside React's render lifecycle.
-    expect(asyncPageCalls).toBe(0);
+    expect(onAsyncRender).not.toHaveBeenCalled();
     expect(renderHTMLMock).toHaveBeenCalledTimes(2);
     expect(renderHTMLMock.mock.calls[0]?.[1]?.component).toBe(Layout);
     expect(renderHTMLMock.mock.calls[1]?.[1]?.component).toBe(Layout);

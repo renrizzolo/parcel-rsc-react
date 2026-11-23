@@ -8,10 +8,11 @@ const repoRoot = path.resolve(__dirname, "..");
 const pkgDir = process.cwd();
 const isNativePluginPack = Boolean(process.env.PLUGIN_DIR);
 
+// Route child stdout to stderr so `npm pack --json` stdout stays valid JSON.
 function run(cmd, args, cwd) {
   const res = spawnSync(cmd, args, {
     cwd,
-    stdio: "inherit",
+    stdio: ["ignore", process.stderr, process.stderr],
     shell: process.platform === "win32",
   });
   if (res.status !== 0) {
@@ -37,16 +38,26 @@ const pnpmCmd = useDirectPnpm ? "pnpm" : "npx";
 const pnpmPrefix = useDirectPnpm ? [] : ["-y", pmSpec];
 
 if (isNativePluginPack) {
-  // Parcel's native-plugin.yml pack job builds JS dist/ only (Rust binaries are
-  // shipped separately in the per-platform artifact packages).
-  if (!fs.existsSync(path.join(repoRoot, "node_modules"))) {
-    run(
-      pnpmCmd,
-      [...pnpmPrefix, "install", "--frozen-lockfile", "--ignore-scripts"],
-      repoRoot
-    );
+  // Parcel's native-plugin.yml pack job temporarily edits package.json to add
+  // unpublished platform optionalDependencies before running `npm pack`.
+  // Temporarily restore the checked-in package.json so `pnpm install --frozen-lockfile`
+  // succeeds, build JS dist/ only (Rust binaries live in platform artifact packages),
+  // then restore the edited package.json before npm finishes packing.
+  const pkgJsonPath = path.join(pkgDir, "package.json");
+  const packedPkgJson = fs.readFileSync(pkgJsonPath, "utf-8");
+  try {
+    if (!fs.existsSync(path.join(repoRoot, "node_modules"))) {
+      run("git", ["checkout", "--", pkgJsonPath], repoRoot);
+      run(
+        pnpmCmd,
+        [...pnpmPrefix, "install", "--frozen-lockfile", "--ignore-scripts"],
+        repoRoot
+      );
+    }
+    run(pnpmCmd, [...pnpmPrefix, "exec", "tsdown"], pkgDir);
+  } finally {
+    fs.writeFileSync(pkgJsonPath, packedPkgJson);
   }
-  run(pnpmCmd, [...pnpmPrefix, "exec", "tsdown"], pkgDir);
 } else {
   // Git install or local pack: build both the Rust cdylib and JS dist/.
   run(pnpmCmd, [...pnpmPrefix, "run", "build"], pkgDir);
