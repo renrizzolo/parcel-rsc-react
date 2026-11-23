@@ -118,4 +118,86 @@ describe("prerenderStaticSite", () => {
     const options = renderHTMLMock.mock.calls[0]?.[1];
     expect(options?.component).toBe(DirectPage);
   });
+
+  it("does not probe page components outside React when bootstrapComponent is explicitly provided", async () => {
+    const outDir = await fs.mkdtemp(path.join(os.tmpdir(), "rsc-prerender-"));
+    tempDirs.push(outDir);
+
+    const ExplicitLayout: ComponentType<{ children?: React.ReactNode }> & {
+      bootstrapScript?: string;
+    } = ({ children }) => <main>{children}</main>;
+    ExplicitLayout.bootstrapScript = 'import("/client/explicit.js")';
+
+    const PageSpy = vi.fn(({ currentPage }: PageProps) => (
+      <ExplicitLayout>{currentPage.name}</ExplicitLayout>
+    ));
+
+    await prerenderStaticSite({
+      routes: [
+        { path: "/", slug: "index", html: "/index.html", rsc: "/index.rsc" },
+      ],
+      pages: {
+        "/index.html": { default: PageSpy },
+      },
+      bootstrapComponent: ExplicitLayout,
+      outDir,
+      staticDir: path.join(outDir, "nonexistent-static"),
+    });
+
+    expect(PageSpy).not.toHaveBeenCalled();
+    expect(renderHTMLMock).toHaveBeenCalledTimes(1);
+    expect(renderHTMLMock.mock.calls[0]?.[1]?.component).toBe(ExplicitLayout);
+  });
+
+  it("does not invoke the first wrapped page twice during fallback discovery and handles async pages", async () => {
+    const outDir = await fs.mkdtemp(path.join(os.tmpdir(), "rsc-prerender-"));
+    tempDirs.push(outDir);
+
+    const Layout: ComponentType<{ children?: React.ReactNode }> & {
+      bootstrapScript?: string;
+    } = ({ children }) => <main>{children}</main>;
+    Layout.bootstrapScript = 'import("/client/layout.js")';
+
+    const SyncPage = vi.fn(({ currentPage }: PageProps) => (
+      <Layout>
+        <h1>{currentPage.name}</h1>
+      </Layout>
+    ));
+
+    let asyncPageCalls = 0;
+    async function AsyncPage({ currentPage }: PageProps) {
+      asyncPageCalls += 1;
+      return (
+        <Layout>
+          <h1>{currentPage.name}</h1>
+        </Layout>
+      );
+    }
+
+    await prerenderStaticSite({
+      routes: [
+        { path: "/", slug: "index", html: "/index.html", rsc: "/index.rsc" },
+        {
+          path: "/async",
+          slug: "async",
+          html: "/async.html",
+          rsc: "/async.rsc",
+        },
+      ],
+      pages: {
+        "/index.html": { default: SyncPage },
+        "/async.html": { default: AsyncPage as unknown as ComponentType<PageProps> },
+      },
+      outDir,
+      staticDir: path.join(outDir, "nonexistent-static"),
+    });
+
+    // Probed only once for fallback discovery, then reused during render.
+    expect(SyncPage).toHaveBeenCalledTimes(1);
+    // Async page is never invoked outside React's render lifecycle.
+    expect(asyncPageCalls).toBe(0);
+    expect(renderHTMLMock).toHaveBeenCalledTimes(2);
+    expect(renderHTMLMock.mock.calls[0]?.[1]?.component).toBe(Layout);
+    expect(renderHTMLMock.mock.calls[1]?.[1]?.component).toBe(Layout);
+  });
 });

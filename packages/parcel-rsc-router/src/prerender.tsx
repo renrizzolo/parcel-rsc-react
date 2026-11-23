@@ -120,6 +120,8 @@ export async function prerenderStaticSite({
     };
   });
 
+  const probedBootstrapByRoute = new Map<string, ComponentType | undefined>();
+
   let fallbackBootstrap: ComponentType | undefined =
     bootstrapComponent ??
     (Object.values(pages).find((mod) => hasBootstrapScript(mod?.default))
@@ -127,7 +129,8 @@ export async function prerenderStaticSite({
 
   // If no page module carries bootstrapScript directly (e.g. an MDX-only site where
   // `'use server-entry'` lives on the layout component wrapped by each `.mdx` file),
-  // probe the first page wrapper to discover the layout's bootstrapScript.
+  // probe page wrappers until one yields a layout's bootstrapScript and cache the result
+  // so that route is not invoked twice.
   if (!fallbackBootstrap) {
     for (const route of routes) {
       const mod = pages[route.html];
@@ -142,6 +145,7 @@ export async function prerenderStaticSite({
           tableOfContents,
         },
       });
+      probedBootstrapByRoute.set(route.html, resolved);
       if (resolved) {
         fallbackBootstrap = resolved;
         break;
@@ -168,8 +172,19 @@ export async function prerenderStaticSite({
 
     const element = <PageComponent {...pageProps} />;
 
-    const componentWithBootstrap =
-      resolveBootstrapComponent(PageComponent, pageProps) ?? fallbackBootstrap;
+    let componentWithBootstrap: ComponentType | undefined;
+    if (hasBootstrapScript(PageComponent)) {
+      componentWithBootstrap = PageComponent as unknown as ComponentType;
+    } else if (bootstrapComponent) {
+      componentWithBootstrap = bootstrapComponent;
+    } else if (probedBootstrapByRoute.has(route.html)) {
+      componentWithBootstrap =
+        probedBootstrapByRoute.get(route.html) ?? fallbackBootstrap;
+    } else {
+      componentWithBootstrap =
+        resolveBootstrapComponent(PageComponent, pageProps) ??
+        fallbackBootstrap;
+    }
 
     const htmlStream = await renderHTML(element, {
       component: componentWithBootstrap,
