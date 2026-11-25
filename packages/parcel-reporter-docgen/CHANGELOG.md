@@ -1,5 +1,11 @@
 # @renr/parcel-reporter-docgen
 
+## 0.1.0-beta.11
+
+### Minor Changes
+
+- [#54](https://github.com/renrizzolo/parcel-rsc-react/pull/54) [`5097456`](https://github.com/renrizzolo/parcel-rsc-react/commit/5097456f51733cff8a6ffbb20993c17a1f731155) Thanks [@renrizzolo](https://github.com/renrizzolo)! - Migrate to a native Rust Parcel v3 reporter backed by the Node docgen CLI.
+
 ## 0.1.0-beta.10
 
 ### Patch Changes

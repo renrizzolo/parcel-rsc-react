@@ -1,6 +1,6 @@
 {
   "name": "@renr/parcel-config-rsc-router",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "author": "Ren Rizzolo",
   "license": "MIT",
   "description": "Shared Parcel v3 configuration for @renr/parcel-plugin-rsc-router",

@@ -2,6 +2,17 @@
 
 ## 1.0.0-beta.20
 
+### Major Changes
+
+- [#54](https://github.com/renrizzolo/parcel-rsc-react/pull/54) [`5097456`](https://github.com/renrizzolo/parcel-rsc-react/commit/5097456f51733cff8a6ffbb20993c17a1f731155) Thanks [@renrizzolo](https://github.com/renrizzolo)! - Introduce native Rust Parcel v3 transformer and reporter plugin (replacing `@renr/parcel-reporter-rsc-router`) that generates typed filesystem routes, injects the server-side prerender footer (using JS-compatible `Reflect.get`/`Reflect.set`), tracks page path changes without redundant mtime-driven rewrites, and hashes built bundles to skip unchanged prerenders.
+
+### Patch Changes
+
+- Updated dependencies [[`5097456`](https://github.com/renrizzolo/parcel-rsc-react/commit/5097456f51733cff8a6ffbb20993c17a1f731155)]:
+  - @renr/parcel-rsc-router@1.0.0-beta.13
+
+## 1.0.0-beta.20
+
 ### Patch Changes
 
 - Updated dependencies [[`2b717ba`](https://github.com/renrizzolo/parcel-rsc-react/commit/2b717ba3b3bf9d1ebc059c777d18f45f5ef54ec9)]:

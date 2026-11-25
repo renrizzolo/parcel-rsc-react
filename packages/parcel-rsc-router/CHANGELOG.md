@@ -1,5 +1,11 @@
 # @renr/parcel-rsc-router
 
+## 1.0.0-beta.13
+
+### Minor Changes
+
+- [#54](https://github.com/renrizzolo/parcel-rsc-react/pull/54) [`5097456`](https://github.com/renrizzolo/parcel-rsc-react/commit/5097456f51733cff8a6ffbb20993c17a1f731155) Thanks [@renrizzolo](https://github.com/renrizzolo)! - Add `@renr/parcel-rsc-router/prerender` (`prerenderStaticSite`) for Parcel v3 static HTML/RSC generation, resolve and cache `bootstrapScript` from wrapped layout components (e.g. compiled MDX pages) without invoking async pages outside React, and update `@parcel/rsc` peer dependency to `^3.0.0-alpha.3`.
+
 ## 1.0.0-beta.12
 
 ### Patch Changes
