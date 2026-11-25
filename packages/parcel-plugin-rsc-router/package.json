@@ -1,6 +1,6 @@
 {
   "name": "@renr/parcel-plugin-rsc-router",
-  "version": "1.0.0-beta.19",
+  "version": "1.0.0-beta.20",
   "author": "Ren Rizzolo",
   "license": "MIT",
   "description": "Parcel v3 native plugin that generates typed filesystem routes and statically prerenders RSC apps",
