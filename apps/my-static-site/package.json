@@ -26,8 +26,8 @@
     "build": "parcel build"
   },
   "dependencies": {
-    "@cumulo/core": "^0.2.0-alpha.0",
-    "@cumulo/css": "^0.2.0-alpha.0",
+    "@cumulo/core": "^0.2.0-alpha.2",
+    "@cumulo/css": "^0.2.0-alpha.2",
     "@parcel/rsc": "^3.0.0-alpha.3",
     "@renr/parcel-rsc-router": "workspace:*",
     "react": "^19.3.0",
@@ -37,6 +37,7 @@
   "devDependencies": {
     "@renr/parcel-config-rsc-router": "workspace:*",
     "@renr/parcel-reporter-docgen": "workspace:*",
+    "@cumulo/parcel-plugin": "^0.2.0-alpha.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "parcel": "^3.0.0-alpha.3",

@@ -1,12 +1,12 @@
 import "@cumulo/core/theme.css";
+import "./styles.css";
+import "./client";
+
 import { Container, Panel, ThemeScript, vars } from "@cumulo/core";
 import { cx, style } from "@cumulo/css";
 import { PageProps } from "@renr/parcel-rsc-router";
 import { Nav } from "./components/Nav";
 import { AppProvider } from "./appProvider";
-import "./client";
-import "./styles.css";
-import { ThemeToggle } from "@cumulo/core/components/ThemeToggle";
 
 const headerBarStyle = style({
   display: "flex",
@@ -61,7 +61,6 @@ export default function Layout({
               className={cx(headerBarStyle)}
             >
               <Nav currentPage={currentPage} />
-              <ThemeToggle />
             </Panel>
             <Panel as="main" padding="md">
               {children}

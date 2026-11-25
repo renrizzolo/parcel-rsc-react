@@ -1,4 +1,8 @@
 {
   "extends": "@renr/parcel-config-rsc-router",
-  "reporters": ["...", "@renr/parcel-reporter-docgen"]
+  "reporters": ["...", "@renr/parcel-reporter-docgen"],
+  "transformers": {
+    "*.{js,mjs,jsx,ts,tsx}": ["@cumulo/parcel-plugin", "...", "@cumulo/parcel-plugin"],
+    "cumulo-css:*": ["@cumulo/parcel-plugin"]
+  }
 }
