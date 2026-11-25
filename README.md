@@ -1,6 +1,8 @@
 # parcel-rsc-react
 
-A modular toolkit for building React Server Components (RSC) applications with [Parcel](https://v3.parceljs.org/recipes/rsc/).
+A modular toolkit for building React Server Components (RSC) applications with [Parcel V3](https://v3.parceljs.org/recipes/rsc/).
+
+⚠️ For Parcel 2, see the https://github.com/renrizzolo/parcel-rsc-react/tree/parcel-v2 branch.
 
 ## Packages
 
