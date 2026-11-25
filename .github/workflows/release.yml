@@ -77,6 +77,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Wait for native plugins on npm
+        if: needs.check-native-plugins.outputs.needs_publish == 'true'
+        run: node scripts/check-native-plugins.mjs --wait packages/parcel-plugin-rsc-router packages/parcel-reporter-docgen
+
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
         with:
