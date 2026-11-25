@@ -1,8 +1,16 @@
 # parcel-rsc-react
 
-A modular toolkit for building React Server Components (RSC) applications with [Parcel V3](https://v3.parceljs.org/recipes/rsc/).
+A router and set of plugins for building static sites using React Server Components (RSC) with [Parcel V3](https://v3.parceljs.org/recipes/rsc/). 
 
-⚠️ For Parcel 2, see the https://github.com/renrizzolo/parcel-rsc-react/tree/parcel-v2 branch.
+For Parcel 2, see the https://github.com/renrizzolo/parcel-rsc-react/tree/parcel-v2 branch.
+
+
+➡️ See it in use at https://cumulo-ui.netlify.app
+
+---
+
+**⚠️ This is in beta: APIs may change and break, and features may not work as expected.**
+
 
 ## Packages
 
