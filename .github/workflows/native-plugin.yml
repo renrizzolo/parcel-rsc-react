@@ -1,18 +1,7 @@
 name: Native Plugin
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "packages/parcel-plugin-rsc-router/**"
-      - "packages/parcel-reporter-docgen/**"
-      - ".github/workflows/native-plugin.yml"
-  pull_request:
-    paths:
-      - "packages/parcel-plugin-rsc-router/**"
-      - "packages/parcel-reporter-docgen/**"
-      - ".github/workflows/native-plugin.yml"
+  workflow_dispatch:
 
 jobs:
   build-native-plugin:
