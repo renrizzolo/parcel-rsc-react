@@ -1,3 +1,4 @@
+"use server-entry";
 import { PageProps } from "@renr/parcel-rsc-router";
 import { routeTree } from "../../../routes";
 import { NavTree } from "../../components/Nav";

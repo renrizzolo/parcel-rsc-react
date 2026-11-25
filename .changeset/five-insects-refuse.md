@@ -1,5 +1,5 @@
 ---
-"@renr/parcel-reporter-rsc-router": patch
+"@renr/parcel-plugin-rsc-router": patch
 ---
 
 bump deps

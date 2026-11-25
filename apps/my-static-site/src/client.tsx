@@ -3,4 +3,4 @@
 import { hydrate } from "@parcel/rsc/client";
 
 // oxlint-disable-next-line no-unused-vars
-const updateRoot = hydrate();
+const updateRoot = typeof document !== "undefined" ? hydrate() : () => {};

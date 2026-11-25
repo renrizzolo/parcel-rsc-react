@@ -1,0 +1,17 @@
+[package]
+name = "parcel-plugin-rsc-router"
+version = "1.0.0-beta.19"
+edition = "2024"
+license = "MIT"
+description = "Native Parcel v3 plugin that generates filesystem route definitions and prerenders static RSC pages"
+repository = "https://github.com/renrizzolo/parcel-rsc-react"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+parcel-plugin = "0.2.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+wax = "0.6"
+

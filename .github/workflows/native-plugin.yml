@@ -1,0 +1,16 @@
+name: Native Plugin
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-native-plugin:
+    permissions:
+      contents: read
+      id-token: write
+    uses: parcel-bundler/parcel/.github/workflows/native-plugin.yml@v3.0.0-alpha.3
+    with:
+      paths: |
+        packages/parcel-plugin-rsc-router
+        packages/parcel-reporter-docgen
+      publish: false
